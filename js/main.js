@@ -1,5 +1,5 @@
 const urlQueryParams = new URLSearchParams(window.location.search);
-var sources = [urlQueryParams.get('entriesDataUrl'), urlQueryParams.get('assessmentsDataUrl'), 'images/summary.svg'];
+var sources = [urlQueryParams.get('assessmentsDataUrl'), urlQueryParams.get('entriesDataUrl'), 'images/summary.svg'];
 
 var Deepviz = new Deepviz(sources, function(data){
 
