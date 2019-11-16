@@ -1,37 +1,28 @@
 const urlQueryParams = new URLSearchParams(window.location.search);
-var sources = [urlQueryParams.get('dataUrl')];
+var sources = [urlQueryParams.get('entriesDataUrl'), urlQueryParams.get('assessmentsDataUrl'), 'images/summary.svg'];
 
 var Deepviz = new Deepviz(sources, function(data){
 
 	//**************************
-	// sector chart
+	// summary section
 	//**************************
-	var sectorChart = Deepviz.createSectorChart();
+	var summary = Deepviz.createSummary();
+
+	// //**************************
+	// // sector chart
+	// //**************************
+	// var sectorChart = Deepviz.createSectorChart();
 
 	//**************************
-	// specific needs chart
+	// affected groups chart
 	//**************************
-	var specificNeedsChart = Deepviz.createSpecificNeedsChart();
+	// var affectedGroupsChart = Deepviz.createAffectedGroupsChart();
 
 	//**************************
-	// specific needs chart
+	// finalScore chart
 	//**************************
-	var affectedGroupsChart = Deepviz.createAffectedGroupsChart();
+	var finalScoreChart = Deepviz.createFinalScoreChart();
 
-	//**************************
-	// severity chart
-	//**************************
-	var severityChart = Deepviz.createSeverityChart();
-
-	//**************************
-	// reliability chart
-	//**************************
-	var reliabilityChart = Deepviz.createReliabilityChart();
-
-	//**************************
-	// framework chart
-	//**************************
-	var frameworkChart = Deepviz.createFrameworkChart();
 
 	//**************************
 	// time chart
@@ -41,7 +32,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	var timelineSvg = Deepviz.createSvg({
 		id: 'timeline_viz',
 		viewBoxWidth: 1300,
-		viewBoxHeight: 870,
+		viewBoxHeight: 1100,
 		div: '#timeline'
 	});
 
@@ -124,8 +115,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		},
 		dateBrush: true,
 		dataValues: 'total_entries',
-		dataKey: 'key',
-		frame: [1]
+		dataKey: 'key'
 	});
 
 	var map = Deepviz.createMap({ });

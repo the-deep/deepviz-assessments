@@ -1,11 +1,8 @@
 html {
-	background-color: #f6f6f6;
-	color: #4c4c4c;
+
 }
 
 text {
-	fill: #4c4c4c;
-	color: #4c4c4c;
 }
 
 .time-select text {
@@ -13,7 +10,7 @@ text {
 }
 
 body {
-	font-family: 'Source Sans Pro' !important;
+	font-family: 'Source Sans Pro', sans-serif  !important;
 	font-size: 14px;
 	margin: 0;
 	-moz-user-select: none; /* Firefox */
@@ -21,7 +18,6 @@ body {
 	-khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
 	-webkit-user-select: none; /* Chrome, Safari, and Opera */
 	-webkit-touch-callout: none; /* Disable Android and iOS callouts*/
-	padding: 0px 10px 10px 10px;
 }
 
 input { cursor: pointer; }
@@ -40,15 +36,20 @@ svg text {
 }
 
 #main-content {
-	padding-top: 73px;
 	padding-bottom: 0px;
+	min-height: 500px;
+	opacity: 0;
+	position: relative;
 }
 
+#summary_row {
+	position: relative;
+}
 
-	#avg_slider_svg {
-	    width: 100%;
-	    float: right;
-	}
+#avg_slider_svg {
+    width: 100%;
+    float: right;
+}
 
 #top-row {
 	height: 58px;
@@ -66,10 +67,7 @@ svg text {
 #container {
 	padding: 0px 15px 0px 15px;
 	margin: 0px auto;
-	border: 1px solid #00000033;
-	border-top: 1px solid #FFF;
 	background-color: #FFF;
-
 }
 
 .leftcol {
@@ -94,9 +92,55 @@ svg text {
 	margin-top: 3px;
 }
 
+[class^='select2'] {
+  border-radius: 0px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+	padding: 2px 4px;
+}
+.select2-container .select2-selection--multiple {
+	min-height: 26px;
+}
+
+.select2-selection__choice,
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+	margin-top: 1px;
+	margin-bottom: 1px;
+	margin-right: 2px;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+	margin-top: 1px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice,
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+	background-color: rgb(0, 137, 116);
+	color: #FFF;
+	border: none;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+	color: #FFF;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #CACACA;
+  font-size: 10px;
+}
+
+.search-adm-id {
+	display: inline;
+	color: #CACACA;
+	font-size: 9px;
+	padding-top: 3px;
+	float: right;
+	padding-right: 2px;
+}
 #map-bubble-svg {
-	-webkit-filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.2));      
-	filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.2)); 
+	-webkit-filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.3));      
+	filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.3)); 
 }
 
 .mapboxgl-control-container {
@@ -110,7 +154,7 @@ svg text {
 
 #timechart-container {
 	position: relative;
-	top: -6px;
+	top: -49px;
 }
 
 @media only screen and (max-width: 1140px) {
@@ -131,10 +175,6 @@ svg text {
 	#avg_slider {
 		top: -5px !important;
 		width: 36%;
-	}
-
-	#timechart_legend {
-		width: 76% !important;
 	}
 
 	#timechart-legend {
@@ -161,7 +201,6 @@ svg text {
 
 @media only screen and (max-width: 970px) {
 
-	.selectedDate { margin-left: 20px; }
 
 	body { font-size: 12px; }
 
@@ -177,14 +216,12 @@ svg text {
 		height: 48px;
 		width: 97% !important;
 	}
-	#main-content {
-		padding-top: 60px;
-	}
+
 	.title {
 		font-size: 12px !important;
 	}
 
-	#severity_value,
+	#finalScore_value,
 	#reliability_value {
 		font-size: 9px !important;
 	}
@@ -195,7 +232,7 @@ svg text {
 
 	.subtitle,
 	#reliabilityRemoveFilter,
-	#severityRemoveFilter {
+	#finalScoreRemoveFilter {
 		height: 12px !important;
 	}
 
@@ -299,15 +336,12 @@ svg text {
 	#top-row {
 		height: 40px;
 	}
-	#main-content {
-		padding-top: 50px;
-	}
 
 	.title {
 		font-size: 10px !important;
 	}
 
-	#severity_value,
+	#finalScore_value,
 	#reliability_value {
 		font-size: 8px !important;
 	}
@@ -322,7 +356,7 @@ svg text {
 	}
 
 	#reliabilityRemoveFilter,
-	#severityRemoveFilter {
+	#finalScoreRemoveFilter {
 		height: 12px !important;
 		width: 12px !important;
 		display: none !important;
@@ -369,15 +403,12 @@ svg text {
 	#top-row {
 		height: 32px;
 	}
-	#main-content {
-		padding-top: 42px;
-	}
 
 	#timechart_legend {
 		display: none;
 	}
 
-	#severity_value,
+	#finalScore_value,
 	#reliability_value {
 		font-size: 6px !important;
 	}
@@ -396,7 +427,7 @@ svg text {
 	}
 
 	#reliabilityRemoveFilter,
-	#severityRemoveFilter {
+	#finalScoreRemoveFilter {
 		height: 10px !important;
 		width: 10px !important;
 		padding-left: 0px;
@@ -449,10 +480,6 @@ svg text {
 }
 
 @media only screen and (max-width: 450px) {
-	.selectedDate {
-		font-size: 4px !important;
-		display: none !important;
-	}
 
 	#top-row {
 		width: 95% !important;
@@ -466,7 +493,7 @@ svg text {
 		width: 82%;
 	}
 
-	#severity_value,
+	#finalScore_value,
 	#reliability_value {
 		font-size: 5px !important;
 	}
@@ -498,12 +525,6 @@ svg text {
 	top: -7px;
 }
 
-#timechart-legend {
-    position: absolute;
-    top: 6px;
-    left: 300px;
-}
-
 #avg_slider .ticks {
 	font: 10px sans-serif;
 }
@@ -518,7 +539,7 @@ font-size: 15px;
 }
 
 .avgSliderLabel {
-	font-size: 11px;
+	font-size: 10px;
 	font-weight: 100;
 }
 
@@ -539,7 +560,7 @@ font-size: 15px;
 
 #avg_slider .track-overlay {
 	pointer-events: stroke;
-	stroke-width: 50px;
+	stroke-width: 32px;
 	stroke: transparent;
 	cursor: ew-resize;
 }
@@ -560,9 +581,9 @@ font-size: 15px;
 }
 
 
-.toggle, .severitytoggle, .reliabilitytoggle { cursor: pointer; }
+.toggle, .finalScoretoggle { cursor: pointer; }
 
-#severity img, 
+#finalScore img, 
 #reliability img {
 	top: 2px;
     position: relative;
@@ -589,62 +610,47 @@ font-size: 15px;
 	display: none;
 }
 
-#reliabilityRemoveFilter,
-#severityRemoveFilter,
+#finalScoreRemoveFilter,
 #geoRemoveFilter {
-	height: 14px;
+	height: 13px;
 	padding-left: 3px;
 	display: none;
 	position: absolute;
 }
 
-#reliabilityRemoveFilter:hover,
-#severityRemoveFilter:hover {
-
+#finalScore {
+	width: 37%;
+    display: inline-block;
+    fill: green;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 2;
 }
 
-#severity {
-	width: 49%;
-	display: inline-block;
-	fill: green;
-	padding-right: 2%;
-	position: relative;
-	top: -4px;
-}
-
-#severity svg,
-#reliability svg {
-	margin-top: 2px;
-	margin-bottom: -2px;
-}
-
-#severitySvg text,
-#reliabilitySvg text {
+#finalScoreSvg text {
 	cursor: pointer;
 }
 
-#severity_bars {
+#finalScore_bars {
 	width: 100%;
 	margin-top: 2px;
-	margin-bottom: 16px;
 }
 
-#severity_value {
+#finalScore_value {
 	color: #008974;
 	float: right;
 	display: inline;
 	font-size: 12px;
 	font-weight: bold;
 	padding-top: 3px;
-
 }
 
-.severityBar {
+.finalScoreBar {
 	cursor: pointer;
 	outline: none;
 }
 
-.reliabilityBar,
 .top-bar {
 	cursor: pointer;
 	outline: none;
@@ -655,10 +661,6 @@ font-size: 15px;
 .sc-bar {
 	cursor: pointer;
 	outline: none;
-}
-
-.bubble {
-	cursor: pointer !important;
 }
 
 #reliability {
@@ -673,7 +675,6 @@ font-size: 15px;
 #reliability_bars {
 	width: 100%;
 	margin-top: 2px;
-	margin-bottom: 16px;
 }
 
 #reliability_value {
@@ -710,7 +711,8 @@ font-size: 15px;
 	display: inline-block;
 	line-height: 1.4;
 	margin-bottom: 0px;
-	margin-left: 15%;
+	position: relative;
+    top: 4px;
 }
 
 #dateRangeText {
@@ -718,6 +720,9 @@ font-size: 15px;
     font-size: 17px;
     color: #008974;
     cursor: default;
+    padding-left: 6px;
+    padding-right: 2px;
+    position: absolute;
 }
 
 .monthly .table-condensed thead tr:nth-child(2),
@@ -751,8 +756,10 @@ font-size: 15px;
 	margin-top: 2px;
 	font-family: Source Sans Pro, sans-serif;
 	opacity: 0;
-	position: absolute;
-	top: 20px;
+	position: relative;
+    top: 0px;
+    left: 0px;
+    width: 180px;
 	cursor: pointer;
 }
 
@@ -769,6 +776,10 @@ font-size: 15px;
 	float: right;
 }
 
+#timechart-legend div {
+	float: right;
+}
+
 #timechart-select {
     top: 3px;
     position: relative;
@@ -778,7 +789,7 @@ font-size: 15px;
 
 .handle {
 	fill: #000;
-	width: 2;
+	width: 2px;
 }
 
 .selection {
@@ -841,7 +852,7 @@ font-size: 15px;
 
 #framework-chart {
 	width: 100%;
-	padding-top: 20px;
+	padding-top: 10px;
 }
 
 #framework-chart .title {
@@ -924,4 +935,25 @@ font-size: 15px;
 
 .top-bar text {
 	cursor: pointer;
+}
+
+#lasso {
+	position: absolute;
+    top: 5px;
+    display: inline;
+    right: 5px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+#lasso-default {
+	
+}
+
+#lasso-hover {
+	display: none;
+}
+
+#lasso-selected {
+	display: none;
 }
