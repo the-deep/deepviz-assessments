@@ -8,20 +8,30 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	var summary = Deepviz.createSummary();
 
-	// //**************************
-	// // sector chart
-	// //**************************
-	// var sectorChart = Deepviz.createSectorChart();
+	//**************************
+	// sector chart
+	//**************************
+	var sectorChart = Deepviz.createSectorChart();
 
 	//**************************
-	// affected groups chart
+	// focus chart
 	//**************************
-	// var affectedGroupsChart = Deepviz.createAffectedGroupsChart();
+	var focusChart = Deepviz.createFocusChart();
+
+	// **************************
+	// affected groups chart
+	// **************************
+	var affectedGroupsChart = Deepviz.createAffectedGroupsChart();
 
 	//**************************
 	// finalScore chart
 	//**************************
 	var finalScoreChart = Deepviz.createFinalScoreChart();
+
+	//**************************
+	// top stakeholders chart
+	//**************************
+	var topStakeholdersChart = Deepviz.createTopStakeholdersChart();
 
 
 	//**************************
@@ -32,7 +42,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	var timelineSvg = Deepviz.createSvg({
 		id: 'timeline_viz',
 		viewBoxWidth: 1300,
-		viewBoxHeight: 1100,
+		viewBoxHeight: 1050,
 		div: '#timeline'
 	});
 

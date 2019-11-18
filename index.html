@@ -18,7 +18,7 @@
 	<link href="js/vendor/select2.min.css" rel="stylesheet" />
 
 	<!-- load custom CSS -->
-	<link href="css/style.css?cache=244" rel="stylesheet" type="text/css" media="all">
+	<link href="css/style.css?cache=245" rel="stylesheet" type="text/css" media="all">
 
 </head>
 
@@ -36,7 +36,6 @@
 		</div>
 
 		<div id="summary_row">
-			<h2>Assessment Details</h2>
 
 				<div id="finalScore" class="widget">
 					<div class="title finalScoreToggle">
@@ -51,6 +50,9 @@
 				</div>
 
 			<div class="leftcol">
+
+				<h2 style="display: inline">Assessment Details</h2><br/><br/>
+
 				<div class="title">
 					ASSESSMENTS BY LOCATION
 				</div>
@@ -121,29 +123,28 @@
 				</div>
 			</div><!-- / .rightcol -->
 		</div><!-- /# summary_row -->
-		
-		<br/>
-		<br/>
-		<div id="framework-chart" class="clearfix">
 
-		</div>
 
-		<div id="footerRow">
-			<div id="col1" class="footerCol">
+
+		<div id="chartRow"><br/>
+
+			<div id="col1" class="chartCol">
+				<div id="focus-svg" class="col-content"></div>
+			</div>
+			<div id="col2" class="chartCol">
 				<div id="sector-svg" class="col-content"></div>
 			</div>
-
-			<div id="col2" class="footerCol">
-				<div id="specific-needs-svg" class="col-content"></div>
-			</div>
-
-			<div id="col3" class="footerCol">
+			<div id="col3" class="chartCol">
 				<div id="affected-groups-svg" class="col-content"></div>
-			</div>		
-		</div>
-
-		<br/>
+			</div>
+			<div id="col4" class="chartCol">
+				<div id="top-stakeholders-svg" class="col-content"></div>
+			</div>	
+		</div><!-- /#chartRow -->
 	</div><!-- /#main-content -->
+
+			<br/>
+
 </div>
 
 	<!-- load vendor JavaScript -->
@@ -157,8 +158,8 @@
 	<script src='js/vendor/mapbox-gl.js'></script>
 
 	<!-- load custom JavaScript -->
-	<script type="text/javascript" src="js/deepviz.js?cache=244"></script>
-	<script type="text/javascript" src="js/main.js?cache=244"></script>
+	<script type="text/javascript" src="js/deepviz.js?cache=245"></script>
+	<script type="text/javascript" src="js/main.js?cache=245"></script>
 
 </body>
 </html>

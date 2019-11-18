@@ -72,13 +72,11 @@ svg text {
 
 .leftcol {
 	width: 34%;
-	float:left;
+	margin-top: 2px;
 }
 
 .rightcol {
-	width: 66%;
-	float:right;
-	padding-top: 3px;
+
 }
 
 .widget {
@@ -153,8 +151,11 @@ svg text {
 }
 
 #timechart-container {
-	position: relative;
-	top: -49px;
+	width: 66%;
+	float: right;
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
 @media only screen and (max-width: 1140px) {
@@ -263,11 +264,6 @@ svg text {
 	#dateRangeText {
 		font-size: 13px !important;
 	}
-
-	#footerRow {
-	    margin-top: 10px !important;
-	}
-
 
 }
 
@@ -489,10 +485,6 @@ svg text {
 		width: 18%;
 	}
 
-	#top-row .rightcol {
-		width: 82%;
-	}
-
 	#finalScore_value,
 	#reliability_value {
 		font-size: 5px !important;
@@ -623,8 +615,8 @@ font-size: 15px;
     display: inline-block;
     fill: green;
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 4px;
+    right: 2px;
     z-index: 2;
 }
 
@@ -658,7 +650,7 @@ font-size: 15px;
 
 .sn-bar,
 .ag-bar,
-.sc-bar {
+.sector-bar {
 	cursor: pointer;
 	outline: none;
 }
@@ -894,12 +886,8 @@ font-size: 15px;
 	stroke: #CCCCCC !important;
 }
 
-#footerRow {
-	margin-top: 20px;
-}
-
-.footerCol {
-	width: 33%;
+.chartCol {
+	width: 24%;
 	display: inline-grid;
 	vertical-align: top;
 }
@@ -909,8 +897,15 @@ font-size: 15px;
 	/*background-color: lightgreen;*/
 }
 
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
 #col1 {
-	width: 33%;
+
 }
 
 #col2 {

@@ -20,7 +20,8 @@ var Deepviz = function(sources, callback){
 		'finalScore': {x: '', y: ''},
 		'sector': {x: '', y: ''},
 		'reliability': {x: '', y: ''},
-		'affected_groups': {x: '', y: ''}
+		'affected_groups': {x: '', y: ''},
+		'organisation': {x: '', y: ''},
 	};
 
 	var mapbox;
@@ -42,6 +43,7 @@ var Deepviz = function(sources, callback){
 	var dataByLocationSum;
 	var dataByLocationArray;
 	var dataByFocus;
+	var dataByFocusArray;
 	var dataBySector;
 	var dataByFramework;
 	var dataByFrameworkSector;
@@ -97,6 +99,8 @@ var Deepviz = function(sources, callback){
 		affectedGroups: [],
 		specificNeeds: [],
 		context: [],
+		focus: [],
+		organisation: [],
 		geo: [],
 		toggle: 'finalScore',
 		frameworkToggle: 'entries',
@@ -120,7 +124,8 @@ var Deepviz = function(sources, callback){
 	.interpolator(d3.interpolateReds);
 
 	// stacked bar charts (sector, affected groups, special needs groups)
-	var stackedBarHeight = 550;
+	var stackedBarHeight = 500;
+
 	//**************************
 	// load data
 	//**************************
@@ -211,6 +216,11 @@ var Deepviz = function(sources, callback){
 			d.id = i+1;
 		});
 
+		metadata.organization.forEach(function(d,i){
+			d._id = d.id;
+			d.id = i+1;
+		});
+
 		metadata.scorepillar_scale.forEach(function(d,i){
 			d._id = d.id;
 			d.id = i+1;
@@ -275,6 +285,18 @@ var Deepviz = function(sources, callback){
 				metadata.sector_array.forEach(function(ddd,ii){
 					if(dd==ddd._id){
 						d.sector.push(ddd.id);
+					}
+				});
+			});
+
+			// parse organisations array
+			d._organisation_and_stakeholder_type = d.organisation_and_stakeholder_type;
+			d.organisation_and_stakeholder_type = [];
+
+			d._organisation_and_stakeholder_type.forEach(function(dd,ii){
+				metadata.organization.forEach(function(ddd,ii){
+					if(dd[1]==ddd._id){
+						d.organisation_and_stakeholder_type.push([dd[0], ddd.id]);
 					}
 				});
 			});
@@ -486,7 +508,7 @@ var Deepviz = function(sources, callback){
 		dataByOrganisation = [];
 		dataByOrganisationType = [];
 		dataByLocationArray = [];
-		var dataByFocusArray = [];
+		dataByFocusArray = [];
 		dataByFrameworkContext = [];
 
 		data.forEach(function(d,i){
@@ -495,28 +517,11 @@ var Deepviz = function(sources, callback){
 			var sectors = [];
 
 			d.sector.forEach(function(dd,ii){
-				var c = dd[0];
-				var f = dd[1];
-				var s = dd[2];
-				// data by sector (non-unique) for framework cells
-				dataByFrameworkSector.push({"date": d.date, "context": c, "framework": f, "sc": s, 's': d.finalScore, 'r': d.reliability});
-				// unique entries by framework
-				var frameworkRow = {"date": d.date, "context": c, "framework": f, 's': d.finalScore, 'r': d.reliability};
-				if(!frameworks.includes(f)){
-					dataByFramework.push(frameworkRow);
-					frameworks.push(f);
-				}
-				// unique entries by context
-				var contextRow = {"date": d.date, "context": c, 's': d.finalScore, 'r': d.reliability};
-				if(!contexts.includes(c)){
-					dataByFrameworkContext.push(contextRow);
-					contexts.push(c);
-				}
 				// unique entries by sector
-				var sectorRow = {"date": d.date, "sc": s, 's': d.finalScore, 'r': d.reliability};
-				if(!sectors.includes(s)){
+				var sectorRow = {"date": d.date, "sector": dd, 's': d.finalScore };
+				if(!sectors.includes(dd)){
 					dataBySector.push(sectorRow);
-					sectors.push(s);
+					sectors.push(dd);
 				}
 			});
 
@@ -525,17 +530,23 @@ var Deepviz = function(sources, callback){
 			});
 
 			d.focus.forEach(function(dd,ii){
-				dataByFocusArray.push({"date": d.date, "month": d.month, "year": d.year, "focus": dd})
+				dataByFocusArray.push({"date": d.date, "month": d.month, "year": d.year, "focus": dd, 's': d.finalScore})
 			});
 
 			d.affected_groups.forEach(function(dd,ii){
-				dataByAffectedGroups.push({"date": d.date, "ag": dd, 's': d.finalScore, 'r': d.reliability});
+				dataByAffectedGroups.push({"date": d.date, "affected_groups": dd, 's': d.finalScore });
 			});
 
 			dataByAssessmentType.push({"date": d.date, 'assessment_type': parseInt(d.assessment_type)});
 
 			d.organisation_and_stakeholder_type.forEach(function(dd,ii){
-				dataByOrganisation.push({"date": d.date,  "stakeholder_type": dd[0], "organisation": dd[1] });
+				var org_name;
+				metadata.organization.forEach(function(ddd,ii){
+					if(parseInt(ddd.id)==parseInt(dd[1])){
+						org_name = ddd.name;
+					}
+				});
+				dataByOrganisation.push({"date": d.date,  "stakeholder_type": dd[0], "organisation": dd[1], 'org_name': org_name });
 			});
 
 			d.data_collection_technique.forEach(function(dd,ii){
@@ -633,8 +644,6 @@ var Deepviz = function(sources, callback){
 				contextArr[b] = 0;
 			}
 
-			d.focus = contextArr;
-
 			dataByFocus[i] && dataByFocus[i].values.forEach(function(dx, ii){
 				var k = dx.key-1;
 				contextArr[k] = dx.value
@@ -688,8 +697,10 @@ var Deepviz = function(sources, callback){
 
 		rightAlignTotals();
 		updateTotals();
-		// updateStackedBars('affected_groups', dataByAffectedGroups);
-		// updateStackedBars('sc', dataBySector);
+		updateBars('affected_groups', dataByAffectedGroups);
+		updateStackedBars('sector', dataBySector);
+		updateBars('focus', dataByFocusArray);
+		updateOrganisationBars('organisation', dataByOrganisation)
 		return dataByDate;
 
 	}
@@ -1851,8 +1862,10 @@ var Deepviz = function(sources, callback){
 	    	updateDate();
 	    	updateBubbles();
 	    	updateFinalScore('map', 500);
-	    	// updateStackedBars('affected_groups', dataByAffectedGroups);
-	    	// updateStackedBars('sc', dataBySector);
+	    	updateBars('affected_groups', dataByAffectedGroups);
+	    	updateStackedBars('sector', dataBySector);
+	    	updateBars('focus', dataByFocusArray);
+	    	updateOrganisationBars('organisation', dataByOrganisation)
 
 	    	handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
 	    	handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + (timechartSvgHeight - margin.top) + ")"; });
@@ -1927,8 +1940,10 @@ var Deepviz = function(sources, callback){
 			updateDate();
 			updateBubbles();
 			updateFinalScore('brush');
-			// updateStackedBars('affected_groups', dataByAffectedGroups);
-			// updateStackedBars('sc', dataBySector);
+			updateBars('affected_groups', dataByAffectedGroups);
+			updateStackedBars('sector', dataBySector);
+			updateBars('focus', dataByFocusArray);
+			updateOrganisationBars('organisation', dataByOrganisation)
 
 			d3.select(this).call(d3.event.target.move, dateRange.map(scale.timechart.x));
 			handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
@@ -1979,8 +1994,10 @@ var Deepviz = function(sources, callback){
 			updateDate();
 			updateBubbles();
 			updateFinalScore('brush',500);
-			// updateStackedBars('affected_groups', dataByAffectedGroups);
-			// updateStackedBars('sc', dataBySector);
+			updateBars('affected_groups', dataByAffectedGroups);
+			updateStackedBars('sector', dataBySector);
+			updateBars('focus', dataByFocusArray);
+			updateOrganisationBars('organisation', dataByOrganisation)
 
 			d3.select(this).call(d3.event.target.move, dateRange.map(scale.timechart.x));
 			handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
@@ -2001,8 +2018,12 @@ var Deepviz = function(sources, callback){
 		updateBubbles();
 		updateFinalScore('init', 500);
 		updateTotals();
-		// updateStackedBars('affected_groups', dataByAffectedGroups);
+		updateBars('affected_groups', dataByAffectedGroups);
 		// updateStackedBars('sc', dataBySector);
+
+		updateStackedBars('sector', dataBySector);
+		updateBars('focus', dataByFocusArray);
+		updateOrganisationBars('organisation', dataByOrganisation)
 
 		return bars;
 	}
@@ -2134,6 +2155,152 @@ var Deepviz = function(sources, callback){
 		updateFinalScore('init', 500);
 	}
 
+	//**************************
+	// bar chart
+	//**************************
+	this.createBarChart = function(a){
+
+		var padding = {left: 20, right: 25, top: 35, bar: {y: 5}};
+
+		// create svg
+		var svg = this.createSvg({
+			id: a.div+'-svg',
+			viewBoxWidth: a.width,
+			viewBoxHeight: stackedBarHeight,
+			div: '#'+a.div,
+			width: '100%'
+		});
+
+		var height = stackedBarHeight - padding.top;
+
+		if((a.limit)&&(a.rows.length>a.limit)) {
+			var rowHeight = height/a.limit;
+		} else {
+			var rowHeight = height/a.rows.length;
+		}
+
+		// add title
+		var title = svg.append('g')
+		.attr('transform', 'translate(0,0)');
+
+		title
+		.append('text')
+		.attr('x', 0)
+		.attr('y', 20)
+		.style('font-weight', 'bold')
+		.text(a.title);
+
+		// add filter icon
+		title.append('image')
+		.attr('id', a.classname+'RemoveFilter')
+		.attr('class', 'removeFilterBtn')
+		.attr('xlink:href', 'images/filter.png')
+		.attr('title', 'Reset filter')
+		.attr('y', 1)
+		.attr('x', title.node().getBBox().width +5 )
+		.attr('height', '22px')
+		.attr('width', '22px');
+
+		var chartarea = svg.append('g');
+
+		var rows = chartarea.selectAll('.bar-row')
+		.data(a.rows)
+		.enter()
+		.append('g')
+		.attr('class', function(d,i) { return 'bar-row ' +a.classname+'-bar-row'+i; })
+		.attr('transform', function(d,i){
+			return 'translate(0,' + ((i*rowHeight) + padding.top) + ')';
+		});
+
+		var label = rows.append('text')
+		.attr('y', rowHeight/2 )
+		.attr('class', function(d,i){ return a.classname + ' ' + a.classname+'-'+i })
+		.style('alignment-baseline', 'middle')
+		.text(function(d,i){
+			var name = d.name.substr(0,17);
+			if(name.length==17) name += '.';
+			return name;
+		}).style('text-anchor', 'end');
+
+		var labelWidth = chartarea.node().getBBox().width + padding.left;
+		label.attr('x', labelWidth-20);
+		labelWidth = labelWidth + 16;
+
+		// title.attr('transform', function(d,i){
+		// 	var offset = d3.select(this).node().getBBox().width +35;
+		// 	return 'translate('+(labelWidth-offset)+',0)';
+		// })
+
+		var width = a.width - labelWidth - padding.right; 
+
+		// adjust title and filter button spacing
+		d3.select('#'+a.classname+'Title').style('text-align', 'left').style('display', 'inline');
+
+		var rowBg = rows.append('rect')
+		.attr('y', 1)
+		.attr('x', 0)
+		.attr('width', labelWidth-30)
+		.attr('height', rowHeight-2)
+		.style('opacity', 0)
+		.style('cursor', 'pointer')
+		.attr('class', function(d,i){ return a.classname +'-bg ' + a.classname+'-bg-'+i })
+		.on('mouseover', function(){
+			d3.select(this).style('opacity', 0.03)
+		})
+		.on('mouseout', function(){
+			d3.select(this).style('opacity', 0)
+		})
+		.on('click', function(d,i){
+			if(a.classname=='focus'){
+				return filter ('focus', i+1);
+			}
+			if(a.classname=='affected_groups'){
+				return filter ('affectedGroups', i+1);
+			}
+		});
+
+		// define x scale
+		scale[a.classname] = {};
+		scale[a.classname].x = d3.scaleLinear()
+		.range([labelWidth, a.width - padding.right])
+		.domain([1, 5]);// finalScore/reliability x xcale
+
+		scale[a.classname].paddingLeft = labelWidth;
+
+		for(var s=0; s >= 0; s--) {
+			var val = s;
+			var bar = rows.append('rect')
+			.attr('id', function(d,i){
+				return a.classname+d.id+'s'+(s);
+			})
+			.attr('class', a.classname+'-bar s'+(s))
+			.attr('x', function(d,i){
+				return scale[a.classname].x(s);
+			})
+			.attr('width', width/5)
+			.attr('data-width', width)
+			.attr('data-id', s)
+			.attr('data-percent', 0)
+			.attr('y', padding.bar.y)
+			.attr('height', rowHeight-(padding.bar.y*2))
+			.style('fill', colorPrimary[s])
+		}
+
+		var dataLabel = rows.append('text')
+		.text(999)
+		.attr('id', function(d,i){
+			return a.classname+d.id+'label';
+		})
+		.attr('class', a.classname+'-label')
+		.attr('y', rowHeight/2)
+		.style('alignment-baseline', 'middle')
+		.style('text-anchor', 'middle')
+		.attr('x', labelWidth -20 )
+		.style('fill', colorPrimary[4])
+		.style('font-weight', 'bold')
+		.style('font-size', '16px');
+
+	}
 
 	//**************************
 	// stacked bar chart
@@ -2199,7 +2366,7 @@ var Deepviz = function(sources, callback){
 		label.attr('x', labelWidth-20);
 		labelWidth = labelWidth + 16;
 
-		if(a.classname == 'sc'){
+		if(a.classname == 'sector'){
 			var icon = rows.append('image')
 			.attr('class', function(d,i){
 				return 'sector-icon sector-icon-'+d.id;
@@ -2215,10 +2382,10 @@ var Deepviz = function(sources, callback){
 			labelWidth = labelWidth + 30;
 		}
 
-		title.attr('transform', function(d,i){
-			var offset = d3.select(this).node().getBBox().width +35;
-			return 'translate('+(labelWidth-offset)+',0)';
-		})
+		// title.attr('transform', function(d,i){
+		// 	var offset = d3.select(this).node().getBBox().width +35;
+		// 	return 'translate('+(labelWidth-offset)+',0)';
+		// })
 
 		var width = a.width - labelWidth - padding.right; 
 
@@ -2240,14 +2407,8 @@ var Deepviz = function(sources, callback){
 			d3.select(this).style('opacity', 0)
 		})
 		.on('click', function(d,i){
-			if(a.classname=='sc'){
+			if(a.classname=='sector'){
 				return filter('sector',i+1);
-			}
-			if(a.classname=='ag'){
-				return filter ('affectedGroups', i+1);
-			}
-			if(a.classname=='sn'){
-				return filter ('specificNeeds', i+1);
 			}
 		});
 
@@ -2308,13 +2469,30 @@ var Deepviz = function(sources, callback){
 	this.createSectorChart = function(options){
 
 		var sectorChart = this.createStackedBarChart({
-			title: 'SECTOR',
+			title: 'ASSESSMENTS BY SECTOR AND ANALYITICAL SCORE',
 			rows: metadata.sector_array,
-			width: 700,
-			classname: 'sc',
+			width: 500,
+			classname: 'sector',
 			div: 'sector-svg'
 		});
+		d3.select('#sectorRemoveFilter').on('click', function(){ filter('sector', 'clear'); });
 
+
+	}
+
+	//**************************
+	// create focus chart
+	//**************************
+	this.createFocusChart = function(options){
+
+		var focusChart = this.createBarChart({
+			title: 'ASSESSMENTS BY FOCUS',
+			rows: metadata.focus_array,
+			width: 500,
+			classname: 'focus',
+			div: 'focus-svg'
+		});
+		d3.select('#focusRemoveFilter').on('click', function(){ filter('focus', 'clear'); });
 	}
 
 	//**************************
@@ -2326,7 +2504,7 @@ var Deepviz = function(sources, callback){
 			title: 'SPECIFIC NEEDS GROUPS',
 			rows: metadata.specific_needs_groups_array,
 			classname: 'sn',
-			width: 700,
+			width: 500,
 			div: 'specific-needs-svg'
 		});
 		d3.select('#snRemoveFilter').on('click', function(){ filter('specificNeeds', 'clear'); });
@@ -2338,14 +2516,30 @@ var Deepviz = function(sources, callback){
 	//**************************
 	this.createAffectedGroupsChart = function(options){
 
-		var affectedGroupsChart = this.createStackedBarChart({
-			title: 'AFFECTED GROUPS',
+		var affectedGroupsChart = this.createBarChart({
+			title: 'ASSESSMENTS BY AFFECTED GROUPS',
 			rows: metadata.affected_groups_array,
 			classname: 'affected_groups',
-			width: 700,
+			width: 500,
 			div: 'affected-groups-svg'
 		});
-		d3.select('#agRemoveFilter').on('click', function(){ filter('affectedGroups', 'clear'); });
+		d3.select('#affected_groupsRemoveFilter').on('click', function(){ filter('affectedGroups', 'clear'); });
+	}
+
+	//**************************
+	// create top stakeholders chart
+	//**************************
+	this.createTopStakeholdersChart = function(options){
+
+		var topStakeholdersChart = this.createBarChart({
+			title: 'TOP 10 STAKEHOLDERS',
+			rows: metadata.organization,
+			classname: 'organisation',
+			width: 500,
+			div: 'top-stakeholders-svg',
+			limit: 10
+		});
+		d3.select('#organisationRemoveFilter').on('click', function(){ filter('organisation', 'clear'); });
 	}
 
 	//**************************
@@ -2483,21 +2677,25 @@ var Deepviz = function(sources, callback){
 			filters.context = [];
 			filters.reliability = [];
 			filters.affectedGroups = [];
+			filters.organisation = [];
 			filters.specificNeeds = [];
 			filters.geo = [];
 		}
 
 		d3.selectAll('.sector-icon').style('opacity', 0.3);
-		d3.selectAll('.sc').style('opacity', 1);
+		d3.selectAll('.sector').style('opacity', 1);
 		d3.selectAll('.col-header-bg-selected').style('opacity', 0);	
 		d3.selectAll('.col-header-text').style('opacity', 1);	
 		d3.select('#frameworkRemoveFilter').style('display', 'none').style('cursor', 'default');
-		d3.select('#scRemoveFilter').style('display', 'none').style('cursor', 'default');
+		d3.select('#sectorRemoveFilter').style('display', 'none').style('cursor', 'default');
+		d3.select('#organisationRemoveFilter').style('display', 'none').style('cursor', 'default');
 
 		d3.selectAll('.sn').style('opacity', 1);
-		d3.selectAll('.ag').style('opacity', 1);
+		d3.selectAll('.affected_groups').style('opacity', 1);
+		d3.selectAll('.organisation').style('opacity', 1);
+		d3.selectAll('.focus').style('opacity', 1);
 		d3.select('#snRemoveFilter').style('display', 'none').style('cursor', 'default');
-		d3.select('#agRemoveFilter').style('display', 'none').style('cursor', 'default');
+		d3.select('#affected_groupsRemoveFilter').style('display', 'none').style('cursor', 'default');
 
 		// d3.selectAll('.outerCircle').attr("stroke", colorNeutral[3]);
 		// d3.selectAll('.innerCircle').attr("stroke", colorNeutral[3]);
@@ -2579,44 +2777,24 @@ var Deepviz = function(sources, callback){
 			$('#location-search').trigger('change.select2');
 		}
 
-		if(filters['context'].length>=numCategories)filters['context'] = [];
-
-		if(filters['context'].length>0){
-			d3.selectAll('.context-filter').style('fill', '#FFF').style('opacity',0.6);
-
-			// filter data
-			data = data.filter(function(d){
-				return d['context'].some(r=> filters['context'].indexOf(parseInt(r)) >= 0);
-				// return filters['sector'].includes(d['sector'][2]);
-			});
-			// bar/text shading
-			filters.context.forEach(function(d,i){
-				// selected state
-				d3.selectAll('#context-filter'+(d)).style('fill', colorGrey[1]).style('opacity', 0.1);
-			});
-			d3.select('#frameworkRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
-		} else {
-			d3.selectAll('.context-filter').style('fill', '#FFF').style('opacity',0);
-		}
-
 		if(filters['sector'].length>=metadata.sector_array.length)filters['sector'] = [];
 
 		if(filters['sector'].length>0){
 			// filter data
 			data = data.filter(function(d){
-				return d['sector'].some(r=> filters['sector'].indexOf(r[2]) >= 0);
+				return d['sector'].some(r=> filters['sector'].indexOf(r) >= 0);
 				// return filters['sector'].includes(d['sector'][2]);
 			});
 			// bar/text shading
-			d3.selectAll('.sc').style('opacity', 0.2);
-			d3.selectAll('.sc-bg').style('opacity', 0);
+			d3.selectAll('.sector').style('opacity', 0.2);
+			d3.selectAll('.sector-bg').style('opacity', 0);
 			d3.selectAll('.col-header-bg-selected').style('opacity', 0);	
 			d3.selectAll('.col-header-text').style('opacity', 0.3);	
 			d3.select('#frameworkRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
-			d3.select('#scRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
+			d3.select('#sectorRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 			filters.sector.forEach(function(d,i){
-				d3.selectAll('.sc-'+(d-1)).style('opacity', 1);
-				d3.selectAll('.sc-bg-'+(d-1)).style('opacity', 0);
+				d3.selectAll('.sector-'+(d-1)).style('opacity', 1);
+				d3.selectAll('.sector-bg-'+(d-1)).style('opacity', 0);
 				d3.select('#col-header-bg-'+(d)).style('opacity', .1)
 				d3.selectAll('.sector-icon-'+(d)).style('opacity', 1)
 				d3.select('#col-header-'+(d) + ' .col-header-text' ).style('opacity', 1)
@@ -2628,14 +2806,43 @@ var Deepviz = function(sources, callback){
 				return d['affected_groups'].some(r=> filters['affectedGroups'].indexOf(r) >= 0);
 			});
 			// bar/text shading
-			d3.selectAll('.ag').style('opacity', 0.2);
-			d3.selectAll('.ag-bg').style('opacity', 0);
+			d3.selectAll('.affected_groups').style('opacity', 0.2);
+			d3.selectAll('.affected_group-bg').style('opacity', 0);
 			filters.affectedGroups.forEach(function(d,i){
-				d3.selectAll('.ag-'+(d-1)).style('opacity', 1);
+				d3.selectAll('.affected_groups-'+(d-1)).style('opacity', 1);
 			});
 
-			d3.select('#agRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
+			d3.select('#affected_groupsRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
+
+		if(filters['focus'].length>0){
+			data = data.filter(function(d){
+				return d['focus'].some(r=> filters['focus'].indexOf(r) >= 0);
+			});
+			// bar/text shading
+			d3.selectAll('.focus').style('opacity', 0.2);
+			d3.selectAll('.focus-bg').style('opacity', 0);
+			filters.focus.forEach(function(d,i){
+				d3.selectAll('.focus-'+(d-1)).style('opacity', 1);
+			});
+
+			d3.select('#focusRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
+		}
+
+		if(filters['organisation'].length>0){
+			data = data.filter(function(d){
+				return d['organisation_and_stakeholder_type'].some(r=> filters['organisation'].indexOf(r[1]) >= 0);
+			});
+			// bar/text shading
+			// d3.selectAll('.organisation').style('opacity', 0.2);
+			d3.selectAll('.organisation-bg').style('opacity', 0);
+			filters.organisation.forEach(function(d,i){
+				d3.selectAll('.organisation-'+(d-1)).style('opacity', 1);
+			});
+
+			d3.select('#organisationRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
+		}
+
 
 		if(filters['specificNeeds'].length>0){
 			data = data.filter(function(d){
@@ -2752,8 +2959,10 @@ var Deepviz = function(sources, callback){
 
 			updateBubbles();
 			updateTotals();
-			// updateStackedBars('affected_groups', dataByAffectedGroups);
-			// updateStackedBars('sc', dataBySector);
+			updateBars('affected_groups', dataByAffectedGroups);
+			updateStackedBars('sector', dataBySector);
+			updateBars('focus', dataByFocusArray);
+			updateOrganisationBars('organisation', dataByOrganisation)
 		});
 	}
 
@@ -3556,155 +3765,207 @@ var Deepviz = function(sources, callback){
 			var text = metadata.scorepillar_scale[s].name;
 		return '<div style="width: 100px; height: 10px; display: inline; background-color: '+ color + '">&nbsp;&nbsp;</div>&nbsp;&nbsp; ' + text + ' <div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + v + ' entries</div>';
 	}
-	//**************************
-	// update framework
-	//**************************
-	var updateFramework = function(){
-		// entries by framework sector (non-unique to populate framework cells)
-		var entries = dataByFrameworkSector.filter(function(d){
-			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]))
-		});
 
-		if(filters.frameworkToggle=='average'){
-			var nullEntries = entries.filter(function(d){
-				if(filters.toggle=='finalScore'){
-					return d.s==0;
-				} else {
-					return d.r==0
-				}
-			});
-			entries = entries.filter(function(d){
-				if(filters.toggle=='finalScore'){
-					return d.s>0;
-				} else {
-					return d.r>0;
-				}
-			});
-		} 
+
+	//**************************
+	// update bar charts
+	//**************************
+	var updateBars = function(group, dataset, duration = 0){
+
+		// affected groups
+		var dat = dataset.filter(function(d){
+			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]));
+		});
 
 		var d = d3.nest()
-		.key(function(d) { return d.framework; })
-		.key(function(d) { return d.sc; })
-		.rollup(function(leaves) { 
-			return { 
-				'median_r': d3.median(leaves, function(d,i){return d.r;}), 
-				'median_s': d3.median(leaves, function(d,i){return d.s;}), 
-				'total': leaves.length, 
-			}
-		})		
-		.entries(entries);	
+		.key(function(d) {  return d[group]; })
+		.rollup(function(leaves) { return leaves.length; })		
+		.entries(dat);	
 
-		// unique entries by framework
-		var frameworkEntries = dataByFramework.filter(function(d){
-			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]));
+		var labels = d3.nest().key(function(d) {
+			return d[group];
+		}).sortKeys(d3.ascending)
+		.rollup(function(leaves) {
+			return d3.sum(leaves, function(d) {
+				return 1;
+			});
+		}).entries(dat);
+
+		var rowMax = d3.max(labels, function(d,i){
+			return d.value
 		});
 
-		var f = d3.nest()
-		.key(function(d) { return d.framework; })
-		.rollup(function(leaves) { 
-			return { 
-				'total': leaves.length, 
-			}
-		})		
-		.entries(frameworkEntries);	
+		scale[group].x.domain([0, rowMax]);// finalScore/reliability x xcale
 
-		// unique entries by context
-		var contextEntries = dataByFrameworkContext.filter(function(d){
-			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]));
+	    // reset all bars to zero width
+	    d3.selectAll('.'+group+'-bar').attr('width', 0);
+		// reset all text labels to zero and hide
+		d3.selectAll('.'+group+'-label').text('').style('opacity', 0);
+
+		labels.forEach(function(dd,ii){
+			d3.select('#'+group+dd.key+'label').text(dd.value).style('opacity', 1)
+			.style('fill', function(){
+				if(filters.toggle == 'finalScore'){
+					return colorNeutral[4];
+				} else {
+					return colorNeutral[4];
+				}
+			});
+			var row = dd.key;
 		});
-
-		var c = d3.nest()
-		.key(function(d) { return d.focus; })
-		.rollup(function(leaves) { 
-			return { 
-				'total': leaves.length, 
-			}
-		})		
-		.entries(contextEntries);	
-
-		if(filters.frameworkToggle == 'entries'){
-			maxCellSize = d3.max(d, function(dd){
-				return d3.max(dd.values, function(ddd){
-					return ddd.value.total;
-				});
-			})
-			var cellColorScale = d3.scaleLinear().domain([1,maxCellSize])
-			.range([colorNeutral[0], colorNeutral[4]])
-			.interpolate(d3.interpolateHcl);
-			d3.selectAll('.f-val').text('').style('fill', colorNeutral[4]);
-		} else { // median
-			if(filters.toggle == 'finalScore'){
-				maxCellSize = 5;
-				d3.select('#toggle1').style('fill', colorPrimary[3]);
-				var cellColorScale = d3.scaleSequential().domain([0.2,maxCellSize+1])
-				.interpolator(d3.interpolateOrRd);
-				// d3.selectAll('.f-val').text('').style('fill', colorPrimary[4]);
-			} else {
-				maxCellSize = 5;
-				d3.select('#toggle1').style('fill', colorSecondary[3]);
-				var cellColorScale = d3.scaleSequential().domain([0.2,maxCellSize+1])
-				.interpolator(d3.interpolatePuBu);
-			}
-		}
-
-		d3.selectAll('.cell').style('fill', '#FFF');
-		d3.selectAll('.framework-text').text('').style('visibility', 'hidden').style('fill', '#000');
-
-		// framework labels
-		d3.selectAll('.f-val').text('');
-		f.forEach(function(d,i){
-			d3.select('#f'+d.key+'-val').text(function(dd,ii){
-				return d.value.total;
-			})
-		});
-
-		// context labels
-		d3.selectAll('.context-val').text('');
-		c.forEach(function(d,i){
-			d3.select('#context-val-'+d.key).text(function(dd,ii){
-				return addCommas(d.value.total);
-			})
-		});
-
-		// color null cells without median
-		if(nullEntries){
-			nullEntries.forEach(function(d,i){
-				var id = 'f'+(d.framework-1)+'s'+(d.sc-1);
-				d3.select('#'+id +'rect').style('fill', function(d){ return colorNeutral[0]; }).style('opacity', 1);
-			});			
-		}
 
 		d.forEach(function(d,i){
-			var sum = d3.sum(d.values, function(d){ return d.value.total});
-			d.total = sum;
-			var f = d.key;
-			d.values.forEach(function(dd,ii){
-				var s = dd.key;
-				var id = 'f'+(f-1)+'s'+(s-1);
-				
-				if(filters.frameworkToggle == 'entries'){
-					var v = dd.value.total;
-				} else {
-					if(filters.toggle=='finalScore'){
-						var v = dd.value.median_s.toFixed(0);
-					} else {
-						var v = dd.value.median_r.toFixed(0);
-					}
-				}
-				// set cell colour
-				d3.select('#'+id +'rect').style('fill', function(d){ if(v==0) {return colorNeutral[0]; } else { return cellColorScale(v); } });
-				// set the text for all cells
-				d3.select('#'+id +'text').text(v).style('visibility', 'hidden')
+			var key = d.key;
+			var wcount = scale[group].paddingLeft;
+			var xcount = scale[group].paddingLeft;
+				var s = d.key;
+				var id = group+(key)+'s0';
+				var w = scale[group].x(d.value)-wcount;
+				d3.select('#'+id )
+				.attr('x', xcount)
+				.attr('width', w)
+				.attr('data-value', d.value)
 				.style('fill', function(){
-					if((v/maxCellSize)>=0.8){
-						return '#FFF';
+					if(filters.toggle == 'finalScore'){
+						return colorPrimary[3];
 					} else {
-						return '#000';
+						return colorSecondary[s];
 					}
 				});
-			});
+				var rect = document.querySelector('#'+id)
+				tippy(rect, { 
+					content: '1',
+					theme: 'light-border',
+					delay: [250,100],
+					inertia: false,
+					distance: 8,
+					allowHTML: true,
+					animation: 'shift-away',
+					arrow: true,
+					size: 'small',
+					onShow(instance) {
+				        var v = d3.select('#'+id).attr('data-value');
+						return '<div style="width: 100px; height: 10px; display: inline; background-color: '+ colorPrimary[2] + '">&nbsp;&nbsp;</div>&nbsp;&nbsp;<div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + v + ' entries</div>';
+					}
+				});
 		});
 	}
+
+
+	//**************************
+	// update top-stake holder bar charts
+	//**************************
+	var updateOrganisationBars = function(group, dataset, duration = 0){
+
+		// affected groups
+		var dat = dataset.filter(function(d){
+			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]));
+		});
+
+		var d = d3.nest()
+		.key(function(d) { return d.org_name; })
+		.key(function(d) { return d.organisation; })
+		.rollup(function(leaves) { return leaves.length; })		
+		.entries(dat);	
+
+		d.sort(function(x,y){
+			return d3.ascending(y.values[0].value, x.values[0].value);
+		});
+
+		var labels = d3.nest().key(function(d) {
+			return d[group];
+		}).sortKeys(d3.ascending)
+		.rollup(function(leaves) {
+			return d3.sum(leaves, function(d) {
+				return 1;
+			});
+		}).entries(dat);
+
+		var rowMax = d3.max(labels, function(d,i){
+			return d.value;
+		});
+
+		scale[group].x.domain([0, rowMax]);// finalScore/reliability x xcale
+
+	    // reset all bars to zero width
+	    d3.selectAll('.'+group+'-bar').attr('width', 0);
+		// reset all text labels to zero and hide
+		d3.selectAll('.'+group+'-label').text('').style('opacity', 0);
+
+		labels.forEach(function(dd,ii){
+			d3.select('#'+group+dd.key+'label').text(dd.value).style('opacity', 1)
+			.style('fill', function(){
+				if(filters.toggle == 'finalScore'){
+					return colorNeutral[4];
+				} else {
+					return colorNeutral[4];
+				}
+			});
+			var row = dd.key;
+		});
+
+		d3.selectAll('.bar-row .organisation').text('');
+
+		d.forEach(function(d,i){
+			if(i>10) return false;
+			var wcount = scale[group].paddingLeft;
+			var xcount = scale[group].paddingLeft;
+			var name = d.key.substr(0,17);
+			if(name.length==17) name += '.';
+			d3.select('.organisation-'+i)
+			.text(name)
+			.style('opacity', function(dd,i){
+				if(filters.organisation.length>0){
+					if(filters.organisation.includes(parseInt(d.values[0].key))) { return 1 } else { return 0.2};
+				} else {
+					return 1;
+				}
+			});
+
+			d3.select('.organisation-bar-row'+i + ' .organisation-label')
+			.text(d.values[0].value)
+			.style('opacity', 1)
+
+			// 	var id = group+(key)+'s0';
+			var w = scale[group].x(d.values[0].value)-wcount;
+
+			d3.select('.organisation-bar-row'+i+' .organisation-bar')
+			.attr('x', xcount)
+			.attr('width', w)
+			.attr('data-value', d.values[0].value)
+			.style('fill', function(){
+				if(filters.toggle == 'finalScore'){
+					return colorPrimary[3];
+				} else {
+					return colorSecondary[s];
+				}
+			});
+
+			d3.select('.organisation-bar-row'+i+' .organisation-bg')
+			.on('click', function(dd,i){
+				return filter ('organisation', parseInt(d.values[0].key));
+			});
+
+
+			// 	var rect = document.querySelector('#'+id)
+			// 	tippy(rect, { 
+			// 		content: '1',
+			// 		theme: 'light-border',
+			// 		delay: [250,100],
+			// 		inertia: false,
+			// 		distance: 8,
+			// 		allowHTML: true,
+			// 		animation: 'shift-away',
+			// 		arrow: true,
+			// 		size: 'small',
+			// 		onShow(instance) {
+			// 	        var v = d3.select('#'+id).attr('data-value');
+			// 			return '<div style="width: 100px; height: 10px; display: inline; background-color: '+ colorPrimary[2] + '">&nbsp;&nbsp;</div>&nbsp;&nbsp;<div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + v + ' entries</div>';
+			// 		}
+			// 	});
+		});
+	}
+
 
 	//**************************
 	// toggle between finalScore and reliability
