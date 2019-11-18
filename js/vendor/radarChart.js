@@ -15,7 +15,7 @@ function RadarChart(id, data, options) {
 	 labelFactor: 1.35, 	//How much farther than the radius of the outer circle should the labels be placed
 	 wrapWidth: 60, 		//The number of pixels after which a label needs to be given a new line
 	 opacityArea: 0.2, 	//The opacity of the area of the blob
-	 dotRadius: 5, 			//The size of the colored circles of each blog
+	 dotRadius: 4, 			//The size of the colored circles of each blog
 	 opacityCircles: 0.04, 	//The opacity of the circles of each blob
 	 opacityCirclesStroke: 0.7, 	//The opacity of the circles of each blob
 	 strokeWidth: 2, 		//The width of the stroke around each blob
