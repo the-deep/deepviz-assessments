@@ -2687,6 +2687,7 @@ var Deepviz = function(sources, callback){
 		d3.selectAll('.col-header-bg-selected').style('opacity', 0);	
 		d3.selectAll('.col-header-text').style('opacity', 1);	
 		d3.select('#frameworkRemoveFilter').style('display', 'none').style('cursor', 'default');
+		d3.select('#focusRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#sectorRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#organisationRemoveFilter').style('display', 'none').style('cursor', 'default');
 
