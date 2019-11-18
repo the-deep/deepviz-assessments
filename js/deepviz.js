@@ -50,6 +50,7 @@ var Deepviz = function(sources, callback){
 	var	databyFrameworkContext;
 	var dataBySpecificNeeds;
 	var dataByAffectedGroups;
+	var dataFitForPurpose;
 	var total = 0;
 	var maxValue; // max value on a given date
 	var maxFocusValue;
@@ -90,6 +91,12 @@ var Deepviz = function(sources, callback){
 	var maxMapBubbleValue;
 	var mapAspectRatio = 1.63;
 	var geoBounds = {'lat': [], 'lon': []};
+	// radar
+	var radarChartOptions;
+	var radarMargin;
+	var radarHeight;
+	var radarWidth;
+	var radarColor; 
 
 	// filters
 	var filters = {
@@ -108,6 +115,7 @@ var Deepviz = function(sources, callback){
 	};
 
 	var svg_summary;
+	var svg_quality;
 
 	// colors
 	var colorPrimary = ['#A1E6DB','#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']; // finalScore (multi-hue)
@@ -164,6 +172,7 @@ var Deepviz = function(sources, callback){
 		data = values[0].data;
 		dataEntries = values[1].data;
 		svg_summary = values[2];
+		svg_quality = values[3];
 
 		metadata = values[0].meta;
 		frameworkToggleImg = values[1];
@@ -697,6 +706,7 @@ var Deepviz = function(sources, callback){
 
 		rightAlignTotals();
 		updateTotals();
+		updateRadarCharts();
 		updateBars('affected_groups', dataByAffectedGroups);
 		updateStackedBars('sector', dataBySector);
 		updateBars('focus', dataByFocusArray);
@@ -1871,6 +1881,7 @@ var Deepviz = function(sources, callback){
 	    	handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + (timechartSvgHeight - margin.top) + ")"; });
 
 	    	updateTotals();
+	    	updateRadarCharts();
 	    });
 
 	    // programattically set date range
@@ -1952,6 +1963,7 @@ var Deepviz = function(sources, callback){
 			$('#location-search').select2('close');
 
 			updateTotals();
+			updateRadarCharts();
 		}
 
 		function dragged() {
@@ -2006,6 +2018,7 @@ var Deepviz = function(sources, callback){
 			$('#location-search').select2('close');
 
 			updateTotals();
+			updateRadarCharts();
 		}
 
 
@@ -2018,6 +2031,7 @@ var Deepviz = function(sources, callback){
 		updateBubbles();
 		updateFinalScore('init', 500);
 		updateTotals();
+		updateRadarCharts();
 		updateBars('affected_groups', dataByAffectedGroups);
 		// updateStackedBars('sc', dataBySector);
 
@@ -2667,6 +2681,74 @@ var Deepviz = function(sources, callback){
 	}
 
 	//**************************
+	// create polar charts
+	//**************************
+	this.createRadarCharts = function(){
+
+		var quality = document.getElementById('svg_quality_div');
+		// remove title tag from map svg
+		var title = svg_quality.getElementsByTagName('title')[0];
+		svg_quality.documentElement.removeChild(title);
+
+		svg_quality.documentElement.removeAttribute('height');
+		svg_quality.documentElement.setAttribute('width', '100%');
+
+		// add svg to map div 
+		quality.innerHTML = new XMLSerializer().serializeToString(svg_quality.documentElement);
+
+
+	}
+
+	var updateRadarCharts = function(){
+
+		// options
+		radarMargin = {top: 60, right: 60, bottom: 60, left: 60},
+		radarWidth = Math.min(300, window.innerWidth - 10) - radarMargin.left - radarMargin.right,
+		radarHeight = Math.min(radarWidth, window.innerHeight - radarMargin.top - radarMargin.bottom - 20);
+
+		radarColor = d3.scaleOrdinal()
+		.range([colorNeutral[3]]);
+
+		radarChartOptions = {
+		  w: radarWidth,
+		  h: radarHeight,
+		  margin: radarMargin,
+		  maxValue: 5,
+		  levels: 5,
+		  roundStrokes: true,
+		  color: radarColor
+		};
+
+		// data filter
+		var dc = data.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
+
+
+		var pillars = ['fit_for_purpose', 'trustworthiness', 'analytical_rigor', 'analytical_writing'];
+
+		pillars.forEach(function(pillar,i){
+			var dataQuality = [];
+			metadata[pillar+'_array'].forEach(function(d,i){
+				var avg = d3.mean(dc, function(md){
+					return md.scores[pillar+'_array'][d.id]
+				})
+				avg = avg != null ? avg : 0;
+				dataQuality[i] = {'axis': d.name, 'value': avg }
+			});
+
+			var dataQualityTotal = d3.sum(dataQuality, d => d.value );
+			d3.select('#quality'+(i+1)+'val tspan').text(Math.round(dataQualityTotal));
+
+			RadarChart("#quality"+(i+1), [dataQuality], radarChartOptions);
+		});
+
+
+
+
+	}
+
+
+
+	//**************************
 	// filtering (push values to filter array)
 	//**************************
 	var filter = function(filterClass, value){
@@ -2960,6 +3042,7 @@ var Deepviz = function(sources, callback){
 
 			updateBubbles();
 			updateTotals();
+			updateRadarCharts();
 			updateBars('affected_groups', dataByAffectedGroups);
 			updateStackedBars('sector', dataBySector);
 			updateBars('focus', dataByFocusArray);

@@ -79,6 +79,9 @@ svg text {
 
 }
 
+#svg_quality_div .axis text {
+ fill: grey;
+}
 .widget {
 	margin-bottom: 0px;
 }

@@ -1,5 +1,5 @@
 const urlQueryParams = new URLSearchParams(window.location.search);
-var sources = [urlQueryParams.get('assessmentsDataUrl'), urlQueryParams.get('entriesDataUrl'), 'images/summary.svg'];
+var sources = [urlQueryParams.get('assessmentsDataUrl'), urlQueryParams.get('entriesDataUrl'), 'images/summary.svg', 'images/quality.svg'];
 
 var Deepviz = new Deepviz(sources, function(data){
 
@@ -33,6 +33,10 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	var topStakeholdersChart = Deepviz.createTopStakeholdersChart();
 
+	//**************************
+	// polar charts
+	//**************************
+	var radarChart = Deepviz.createRadarCharts();
 
 	//**************************
 	// time chart
