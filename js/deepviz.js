@@ -1192,7 +1192,8 @@ var Deepviz = function(sources, callback){
 		maxDate = new Date(d3.max(data, function(d){
 			return d.date;
 		}));
-
+		var maxAssessmentDate = maxDate;
+		
 		var today = new Date();
 		if(maxDate<today){
 			maxDate = today;
@@ -1219,7 +1220,7 @@ var Deepviz = function(sources, callback){
 			if(filters.time=='d'){
 				maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth()+1, 1);
 				minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
-				dateRange[0] = new Date(maxDate.getFullYear(), maxDate.getMonth()-1, 1);
+				dateRange[0] = new Date(maxAssessmentDate.getFullYear(), maxAssessmentDate.getMonth()-1, 1);
 				dateRange[1] = maxDate;
 			}	
 			timechartInit=1;
