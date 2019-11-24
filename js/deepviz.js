@@ -1377,7 +1377,7 @@ var Deepviz = function(sources, callback){
 		.attr("x", 170)
 		.style('font-weight','lighter')
 		.style('font-size', '15px')
-		.text('Total Entries')
+		.text('Number of Entries')
 
 		timechartLegend
 		.append("line")
