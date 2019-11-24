@@ -85,7 +85,7 @@
                 <tspan x="8.83486239" y="24.1101359">ANALYTICAL DENSITY</tspan>
             </text>
             <text id="quality5val" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="28" font-weight="bold" fill="#4A4A4A">
-                <tspan x="299.956156" y="28.1121974">0</tspan>
+                <tspan x="285.172156" y="28.1121974">00</tspan>
             </text>
             <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="11" font-weight="normal" fill="#8D8D8D">
                 <tspan x="287.623853" y="47.1025693">/ 25</tspan>
@@ -102,7 +102,7 @@
                 <tspan x="8.83486239" y="25.1101359">FINAL SCORE</tspan>
             </text>
             <text id="quality6val" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="28" font-weight="bold" fill="#FFFFFF">
-                <tspan x="294.931311" y="28.1109766">0</tspan>
+                <tspan x="284.147311" y="28.1109766">00</tspan>
             </text>
             <text id="/-10" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="11" font-weight="normal" fill="#8D8D8D">
                 <tspan x="287.623853" y="47.1025693">/ 10</tspan>

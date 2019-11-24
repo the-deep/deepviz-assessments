@@ -86,6 +86,10 @@ svg text {
 	margin-bottom: 0px;
 }
 
+#quality6 .axis text {
+	font-weight: bold;
+}
+
 #map {
 	width: 100%;
 	height: 300px;

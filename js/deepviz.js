@@ -1193,7 +1193,7 @@ var Deepviz = function(sources, callback){
 			return d.date;
 		}));
 		var maxAssessmentDate = maxDate;
-		
+
 		var today = new Date();
 		if(maxDate<today){
 			maxDate = today;
@@ -2697,11 +2697,6 @@ var Deepviz = function(sources, callback){
 		// add svg to map div 
 		quality.innerHTML = new XMLSerializer().serializeToString(svg_quality.documentElement);
 
-
-	}
-
-	var updateRadarCharts = function(){
-
 		// options
 		radarMargin = {top: 60, right: 60, bottom: 60, left: 60},
 		radarWidth = Math.min(300, window.innerWidth - 10) - radarMargin.left - radarMargin.right,
@@ -2723,7 +2718,6 @@ var Deepviz = function(sources, callback){
 		// data filter
 		var dc = data.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
 
-
 		var pillars = ['fit_for_purpose', 'trustworthiness', 'analytical_rigor', 'analytical_writing'];
 
 		pillars.forEach(function(pillar,i){
@@ -2738,11 +2732,75 @@ var Deepviz = function(sources, callback){
 
 			var dataQualityTotal = d3.sum(dataQuality, d => d.value );
 			d3.select('#quality'+(i+1)+'val tspan').text(Math.round(dataQualityTotal));
-
+			radarChartOptions.maxValue = 5;
 			RadarChart("#quality"+(i+1), [dataQuality], radarChartOptions);
 		});
 
+		// final score
+		var dataQuality = [];
+		metadata.final_scores_array.score_pillar.forEach(function(d,i){
+			var avg = d3.mean(dc, function(md){
+				return md.scores.final_scores.score_pillar[d.id];
+			})
+			avg = avg != null ? avg : 0;
+			dataQuality[i] = {'axis': d.name, 'value': avg }
+		});
 
+		var avg = d3.mean(dc, function(md){
+			return md.scores.final_scores.score_matrix_pillar[metadata.final_scores_array.score_matrix_pillar[0].id];
+		})
+		avg = avg != null ? avg : 0;
+		dataQuality.push({'axis': metadata.final_scores_array.score_matrix_pillar[0].name, 'value': avg });
+		radarChartOptions.maxValue = 25;
+		RadarChart("#quality6", [dataQuality], radarChartOptions);
+
+	}
+
+	var updateRadarCharts = function(){
+
+		// data filter
+		var dc = data.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
+
+
+		// first 4 standard pillars
+		var pillars = ['fit_for_purpose', 'trustworthiness', 'analytical_rigor', 'analytical_writing'];
+		pillars.forEach(function(pillar,i){
+			var dataQuality = [];
+			metadata[pillar+'_array'].forEach(function(d,i){
+				var avg = d3.mean(dc, function(md){
+					return md.scores[pillar+'_array'][d.id]
+				})
+				avg = avg != null ? avg : 0;
+				dataQuality[i] = {'axis': d.name, 'value': avg }
+			});
+
+			var dataQualityTotal = d3.sum(dataQuality, d => d.value );
+			d3.select('#quality'+(i+1)+'val tspan').text(Math.round(dataQualityTotal));
+			radarChartOptions.maxValue = 5;
+			RadarChartUpdate("#quality"+(i+1), [dataQuality], radarChartOptions);
+		});
+
+		// final score
+		var dataQuality = [];
+		metadata.final_scores_array.score_pillar.forEach(function(d,i){
+			var avg = d3.mean(dc, function(md){
+				return md.scores.final_scores.score_pillar[d.id];
+			})
+			avg = avg != null ? avg : 0;
+			dataQuality[i] = {'axis': d.name, 'value': avg }
+		});
+
+		var avg = d3.mean(dc, function(md){
+			return md.scores.final_scores.score_matrix_pillar[metadata.final_scores_array.score_matrix_pillar[0].id];
+		})
+		avg = avg != null ? avg : 0;
+		dataQuality.push({'axis': metadata.final_scores_array.score_matrix_pillar[0].name, 'value': avg });
+
+		var dataQualityTotal = d3.mean(dataQuality, d => d.value );
+		d3.select('#quality6val tspan').text(Math.round(dataQualityTotal));
+
+		radarChartOptions.maxValue = 25;
+		RadarChartUpdate("#quality6", [dataQuality], radarChartOptions);
 
 
 	}
