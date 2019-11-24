@@ -58,6 +58,7 @@ var Deepviz = function(sources, callback){
 	var maxFocusValue;
 	var tp_finalScore = [];
 	var tp_reliability = [];
+	var duration = 700;
 	// timechart variables
 	var timechartInit = 0;
 	var timechartyAxis;
@@ -1342,6 +1343,8 @@ var Deepviz = function(sources, callback){
 	    .domain([minDate, maxDate])
 	    .range([0, (width - (margin.right + margin.left))])
 
+		var svgChartBg2 = svg.append('g').attr('id', 'svgchartbg2').attr('class', 'chartarea2').attr('transform', 'translate('+(margin.left+0)+','+margin.top+')');
+
 		var svgBg = svg.append('g');
 
 		svgBg.append('rect')
@@ -1429,6 +1432,14 @@ var Deepviz = function(sources, callback){
 	    //**************************
 	    // Y AXIS left
 	    //**************************
+
+		svgBg.append('rect')
+		.attr('x', -5)
+		.attr('y', 0)
+		.attr('height', timechartHeight2+35)
+		.attr('width', 50)
+		.style('fill', 'white');
+
 	    scale.timechart.y1 = d3.scaleLinear()
 	    .range([timechartHeight2, 0])
 	    .domain([0, rounder(maxValue)]);
@@ -1460,6 +1471,7 @@ var Deepviz = function(sources, callback){
 
 		d3.select('#timechartyGrid')
 		.transition()
+		.duration(duration)
 		.call(timechartyGrid);
 
 		// x-axis 
@@ -1633,7 +1645,7 @@ var Deepviz = function(sources, callback){
 		// draw entries chart
 		//**************************
 
-		var entriesGroup = d3.select('#svgchartbg')
+		var entriesGroup = svgChartBg2
 		.append('g')
 		.attr('class', 'entries')
 		.attr('transform', 'translate('+(0) + ', '+ (timechartHeight2+entriesTopMargin) +')' );
@@ -1760,6 +1772,15 @@ var Deepviz = function(sources, callback){
 		.attr('transform', 'translate(0,'+ (timechartHeight2 + yPadding + entriesChartHeight + entriesTopMargin ) + ')');
 
 		var contextualRowsHeight = timechartSvgHeight - timechartHeight2 - yPadding - 36 - entriesChartHeight - entriesTopMargin ;
+
+		var title = contextualRows.append('text')
+		.text('FOCUS')
+		.attr('transform', 'rotate(270)')
+		.attr('x', -contextualRowsHeight/2 - 20)
+		.attr('y', -20)
+		.style('font-size', '23px')
+		.style('font-weight', '300')
+		.style('fill', '#CCCCCC');
 
 		contextualRows.append('rect')
 		.attr('height', contextualRowsHeight)
@@ -2245,7 +2266,7 @@ var Deepviz = function(sources, callback){
 	            d3.select(this).select('.bar-percent').style('opacity',1);
 	            d3.select(this).select('.bar-value').style('opacity',0);
 		}).on('click', function(d,i){
-			d3.selectAll('.bar').transition("mouseoutReliability").duration(500).style('opacity', 1);	
+			d3.selectAll('.bar').transition("mouseoutReliability").duration(duration).style('opacity', 1);	
 			clickTimer = 1;
 			filter('finalScore',i);
 			setTimeout(function(){ clickTimer = 0 }, 2000);
@@ -2270,7 +2291,7 @@ var Deepviz = function(sources, callback){
 			return filter('finalScore', 'clear'); 
 		});
 
-		updateFinalScore('init', 500);
+		updateFinalScore('init', duration);
 	}
 
 	//**************************
@@ -3183,7 +3204,7 @@ var Deepviz = function(sources, callback){
 		.attr("y", timechartHeight2);
 
 		individualBars.transition()
-		.duration(500)
+		.duration(duration)
 		.attr("y", function(d,i) { 
 			if(i>0){
 				yArray[i] = yArray[i-1] + d;
@@ -3241,7 +3262,7 @@ var Deepviz = function(sources, callback){
 						}
 					}
 				})
-				.transition().duration(500)
+				.transition().duration(duration)
 				.attr("height", function(d,i) {
 					return timechartHeight2-scale.timechart.y1(dD[filters.toggle][i]); 
 				})
@@ -3253,19 +3274,19 @@ var Deepviz = function(sources, callback){
 					}
 					return scale.timechart.y1(yArray[i]); 
 				});
-				eventDrops.transition().duration(500)
+				eventDrops.transition().duration(duration)
 				.attr('r', function(d,i){
 					var dx = dD['focus'][i]
 					return scale.eventdrop(dx);
 				})
 			} else {
 				group.selectAll('.bar').transition("h").duration(0).attr('height',0);
-				group.selectAll('.bar').transition().duration(500).attr('y',timechartHeight2).attr('height',0);
-				eventDrops.transition().duration(750)
+				group.selectAll('.bar').transition().duration(duration).attr('y',timechartHeight2).attr('height',0);
+				eventDrops.transition().duration(duration)
 				.attr('r', 0)
 			}
 		});
-		updateFinalScore(target, 500);
+		updateFinalScore(target, duration);
 		updateEntriesChart();
 		updateBubbles();
 		colorBars();
@@ -3641,44 +3662,66 @@ var Deepviz = function(sources, callback){
 	// update entries chart
 	//**************************
 	var updateEntriesChart = function(){
+		setTimeout(function(){
 
-		entriesMax = d3.max(dataEntriesByDate, function(d,i){
-			return d.value;
-		});
+			entriesMax = d3.max(dataEntriesByDate, function(d,i){
+				return d.value;
+			});
 
-		scale.entrieschart.y = d3.scaleLinear()
-		.range([entriesChartHeight , 0])
-		.domain([0, entriesMax]);
+			scale.entrieschart.y = d3.scaleLinear()
+			.range([entriesChartHeight , 0])
+			.domain([0, entriesMax]);
 
-	    entriesAxis = d3.axisLeft()
-	    .scale(scale.entrieschart.y)
-	    .ticks(2)
-	    .tickSize(0)
-	    .tickPadding(8);
+		    entriesAxis = d3.axisLeft()
+		    .scale(scale.entrieschart.y)
+		    .ticks(2)
+		    .tickSize(0)
+		    .tickPadding(8);
 
-		var entriesBars = d3.selectAll('.entriesBar')
-		.transition()
-		.duration(700)
-		.attr('height', function(d,i){
-			return 0;
-		})
-		.attr('y', function(d,i){
-			return  entriesChartHeight;
-		});
-
-		dataEntriesByDate.forEach(function(d,i){
-			var dt = new Date(d.key);
-			dt.setHours(0,0,0,0);
-			d3.select('#entriesDate'+dt.getTime())
+			var entriesAxisText = d3.select(".yEntriesAxis")
 			.transition()
-			.duration(700)
-			.attr('height', function(dd,ii){
-				return entriesChartHeight - scale.entrieschart.y(d.value);
+			.duration(duration)
+			.call(entriesAxis);
+
+			var entriesChartyGrid = d3.axisLeft(scale.entrieschart.y)
+			.ticks(2)
+			.tickSize(-width+52)
+			.tickFormat("")
+
+			d3.select('#entriesChartYGrid')
+			.transition()
+			.duration(duration)
+			.call(entriesChartyGrid);
+
+		d3.select("#timechartyAxis")
+		.transition()
+		.call(timechartyAxis);
+
+			var entriesBars = d3.selectAll('.entriesBar')
+			.transition()
+			.duration(duration)
+			.attr('height', function(d,i){
+				return 0;
 			})
-			.attr('y', function(dd,ii){
-				return  scale.entrieschart.y(d.value);
-			});	
-		});
+			.attr('y', function(d,i){
+				return  entriesChartHeight;
+			});
+
+			dataEntriesByDate.forEach(function(d,i){
+				var dt = new Date(d.key);
+				dt.setHours(0,0,0,0);
+				d3.select('#entriesDate'+dt.getTime())
+				.transition()
+				.duration(duration)
+				.attr('height', function(dd,ii){
+					return entriesChartHeight - scale.entrieschart.y(d.value);
+				})
+				.attr('y', function(dd,ii){
+					return  scale.entrieschart.y(d.value);
+				});	
+			});
+		}, 20);
+
 
 	}
 
@@ -4227,26 +4270,6 @@ var Deepviz = function(sources, callback){
 				return colorLightgrey[3];
 			}
 		});
-
-	    entriesAxis = d3.axisLeft()
-	    .scale(scale.entrieschart.y)
-	    .ticks(2)
-	    .tickSize(0)
-	    .tickPadding(8);
-
-		// y-axis
-		var entriesAxisText = d3.select(".yEntriesAxis")
-		.call(entriesAxis);
-
-
-		// add the Y gridline
-		var entriesChartyGrid = d3.axisLeft(scale.entrieschart.y)
-		.ticks(2)
-		.tickSize(-width+52)
-		.tickFormat("")
-
-		d3.select('#entriesChartYGrid')
-		.call(entriesChartyGrid);
 
 	}
 
