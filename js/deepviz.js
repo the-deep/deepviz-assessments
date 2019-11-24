@@ -51,6 +51,7 @@ var Deepviz = function(sources, callback){
 	var dataBySpecificNeeds;
 	var dataByAffectedGroups;
 	var dataFitForPurpose;
+	var monitoringId;
 	var total = 0;
 	var maxValue; // max value on a given date
 	var maxFocusValue;
@@ -213,6 +214,7 @@ var Deepviz = function(sources, callback){
 		metadata.assessment_type.forEach(function(d,i){
 			d._id = d.id;
 			d.id = i+1;
+			if(d.name=='Monitoring') monitoringId = d.id;
 		});
 
 		metadata.affected_groups_array.forEach(function(d,i){
@@ -3444,7 +3446,8 @@ var Deepviz = function(sources, callback){
 		dc.forEach(function(d,i){
 			d.focus.forEach(function(dd,ii){
 				context.push(dd);
-			})
+			});
+			d.sector_count = d.sector.length;
 		});
 
 		var individuals = d3.sum(dc, d => d.individuals);
@@ -3462,14 +3465,53 @@ var Deepviz = function(sources, callback){
 			d3.select('#total-label'+(d.key-1)).text(d.value);
 		})
 
-		total = d3.sum(dataByDate, function(d){
-			if((d.date>=dateRange[0])&&(d.date<dateRange[1]))
-				return d.total_assessments;
+		total = dc.length;
+
+		var mutli_sector_5 = d3.sum(dc, function(d){
+			if(d.sector_count>=5)
+				return 1;
 		});
 
+		var mutli_sector_2 = d3.sum(dc, function(d){
+			if(d.sector_count>=2)
+				return 1;
+		});
+
+		var single_sector = d3.sum(dc, function(d){
+			if(d.sector_count==1)
+				return 1;
+		});
+
+		var sector_monitoring_5 = d3.sum(dc, function(d){
+			if(d.sector_count>=5)
+				return 1;
+		});
+
+		var sector_monitoring_2 = d3.sum(dc, function(d){
+			if(d.sector_count>=2)
+				return 1;
+		});
+
+		var sector_monitoring_5 = d3.sum(dc, function(d){
+			if((d.sector_count>=5)&&(d.assessment_type==monitoringId))
+				return 1;
+		});
+
+		var sector_monitoring_2 = d3.sum(dc, function(d){
+			if((d.sector_count>=2)&&(d.assessment_type==monitoringId))
+				return 1;
+		});
+
+		var sector_monitoring_1 = d3.sum(dc, function(d){
+			if((d.sector_count==1)&&(d.assessment_type==monitoringId))
+				return 1;
+		});
+
+
 		d3.select('#total_assessments tspan').text(addCommas(total));
-		d3.select('#coordinated_multi_sector tspan').text(0);
-		d3.select('#coordinated_12_sector tspan').text(0);
+		d3.select('#coordinated_5_sector tspan').text(0);
+		d3.select('#coordinated_2_sector tspan').text(0);
+		d3.select('#coordinated_1_sector tspan').text(0);
 		d3.select('#harmonized tspan').text(0);
 		d3.select('#uncoordinated tspan').text(0);
 		
@@ -3477,16 +3519,16 @@ var Deepviz = function(sources, callback){
 		d3.select('#lngos tspan').text(0);
 		d3.select('#ingos tspan').text(0);
 		d3.select('#un_agencies tspan').text(0);
-		d3.select('#clusters tspan').text(0);
 		d3.select('#donors tspan').text(0);
 		d3.select('#rcrc tspan').text(0);
 		d3.select('#government tspan').text(0);
 
-		d3.select('#mutli_sector_5 tspan').text(0);
-		d3.select('#multi_sector_2 tspan').text(0);
-		d3.select('#single_sector tspan').text(0);
-		d3.select('#sector_monitoring tspan').text(0);
-		d3.select('#multi_sector_monitoring tspan').text(0);
+		d3.select('#mutli_sector_5 tspan').text(addCommas(mutli_sector_5));
+		d3.select('#multi_sector_2 tspan').text(addCommas(mutli_sector_2));
+		d3.select('#single_sector tspan').text(addCommas(single_sector));
+		d3.select('#sector_monitoring_5 tspan').text(addCommas(sector_monitoring_5));
+		d3.select('#sector_monitoring_2 tspan').text(addCommas(sector_monitoring_2));
+		d3.select('#sector_monitoring_1 tspan').text(addCommas(sector_monitoring_1));
 		d3.select('#total_initial tspan').text(0);
 		d3.select('#total_rapid tspan').text(0);
 		d3.select('#total_indepth tspan').text(0);
@@ -3556,6 +3598,8 @@ var Deepviz = function(sources, callback){
 		var stakeholder_type_keys = {};
 		metadata.organisation_type.forEach(function(row){
 			if(row.name=='Donor') stakeholder_type_keys.donor = row.id;
+			if(row.name=='International Organization') stakeholder_type_keys.ingo = row.id;
+			if(row.name=='Non-governmental Organization') stakeholder_type_keys.ngo = row.id;
 			if(row.name=='Government') stakeholder_type_keys.government = row.id;
 			if(row.name=='UN Agency') stakeholder_type_keys.unagency = row.id;
 			if(row.name=='Red Cross/Red Crescent Movement') stakeholder_type_keys.rcrc = row.id;
@@ -3566,6 +3610,14 @@ var Deepviz = function(sources, callback){
 
 			if(d.key==stakeholder_type_keys.donor){
 				d3.select('#donors tspan').text(addCommas(d.value));
+			} 
+
+			if(d.key==stakeholder_type_keys.ingo){
+				d3.select('#ingos tspan').text(addCommas(d.value));
+			} 
+
+			if(d.key==stakeholder_type_keys.ngo){
+				d3.select('#lngos tspan').text(addCommas(d.value));
 			} 
 
 			if(d.key==stakeholder_type_keys.government){
@@ -4301,15 +4353,15 @@ var Deepviz = function(sources, callback){
 
 	function rightAlignTotals(){
 
-		d3.select('#coordinated_multi_sector tspan').attr('text-anchor', 'end');
-		d3.select('#coordinated_12_sector tspan').attr('text-anchor', 'end');
+		d3.select('#coordinated_5_sector tspan').attr('text-anchor', 'end');
+		d3.select('#coordinated_2_sector tspan').attr('text-anchor', 'end');
+		d3.select('#coordinated_1_sector tspan').attr('text-anchor', 'end');
 		d3.select('#harmonized tspan').attr('text-anchor', 'end');
 		d3.select('#uncoordinated tspan').attr('text-anchor', 'end');
 		
 		d3.select('#lngos tspan').attr('text-anchor', 'end');
 		d3.select('#ingos tspan').attr('text-anchor', 'end');
 		d3.select('#un_agencies tspan').attr('text-anchor', 'end');
-		d3.select('#clusters tspan').attr('text-anchor', 'end');
 		d3.select('#donors tspan').attr('text-anchor', 'end');
 		d3.select('#rcrc tspan').attr('text-anchor', 'end');
 		d3.select('#government tspan').attr('text-anchor', 'end');
@@ -4317,8 +4369,9 @@ var Deepviz = function(sources, callback){
 		d3.select('#mutli_sector_5 tspan').attr('text-anchor', 'end');
 		d3.select('#multi_sector_2 tspan').attr('text-anchor', 'end');
 		d3.select('#single_sector tspan').attr('text-anchor', 'end');
-		d3.select('#sector_monitoring tspan').attr('text-anchor', 'end');
-		d3.select('#multi_sector_monitoring tspan').attr('text-anchor', 'end');
+		d3.select('#sector_monitoring_5 tspan').attr('text-anchor', 'end');
+		d3.select('#sector_monitoring_2 tspan').attr('text-anchor', 'end');
+		d3.select('#sector_monitoring_1 tspan').attr('text-anchor', 'end');
 		d3.select('#total_initial tspan').attr('text-anchor', 'end');
 		d3.select('#total_rapid tspan').attr('text-anchor', 'end');
 		d3.select('#total_indepth tspan').attr('text-anchor', 'end');
@@ -4329,7 +4382,7 @@ var Deepviz = function(sources, callback){
 		d3.select('#focus_group_discussions').attr('text-anchor', 'end');
 		d3.select('#community_group_discussions').attr('text-anchor', 'end');
 
-		d3.select('#totals_right_align').attr('transform', 'translate(147,19)')
+		d3.select('#totals_right_align').attr('transform', 'translate(150,19)');
 
 
 	}
