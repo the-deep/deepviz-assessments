@@ -14,7 +14,7 @@ var Deepviz = function(sources, callback){
 	var dateIndex;
 	var scale = {
 		'timechart': {x: '', y1: '', y2: ''},
-		'trendline': {x: '', y: ''},
+		'entrieschart': {x: '', y: ''},
 		'map': '',
 		'eventdrop': '',
 		'finalScore': {x: '', y: ''},
@@ -52,6 +52,7 @@ var Deepviz = function(sources, callback){
 	var dataByAffectedGroups;
 	var dataFitForPurpose;
 	var monitoringId;
+	var stakeholder_type_keys = {};
 	var total = 0;
 	var maxValue; // max value on a given date
 	var maxFocusValue;
@@ -61,6 +62,8 @@ var Deepviz = function(sources, callback){
 	var timechartInit = 0;
 	var timechartyAxis;
 	var timechartyGrids;
+	var entriesAxis;
+	var entriesMax;
 	var width = 1300;
 	var margin = {top: 18, right: 17, bottom: 0, left: 45};
 	var timechartViewBoxHeight = 1100;
@@ -69,6 +72,8 @@ var Deepviz = function(sources, callback){
 	var timechartHeight = 346;
 	var timechartHeight2 = timechartHeight;
 	var timechartHeightOriginal = timechartHeight;
+	var entriesChartHeight = 100;
+	var entriesTopMargin = 34;
 	var brush;
 	var gBrush; 
 	var barWidth;
@@ -126,7 +131,7 @@ var Deepviz = function(sources, callback){
 	var colorBlue = ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'];
 	var colorNeutral = ['#ddf6f2', '#76D1C3', '#36BBA6', '#1AA791', '#008974'];
 	var colorPrimary = ['#ddf6f2', '#76D1C3', '#36BBA6', '#1AA791', '#008974'];
-	var colorSecondary = ['#A1E6DB','#f1eef6', '#bdc9e1', '#74a9cf', '#2b8cbe', '#045a8d']; // reliability (multi-hue PuBu)
+	var colorSecondary = ['#A1E6DB','#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']; // finalScore (multi-hue)
 
 	var maxCellSize = 4;
 	var cellColorScale = d3.scaleSequential().domain([1,maxCellSize])
@@ -230,6 +235,18 @@ var Deepviz = function(sources, callback){
 		metadata.organization.forEach(function(d,i){
 			d._id = d.id;
 			d.id = i+1;
+
+		});
+
+		metadata.organisation_type.forEach(function(d,i){
+			d._id = d.id;
+			d.id = i+1;
+			if(d.name=='Donor') stakeholder_type_keys.donor = d.id;
+			if(d.name=='International Organization') stakeholder_type_keys.ingo = d.id;
+			if(d.name=='Non-governmental Organization') stakeholder_type_keys.ngo = d.id;
+			if(d.name=='Government') stakeholder_type_keys.government = d.id;
+			if(d.name=='UN Agency') stakeholder_type_keys.unagency = d.id;
+			if(d.name=='Red Cross/Red Crescent Movement') stakeholder_type_keys.rcrc = d.id;
 		});
 
 		metadata.scorepillar_scale.forEach(function(d,i){
@@ -300,16 +317,30 @@ var Deepviz = function(sources, callback){
 				});
 			});
 
+
 			// parse organisations array
 			d._organisation_and_stakeholder_type = d.organisation_and_stakeholder_type;
 			d.organisation_and_stakeholder_type = [];
 
 			d._organisation_and_stakeholder_type.forEach(function(dd,ii){
+				var orgId;
+				var orgTypeId;
+
 				metadata.organization.forEach(function(ddd,ii){
 					if(dd[1]==ddd._id){
-						d.organisation_and_stakeholder_type.push([dd[0], ddd.id]);
+						orgId = ddd.id;
 					}
 				});
+
+				metadata.organisation_type.forEach(function(ddd,ii){
+					if(dd[0]==ddd._id){
+						orgTypeId = ddd.id;
+					}
+				});
+
+				d.organisation_and_stakeholder_type.push([orgTypeId, orgId]);
+
+
 			});
 
 			// parse scorepillar scale id
@@ -1346,7 +1377,7 @@ var Deepviz = function(sources, callback){
 		.attr("x", 170)
 		.style('font-weight','lighter')
 		.style('font-size', '15px')
-		.text('Number of Entries')
+		.text('Total Entries')
 
 		timechartLegend
 		.append("line")
@@ -1355,10 +1386,9 @@ var Deepviz = function(sources, callback){
 		.attr("y2", 12)
 		.attr("x1", 163)
 		.attr("x2", 152)
-		.style('stroke', colorPrimary[3])
-		.style('stroke-width',3)
+		.style('stroke', colorSecondary[4])
+		.style('stroke-width',10)
 		.style('stroke-opacity',1)
-		.style('stroke-dasharray', '2 2');
 
 		timechartLegend
 		.append("text")
@@ -1417,40 +1447,6 @@ var Deepviz = function(sources, callback){
 		.call(timechartyAxis)
 		.style('font-size', options.yAxis.font.values.size);
 
-		//**************************
-		// Y AXIS right
-		//**************************
-
-		// define y-axis secondary
-		scale.trendline.y = d3.scaleLinear()
-		.range([(timechartHeight2), 0])
-		.domain([0, 5]);
-
-		var yAxisText2 = svgBg.append("g")
-		.attr("class", "yAxis axis")
-		.attr('transform', 'translate('+(width_new + margin.left-1)+','+margin.top+')')
-		.style('font-size', options.yAxis.font.values.size);
-
-		yAxisText2
-		.append("text")
-		.attr('class','axisLabel1')
-		.attr("y", timechartHeight2+4)
-		.attr("x", 8)
-		.style('font-weight','normal')
-		.style('font-size', '15px')
-		.style('fill', '#000')
-		.text('1')
-
-		yAxisText2
-		.append("text")
-		.attr('class','axisLabel1')
-		.attr("y", 4)
-		.attr("x", 8)
-		.style('font-weight','normal')
-		.style('font-size', '15px')
-		.style('fill', '#000')
-		.text('x');
-
 		// add the Y gridline
 		timechartyGrid = d3.axisLeft(scale.timechart.y1)
 		.ticks(4)
@@ -1496,6 +1492,16 @@ var Deepviz = function(sources, callback){
 		.attr('x2', 0)
 		.attr('y1', -timechartHeight2)
 		.attr('y2', timechartSvgHeight-timechartHeight2-35)
+
+		xAxisObj
+		.append('line')
+		.attr('class', 'axisBaseline')
+		.attr('x1',0)
+		.attr('x2',1250)
+		.attr('y1', 0)
+		.attr('y2', 0)
+		.style('stroke', '#E1E1E1')
+		.style('stroke-width', '1px')
 
 		// add the axis buttons
 		xAxisObj.selectAll(".tick").each(function(d,i){
@@ -1624,39 +1630,136 @@ var Deepviz = function(sources, callback){
 		});
 
 		//**************************
-		// draw trendline
+		// draw entries chart
 		//**************************
-		var trendline = d3.select('#svgchartbg')
+
+		var entriesGroup = d3.select('#svgchartbg')
 		.append('g')
-		.attr('class', 'trendline')
-		.attr('transform', 'translate('+(barWidth/2) + ', 0)' )
-		.append('path')
-		.attr('id', 'avg-line')
-		.style('opacity', 0)
-		.style('stroke', function(){
-			if(filters.toggle=='finalScore'){
-				d3.select('#rightAxisLabel').text('Number of Entries');
-				d3.select('#rightAxisLabelLine').style('stroke', colorPrimary[3]);
-				return colorPrimary[3];
-			} else {
-				d3.select('#rightAxisLabelLine').style('stroke', colorSecondary[3]);
-				d3.select('#rightAxisLabel').text('Avg. Reliability');
-				return colorSecondary[3];
-			}
+		.attr('class', 'entries')
+		.attr('transform', 'translate('+(0) + ', '+ (timechartHeight2+entriesTopMargin) +')' );
+
+		// entriesGroup.append('text')
+		// .attr('y', 5)
+		// .attr('x', 0)
+		// .text('ENTRIES BY DATE')
+		// .style('font-weight', 'bold')
+		// .style('font-size', '19px')
+		// .style('fill', '#4c4c4c');
+
+		entriesMax = d3.max(dataEntriesByDate, function(d,i){
+			return d.value;
 		});
+
+		scale.entrieschart.y = d3.scaleLinear()
+		.range([entriesChartHeight , 0])
+		.domain([0, entriesMax]);
+
+	    entriesAxis = d3.axisLeft()
+	    .scale(scale.entrieschart.y)
+	    .ticks(2)
+	    .tickSize(0)
+	    .tickPadding(8);
+
+		// y-axis
+		var entriesAxisText = entriesGroup.append("g")
+		.attr("class", "yEntriesAxis axis")
+		.attr("id", "entriesYAxis")
+		.attr('transform', 'translate('+(0)+','+ (0)+')')
+		.call(entriesAxis)
+		.style('font-size', options.yAxis.font.values.size);
+
+		// add the Y gridline
+		var entriesChartyGrid = d3.axisLeft(scale.entrieschart.y)
+		.ticks(2)
+		.tickSize(-width+52)
+		.tickFormat("")
+
+		entriesGroup
+		.append('line')
+		.attr('class', 'axisBaseline')
+		.attr('x1',0)
+		.attr('x2',1250)
+		.attr('y1', entriesChartHeight)
+		.attr('y2', entriesChartHeight)
+		.style('stroke', '#ECECEC')
+		.style('stroke-width', '1px')
+
+		entriesGroup.append("g")			
+		.attr("class", "grid")
+		.attr('id', 'entriesChartYGrid')
+		.call(entriesChartyGrid);
+
+		var entriesBars = entriesGroup.selectAll('.entriesBar')
+		.data(dataEntriesByDate)
+		.enter()
+		.append('g')
+		.attr("transform", function(d,i) { return "translate(" + scale.timechart.x(d.key) + ",0)"; })
+		.append('rect')
+		.attr("class", "entriesBar")
+		.attr('id', function(d,i){
+			var dt = new Date(d.key);
+			dt.setHours(0,0,0,0);
+			d.date = dt;
+			return 'entriesDate'+dt.getTime();
+		})
+		.attr('x', function(d,i){
+			if(filters.time=='y'){
+				var date = new Date(d.key);
+				var endYear = new Date(date.getFullYear(), 11, 31);
+				return scale.timechart.x(d.key) *.3;
+			}
+
+			if(filters.time=='m'){
+				var date = new Date(d.key);
+				var endMonth = new Date(date.getFullYear(), date.getMonth()+1, 1);
+				return (scale.timechart.x(endMonth) - scale.timechart.x(d.key))*.2;
+			}
+
+			if(filters.time=='d'){
+				var date = new Date(d.date);
+				var endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+				return (scale.timechart.x(endDate) - scale.timechart.x(d.key))
+			}	
+		})
+		.attr('width', function(d,i) { 
+			if(filters.time=='y'){
+				var date = new Date(d.key);
+				var endYear = new Date(date.getFullYear(), 11, 31);
+				return scale.timechart.x(d.key) *.4;
+			}
+
+			if(filters.time=='m'){
+				var date = new Date(d.key);
+				var endMonth = new Date(date.getFullYear(), date.getMonth()+1, 1);
+				return (scale.timechart.x(endMonth) - scale.timechart.x(d.key))*.6;
+			}
+
+			if(filters.time=='d'){
+				var date = new Date(d.key);
+				var endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate()+1);
+				return (scale.timechart.x(endDate) - scale.timechart.x(d.key));
+			}	
+		})
+		.attr('height', function(d,i){
+			return entriesChartHeight - scale.entrieschart.y(d.value);
+		})
+		.attr('y', function(d,i){
+			return  scale.entrieschart.y(d.value);
+		})
+		.style('fill', colorSecondary[4]);
 
 		// *************************
 		// draw contextual rows
 		//**************************
 
 		var timechart = d3.select('#timeChart');
-		var yPadding = 20;
+		var yPadding = 0;
 
 		var contextualRows = svgChartBg.append('g')
 		.attr('id', 'contextualRows')
-		.attr('transform', 'translate(0,'+ (timechartHeightOriginal + yPadding ) + ')');
+		.attr('transform', 'translate(0,'+ (timechartHeight2 + yPadding + entriesChartHeight + entriesTopMargin ) + ')');
 
-		var contextualRowsHeight = timechartSvgHeight - timechartHeightOriginal - yPadding - 36;
+		var contextualRowsHeight = timechartSvgHeight - timechartHeight2 - yPadding - 36 - entriesChartHeight - entriesTopMargin ;
 
 		contextualRows.append('rect')
 		.attr('height', contextualRowsHeight)
@@ -1682,7 +1785,7 @@ var Deepviz = function(sources, callback){
 		.style('fill', '#FFF')
 		.style('fill-opacity',1);
 
-		var contextualRowHeight = contextualRowsHeight/numContextualRows;
+		var contextualRowHeight = (contextualRowsHeight)/numContextualRows;
 
 		var rows = contextualRows.selectAll('.contextualRow')
 		.data(metadata.focus_array)
@@ -1793,7 +1896,7 @@ var Deepviz = function(sources, callback){
 				return (w/2);
 			})
 		.attr('cy', function(d,i){
-			return timechartHeight2 + (contextualRowHeight*(i+1))+17;
+			return timechartHeight2 + (contextualRowHeight*(i))+ (contextualRowHeight/2)+ entriesChartHeight + entriesTopMargin;
 		})
 		.style('fill', colorNeutral[3]);
 
@@ -1902,8 +2005,6 @@ var Deepviz = function(sources, callback){
 
 	    	var d0 = d3.event.selection.map(scale.timechart.x.invert);
 			var d1 = [];
-
-
 
 			if(filters.time=='d'){
 				var a = d3.timeDay.floor(d0[1]).getTime() - d3.timeDay.floor(d0[0]).getTime(); 
@@ -2030,7 +2131,7 @@ var Deepviz = function(sources, callback){
 
 		colorBars();
 		updateDate();
-		updateTrendline();
+		updateEntriesChart();
 		updateBubbles();
 		updateFinalScore('init', 500);
 		updateTotals();
@@ -2559,129 +2660,7 @@ var Deepviz = function(sources, callback){
 		d3.select('#organisationRemoveFilter').on('click', function(){ filter('organisation', 'clear'); });
 	}
 
-	//**************************
-	// trendline slider
-	//**************************
-	this.createTrendline = function(options){
-		// create average svg
-		var avgSliderSvg = this.createSvg({
-			id: 'avg_slide_svg',
-			viewBoxWidth: 300,
-			viewBoxHeight: 30,
-			div: '#avg_slider',
-			width: '100%'
-		});
 
-		var avgSliderIcons = avgSliderSvg.append('g')
-		.attr('id', 'sliderIcons');
-
-		avgSliderIcons.append('image')
-		.attr('class', 'sliderIcon')
-		.attr('xlink:href', 'images/oscillator_saw.png')
-		.attr('y', 8)
-		.attr('x', 113)
-		.attr('height', '22px')
-		.attr('width', '22px');
-
-		avgSliderIcons.append('image')
-		.attr('class', 'sliderIcon')
-		.attr('xlink:href', 'images/oscillator_sine.png')
-		.attr('y', 8)
-		.attr('x', 276)
-		.attr('height', '19px')
-		.attr('width', '19px');
-
-		avgSliderSvg.on('mouseover', function(){
-			d3.select('#avg-line')
-			.style('stroke-width',2)
-			.transition().duration(750)
-			.style('stroke-opacity',1);
-
-			d3.select('#chartarea').transition().duration(750).style('opacity', 0.2);
-
-		}).on('mouseout', function(){
-			if(avgSliderBrushing==false){
-				d3.select('#avg-line')
-				.style('stroke-width',1)
-				.transition().duration(750)
-				.style('stroke-opacity',0.4);	
-
-				d3.select('#chartarea').transition().duration(750).style('opacity', 1);		
-			}
-		});
-
-		var sliderPadding = 60;
-
-		var xt = d3.scaleLinear()
-		.domain([0, (dataByDate.length/2)])
-		.range([0, 190-sliderPadding])
-		.clamp(true);
-
-		var slider = avgSliderSvg.append("g")
-		.attr("class", "slider")
-		.attr("transform", "translate("+139+",20)");
-
-		avgSliderSvg.append("text")
-		.attr('class', 'avgSliderLabel')
-		.text('Moving avg. interpolation')
-		.attr('y', 22)
-		.attr('x', 6);
-
-		// var nDays = avgSliderSvg.append("text")
-		// .attr('class', 'avgSliderLabel')
-		// .attr('id', 'n-days')
-		// .text('( n days = 10 )')
-		// .attr('y', 36)
-		// .attr('x', 180)
-
-		slider.append("line")
-		.attr("class", "track")
-		.attr("x1", xt.range()[0])
-		.attr("x2", xt.range()[1])
-		.select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-		.attr("class", "track-inset")
-		.select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-		.attr("class", "track-overlay")
-		.call(d3.drag()
-			.on("start.interrupt", function() { slider.interrupt(); })
-			.on('end', function(){
-				avgSliderBrushing = false;
-
-				d3.selectAll('#avg-line')
-				.style('stroke-width',1)
-				.transition().duration(750)
-				.style('stroke-opacity',0.4);	
-
-				d3.select('#chartarea').transition().duration(500).style('opacity', 1);
-			})
-			.on("start drag", function() { 
-				avgSliderBrushing = true;
-				var h = xt.invert(d3.event.x)
-				handle.attr('transform', 'translate('+xt(h)+',-10)')
-				smoothAverage(h); }));
-
-		slider.insert("g", ".track-overlay")
-		.attr("class", "ticks")
-		.attr("transform", "translate(0," + sliderPadding/2 + ")");
-
-		slider.insert("g", ".track-overlay")
-		.attr("class", "ticks")
-		.attr("transform", "translate(0," + sliderPadding/2 + ")");
-
-	    // slider init
-	    var handle = slider.insert('g', '.track-overlay')
-	    .attr('transform', 'translate('+xt(smoothingVal)+',-10)')
-	    .attr("class", "handle");
-
-	    handle
-	    .append('path')
-	    .attr("stroke", "#000")
-	    .attr('stroke-width', 0)
-	    .attr('fill', '#000')
-	    .attr("cursor", "ew-resize")
-	    .attr("d", 'M -7,0 -1,9 6,0 z');
-
-	}
 
 	//**************************
 	// create polar charts
@@ -3287,7 +3266,7 @@ var Deepviz = function(sources, callback){
 			}
 		});
 		updateFinalScore(target, 500);
-		updateTrendline();
+		updateEntriesChart();
 		updateBubbles();
 		colorBars();
 	}
@@ -3519,6 +3498,7 @@ var Deepviz = function(sources, callback){
 		d3.select('#lngos tspan').text(0);
 		d3.select('#ingos tspan').text(0);
 		d3.select('#un_agencies tspan').text(0);
+		d3.select('#clusters tspan').text(0);
 		d3.select('#donors tspan').text(0);
 		d3.select('#rcrc tspan').text(0);
 		d3.select('#government tspan').text(0);
@@ -3595,16 +3575,6 @@ var Deepviz = function(sources, callback){
 		})
 		.entries(stakeholderTypes);
 
-		var stakeholder_type_keys = {};
-		metadata.organisation_type.forEach(function(row){
-			if(row.name=='Donor') stakeholder_type_keys.donor = row.id;
-			if(row.name=='International Organization') stakeholder_type_keys.ingo = row.id;
-			if(row.name=='Non-governmental Organization') stakeholder_type_keys.ngo = row.id;
-			if(row.name=='Government') stakeholder_type_keys.government = row.id;
-			if(row.name=='UN Agency') stakeholder_type_keys.unagency = row.id;
-			if(row.name=='Red Cross/Red Crescent Movement') stakeholder_type_keys.rcrc = row.id;
-		});
-
 		stakeholderTypes.forEach(function(d,i){
 			d.key = parseInt(d.key);
 
@@ -3668,35 +3638,47 @@ var Deepviz = function(sources, callback){
 	}
 
 	//**************************
-	// update trendline
+	// update entries chart
 	//**************************
-	var updateTrendline = function(){
+	var updateEntriesChart = function(){
 
-		tp = [];
-
-		var entriesMax = d3.max(dataEntriesByDate, function(d,i){
-			return d.value
+		entriesMax = d3.max(dataEntriesByDate, function(d,i){
+			return d.value;
 		});
 
-		scale.trendline.y = d3.scaleLinear()
-		.range([(timechartHeight2), 0])
+		scale.entrieschart.y = d3.scaleLinear()
+		.range([entriesChartHeight , 0])
 		.domain([0, entriesMax]);
 
-		dataEntriesByDate.forEach(function(d,i){
-			d.total_entries = scale.trendline.y(d.value);
-			tp.push(d.total_entries);
+	    entriesAxis = d3.axisLeft()
+	    .scale(scale.entrieschart.y)
+	    .ticks(2)
+	    .tickSize(0)
+	    .tickPadding(8);
+
+		var entriesBars = d3.selectAll('.entriesBar')
+		.transition()
+		.duration(700)
+		.attr('height', function(d,i){
+			return 0;
+		})
+		.attr('y', function(d,i){
+			return  entriesChartHeight;
 		});
 
-		curvedLine = d3.line()
-		.x(function(d,i){
-			return scale.timechart.x(dataEntriesByDate[i].date);
-		})
-		.y(d => (d))
-		.curve(d3.curveLinear);
-		
-		d3.select('#avg-line')
-		.datum(tp)
-		.attr('d', curvedLine)
+		dataEntriesByDate.forEach(function(d,i){
+			var dt = new Date(d.key);
+			dt.setHours(0,0,0,0);
+			d3.select('#entriesDate'+dt.getTime())
+			.transition()
+			.duration(700)
+			.attr('height', function(dd,ii){
+				return entriesChartHeight - scale.entrieschart.y(d.value);
+			})
+			.attr('y', function(dd,ii){
+				return  scale.entrieschart.y(d.value);
+			});	
+		});
 
 	}
 
@@ -4220,19 +4202,11 @@ var Deepviz = function(sources, callback){
 			var idate = parseInt(d3.select(this).attr('id').slice(4));
 			if(((new Date(idate)) >= (dateRange[0]))&&((new Date(idate))< (dateRange[1]))){
 				d3.select(this).selectAll('.bar').style('fill', function(d,i){
-					if(filters.toggle == 'finalScore'){
-						return colorPrimary[i];
-					} else {
-						return colorSecondary[i];
-					}
+					return colorPrimary[i];
 				}).style('fill-opacity', 1);
 
 				d3.select(this).selectAll('.eventDrop').style('fill', function(d,i){
-					if(filters.toggle == 'finalScore'){
-						return colorNeutral[3];
-					} else {
-						return colorNeutral[3];
-					}
+					return colorNeutral[3];
 				});
 			} else {
 				d3.select(this).selectAll('.bar').style('fill', function(d,i){
@@ -4243,6 +4217,37 @@ var Deepviz = function(sources, callback){
 				});
 			}
 		});
+
+		d3.selectAll('.entriesBar')
+		.style('fill', function(d,i){
+			var edate = parseInt(d3.select(this).attr('id').slice(11));
+			if(((new Date(edate)) >= (dateRange[0]))&&((new Date(edate))< (dateRange[1]))){
+				return colorSecondary[4];
+			} else {
+				return colorLightgrey[3];
+			}
+		});
+
+	    entriesAxis = d3.axisLeft()
+	    .scale(scale.entrieschart.y)
+	    .ticks(2)
+	    .tickSize(0)
+	    .tickPadding(8);
+
+		// y-axis
+		var entriesAxisText = d3.select(".yEntriesAxis")
+		.call(entriesAxis);
+
+
+		// add the Y gridline
+		var entriesChartyGrid = d3.axisLeft(scale.entrieschart.y)
+		.ticks(2)
+		.tickSize(-width+52)
+		.tickFormat("")
+
+		d3.select('#entriesChartYGrid')
+		.call(entriesChartyGrid);
+
 	}
 
 	//**************************
@@ -4362,6 +4367,7 @@ var Deepviz = function(sources, callback){
 		d3.select('#lngos tspan').attr('text-anchor', 'end');
 		d3.select('#ingos tspan').attr('text-anchor', 'end');
 		d3.select('#un_agencies tspan').attr('text-anchor', 'end');
+		d3.select('#clusters tspan').attr('text-anchor', 'end');
 		d3.select('#donors tspan').attr('text-anchor', 'end');
 		d3.select('#rcrc tspan').attr('text-anchor', 'end');
 		d3.select('#government tspan').attr('text-anchor', 'end');
