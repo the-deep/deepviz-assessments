@@ -264,7 +264,7 @@ var Deepviz = function(sources, callback){
 			d.id = i+1;
 		});
 
-		// convert date strings into js date objects
+		// PARSE ASSESSMENT DATA IDS
 		data.forEach(function(d,i){
 			d.date = new Date(d.date);
 			d.date.setHours(0,0,0,0);
@@ -278,9 +278,9 @@ var Deepviz = function(sources, callback){
 
 			// PARSE STRING IDS TO INTEGERS
 			// parse context array
-			d._context = d.focus;
+			d._focus = d.focus;
 			d.focus = [];
-			d._context.forEach(function(dd,ii){
+			d._focus.forEach(function(dd,ii){
 				metadata.focus_array.forEach(function(ddd,ii){
 					if(dd==ddd._id){
 						d.focus.push(ddd.id);
@@ -318,30 +318,41 @@ var Deepviz = function(sources, callback){
 				});
 			});
 
+			// parse analytical density sector keys
+			d.scores._analytical_density = d.scores.analytical_density;
+			d.scores.analytical_density = [];
+
+			Object.entries(d.scores._analytical_density).forEach(function(dd,ii){
+				var sector = dd[0];
+				var value = dd[1];
+				metadata.sector_array.forEach(function(ddd,ii){
+					if(sector==ddd._id){
+						var obj = {};
+						obj.sector = ddd.id;
+						obj.name = ddd.name;
+						obj.value = value;
+						d.scores.analytical_density.push(obj);
+					}
+				});
+			});
 
 			// parse organisations array
 			d._organisation_and_stakeholder_type = d.organisation_and_stakeholder_type;
 			d.organisation_and_stakeholder_type = [];
-
 			d._organisation_and_stakeholder_type.forEach(function(dd,ii){
 				var orgId;
 				var orgTypeId;
-
 				metadata.organization.forEach(function(ddd,ii){
 					if(dd[1]==ddd._id){
 						orgId = ddd.id;
 					}
 				});
-
 				metadata.organisation_type.forEach(function(ddd,ii){
 					if(dd[0]==ddd._id){
 						orgTypeId = ddd.id;
 					}
 				});
-
 				d.organisation_and_stakeholder_type.push([orgTypeId, orgId]);
-
-
 			});
 
 			// parse scorepillar scale id
@@ -359,7 +370,6 @@ var Deepviz = function(sources, callback){
 			// parse geo id
 			d._geo = d.geo;
 			d.geo = [];
-
 			d._geo.forEach(function(dd,ii){
 				metadata.geo_array.forEach(function(ddd,ii){
 					if(dd==ddd._id){
@@ -2725,11 +2735,11 @@ var Deepviz = function(sources, callback){
 		pillars.forEach(function(pillar,i){
 			var dataQuality = [];
 			metadata[pillar+'_array'].forEach(function(d,i){
-				var avg = d3.mean(dc, function(md){
+				var median = d3.median(dc, function(md){
 					return md.scores[pillar+'_array'][d.id]
 				})
-				avg = avg != null ? avg : 0;
-				dataQuality[i] = {'axis': d.name, 'value': avg }
+				median = median != null ? median : 0;
+				dataQuality[i] = {'axis': d.name, 'value': median }
 			});
 
 			var dataQualityTotal = d3.sum(dataQuality, d => d.value );
@@ -2738,21 +2748,47 @@ var Deepviz = function(sources, callback){
 			RadarChart("#quality"+(i+1), [dataQuality], radarChartOptions);
 		});
 
+		// analytical density radar
+		var scores = [];
+		var ad_scores = [];
+
+		dc.forEach(function(d,i){
+			d.scores.analytical_density.forEach(function(dd,ii){
+				scores.push(dd);
+			})
+		});
+
+		var dataQuality = d3.nest()
+		.key(function(d) { return d.name;})
+		.rollup(function(v) { return (d3.median(v, function(d) { 
+			return d.value; 
+		}))})
+		.entries(scores);
+
+		dataQuality.forEach(function(d,i){
+			d.axis = d.key;
+		})
+
+		radarChartOptions.maxValue = 5;
+		RadarChart("#quality5", [dataQuality], radarChartOptions);
+
 		// final score
 		var dataQuality = [];
 		metadata.final_scores_array.score_pillar.forEach(function(d,i){
-			var avg = d3.mean(dc, function(md){
+			var median = d3.median(dc, function(md){
 				return md.scores.final_scores.score_pillar[d.id];
 			})
-			avg = avg != null ? avg : 0;
-			dataQuality[i] = {'axis': d.name, 'value': avg }
+			median = median != null ? median : 0;
+			dataQuality[i] = {'axis': d.name, 'value': median }
 		});
 
-		var avg = d3.mean(dc, function(md){
+		var median = d3.median(dc, function(md){
 			return md.scores.final_scores.score_matrix_pillar[metadata.final_scores_array.score_matrix_pillar[0].id];
 		})
-		avg = avg != null ? avg : 0;
-		dataQuality.push({'axis': metadata.final_scores_array.score_matrix_pillar[0].name, 'value': avg });
+		median = median != null ? median : 0;
+		dataQuality.push({'axis': metadata.final_scores_array.score_matrix_pillar[0].name, 'value': median });
+		d3.select('#quality5val tspan').text(Math.round(median));
+
 		radarChartOptions.maxValue = 25;
 		RadarChart("#quality6", [dataQuality], radarChartOptions);
 
@@ -2763,17 +2799,16 @@ var Deepviz = function(sources, callback){
 		// data filter
 		var dc = data.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
 
-
 		// first 4 standard pillars
 		var pillars = ['fit_for_purpose', 'trustworthiness', 'analytical_rigor', 'analytical_writing'];
 		pillars.forEach(function(pillar,i){
 			var dataQuality = [];
 			metadata[pillar+'_array'].forEach(function(d,i){
-				var avg = d3.mean(dc, function(md){
+				var median = d3.median(dc, function(md){
 					return md.scores[pillar+'_array'][d.id]
 				})
-				avg = avg != null ? avg : 0;
-				dataQuality[i] = {'axis': d.name, 'value': avg }
+				median = median != null ? median : 0;
+				dataQuality[i] = {'axis': d.name, 'value': median }
 			});
 
 			var dataQualityTotal = d3.sum(dataQuality, d => d.value );
@@ -2782,23 +2817,48 @@ var Deepviz = function(sources, callback){
 			RadarChartUpdate("#quality"+(i+1), [dataQuality], radarChartOptions);
 		});
 
+		// analytical density radar
+		var scores = [];
+		var ad_scores = [];
+
+		dc.forEach(function(d,i){
+			d.scores.analytical_density.forEach(function(dd,ii){
+				scores.push(dd);
+			})
+		});
+
+		var dataQuality = d3.nest()
+		.key(function(d) { return d.name;})
+		.rollup(function(v) { return (d3.median(v, function(d) { 
+			return d.value; 
+		}))})
+		.entries(scores);
+
+		dataQuality.forEach(function(d,i){
+			d.axis = d.key;
+		})
+
+		radarChartOptions.maxValue = 5;
+		RadarChart("#quality5", [dataQuality], radarChartOptions);
+
 		// final score
 		var dataQuality = [];
 		metadata.final_scores_array.score_pillar.forEach(function(d,i){
-			var avg = d3.mean(dc, function(md){
+			var median = d3.median(dc, function(md){
 				return md.scores.final_scores.score_pillar[d.id];
 			})
-			avg = avg != null ? avg : 0;
-			dataQuality[i] = {'axis': d.name, 'value': avg }
+			median = median != null ? median : 0;
+			dataQuality[i] = {'axis': d.name, 'value': median }
 		});
 
-		var avg = d3.mean(dc, function(md){
+		var median = d3.median(dc, function(md){
 			return md.scores.final_scores.score_matrix_pillar[metadata.final_scores_array.score_matrix_pillar[0].id];
 		})
-		avg = avg != null ? avg : 0;
-		dataQuality.push({'axis': metadata.final_scores_array.score_matrix_pillar[0].name, 'value': avg });
+		median = median != null ? median : 0;
+		dataQuality.push({'axis': metadata.final_scores_array.score_matrix_pillar[0].name, 'value': median });
+		d3.select('#quality5val tspan').text(Math.round(median));
 
-		var dataQualityTotal = d3.mean(dataQuality, d => d.value );
+		var dataQualityTotal = d3.median(dataQuality, d => d.value );
 		d3.select('#quality6val tspan').text(Math.round(dataQualityTotal));
 
 		radarChartOptions.maxValue = 25;
