@@ -144,16 +144,16 @@
             <tspan x="564" y="66">&gt;=2 Sectors</tspan>
         </text>
         <g id="totals_right_align" transform="translate(120.000000, 20.000000)">
-            <text id="coordinated_5_sector" opacity="0.288169643" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
+            <text id="coordinated_5_sector" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
                 <tspan x="386.242667" y="44">00</tspan>
             </text>
-            <text id="coordinated_2_sector" opacity="0.288169643" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
+            <text id="coordinated_2_sector" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
                 <tspan x="646.242667" y="44">00</tspan>
             </text>
-            <text id="coordinated_1_sector" opacity="0.288169643" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
+            <text id="coordinated_1_sector" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
                 <tspan x="907.242667" y="44">00</tspan>
             </text>
-            <text id="harmonized" opacity="0.288169643" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
+            <text id="harmonized" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
                 <tspan x="1167.24267" y="44">00</tspan>
             </text>
             <text id="ingos" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
@@ -165,7 +165,7 @@
             <text id="un_agencies" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
                 <tspan x="678.681333" y="119">00</tspan>
             </text>
-            <text id="clusters" opacity="0.29" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
+            <text id="clusters" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
                 <tspan x="865.681333" y="119">00</tspan>
             </text>
             <text id="donors" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
@@ -177,7 +177,7 @@
             <text id="rcrc" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
                 <tspan x="1237.68133" y="119">00</tspan>
             </text>
-            <text id="uncoordinated" opacity="0.288169643" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
+            <text id="uncoordinated" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
                 <tspan x="1428.24267" y="44">00</tspan>
             </text>
             <text id="mutli_sector_5" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#FFFFFF">

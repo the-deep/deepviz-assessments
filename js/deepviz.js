@@ -52,6 +52,9 @@ var Deepviz = function(sources, callback){
 	var dataByAffectedGroups;
 	var dataFitForPurpose;
 	var monitoringId;
+	var coordinatedJointId;
+	var coordinatedHarmonizedId;
+	var uncoordinatedId;
 	var stakeholder_type_keys = {};
 	var total = 0;
 	var maxValue; // max value on a given date
@@ -223,6 +226,14 @@ var Deepviz = function(sources, callback){
 			if(d.name=='Monitoring') monitoringId = d.id;
 		});
 
+		metadata.coordination.forEach(function(d,i){
+			d._id = d.id;
+			d.id = i+1;
+			if(d.name=='Coordinated - Joint') coordinatedJointId = d.id;
+			if(d.name=='Coordinated - Harmonized') coordinatedHarmonizedId = d.id;
+			if(d.name=='Uncoordinated') uncoordinatedId = d.id;
+		});
+
 		metadata.affected_groups_array.forEach(function(d,i){
 			d._id = d.id;
 			d.id = i+1;
@@ -236,7 +247,6 @@ var Deepviz = function(sources, callback){
 		metadata.organization.forEach(function(d,i){
 			d._id = d.id;
 			d.id = i+1;
-
 		});
 
 		metadata.organisation_type.forEach(function(d,i){
@@ -247,7 +257,9 @@ var Deepviz = function(sources, callback){
 			if(d.name=='Non-governmental Organization') stakeholder_type_keys.ngo = d.id;
 			if(d.name=='Government') stakeholder_type_keys.government = d.id;
 			if(d.name=='UN Agency') stakeholder_type_keys.unagency = d.id;
+			if(d.name=='UN Agencies') stakeholder_type_keys.unagency = d.id;
 			if(d.name=='Red Cross/Red Crescent Movement') stakeholder_type_keys.rcrc = d.id;
+			if(d.name=='Cluster') stakeholder_type_keys.cluster = d.id;
 		});
 
 		metadata.scorepillar_scale.forEach(function(d,i){
@@ -304,6 +316,14 @@ var Deepviz = function(sources, callback){
 			metadata.assessment_type.forEach(function(ddd,ii){
 				if(d._assessment_type==ddd._id){
 					d.assessment_type = ddd.id;
+				}
+			});
+
+			// parse coordination 
+			d._coordination = d.coordination;
+			metadata.coordination.forEach(function(ddd,ii){
+				if(d._coordination==ddd._id){
+					d.coordination = ddd.id;
 				}
 			});
 
@@ -3542,16 +3562,35 @@ var Deepviz = function(sources, callback){
 				return 1;
 		});
 
-		var sector_monitoring_5 = d3.sum(dc, function(d){
-			if(d.sector_count>=5)
+		// coordinated totals
+		var coordinated_5 = d3.sum(dc, function(d){
+			if((d.sector_count>=5)&&((d.coordination==coordinatedJointId)||(d.coordination==coordinatedHarmonizedId)))
 				return 1;
 		});
 
-		var sector_monitoring_2 = d3.sum(dc, function(d){
-			if(d.sector_count>=2)
+		var coordinated_2 = d3.sum(dc, function(d){
+			if((d.sector_count>=2)&&((d.coordination==coordinatedJointId)||(d.coordination==coordinatedHarmonizedId)))
 				return 1;
 		});
 
+		var coordinated_1 = d3.sum(dc, function(d){
+			if((d.sector_count==1)&&((d.coordination==coordinatedJointId)||(d.coordination==coordinatedHarmonizedId)))
+				return 1;
+		});
+
+		// harmonized total
+		var harmonized = d3.sum(dc, function(d){
+			if(d.coordination==coordinatedHarmonizedId)
+				return 1;
+		});
+
+		// uncoordianted total
+		var uncoordinated = d3.sum(dc, function(d){
+			if(d.coordination==uncoordinatedId)
+				return 1;
+		});
+
+		// sector monitoring totals
 		var sector_monitoring_5 = d3.sum(dc, function(d){
 			if((d.sector_count>=5)&&(d.assessment_type==monitoringId))
 				return 1;
@@ -3569,11 +3608,11 @@ var Deepviz = function(sources, callback){
 
 
 		d3.select('#total_assessments tspan').text(addCommas(total));
-		d3.select('#coordinated_5_sector tspan').text(0);
-		d3.select('#coordinated_2_sector tspan').text(0);
-		d3.select('#coordinated_1_sector tspan').text(0);
-		d3.select('#harmonized tspan').text(0);
-		d3.select('#uncoordinated tspan').text(0);
+		d3.select('#coordinated_5_sector tspan').text(addCommas(coordinated_5));
+		d3.select('#coordinated_2_sector tspan').text(addCommas(coordinated_2));
+		d3.select('#coordinated_1_sector tspan').text(addCommas(coordinated_1));
+		d3.select('#harmonized tspan').text(addCommas(harmonized));
+		d3.select('#uncoordinated tspan').text(addCommas(uncoordinated));
 		
 		d3.select('#total_stakeholders tspan').text(0);
 		d3.select('#lngos tspan').text(0);
@@ -3681,6 +3720,10 @@ var Deepviz = function(sources, callback){
 
 			if(d.key==stakeholder_type_keys.rcrc){
 				d3.select('#rcrc tspan').text(addCommas(d.value));
+			} 
+
+			if(d.key==stakeholder_type_keys.cluster){
+				d3.select('#clusters tspan').text(addCommas(d.value));
 			} 
 		});
 
