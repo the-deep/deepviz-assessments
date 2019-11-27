@@ -4291,7 +4291,7 @@ var Deepviz = function(sources, callback){
 			if(group=='sector'){
 				d3.select('.'+group+'-icon-'+(i+1))
 				.attr('href', function(d,i){
-					return 'images/sector-icons/'+name+'.svg'
+					return 'images/sector-icons/'+name.toLowerCase()+'.svg'
 				})
 				.style('opacity', function(d,i){
 					if(filters['sector'].includes(key)){
