@@ -11,27 +11,167 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// sector chart
 	//**************************
-	var sectorChart = Deepviz.createSectorChart();
+	var sectorChart = Deepviz.createStackedBarChart({
+		title: 'ASSESSMENTS BY SECTOR AND ANALYITICAL SCORE',
+		rows: 'sector_array',
+		width: 500,
+		height: 500,
+		filter: 'sector',
+		classname: 'sector',
+		div: 'sector-svg'
+	});
 
 	//**************************
 	// focus chart
 	//**************************
-	var focusChart = Deepviz.createFocusChart();
+	var focusChart = Deepviz.createBarChart({
+		title: 'ASSESSMENTS BY FOCUS',
+		rows: 'focus_array',
+		width: 500,
+		height: 500,
+		filter: 'focus',
+		classname: 'focus',
+		div: 'focus-svg'
+	});
 
 	// **************************
 	// affected groups chart
 	// **************************
-	var affectedGroupsChart = Deepviz.createAffectedGroupsChart();
+	var affectedGroupsChart = Deepviz.createBarChart({
+		title: 'ASSESSMENTS BY AFFECTED GROUPS',
+		rows: 'affected_groups_array',
+		classname: 'affected_groups',
+		width: 500,
+		height: 500,
+		filter: 'affectedGroups',
+		div: 'affected-groups-svg'
+	});
+
+	//**************************
+	// top stakeholders chart
+	//**************************
+	var topStakeholdersChart = Deepviz.createBarChart({
+		title: 'TOP 10 STAKEHOLDERS',
+		rows: 'organization',
+		classname: 'organisation',
+		width: 500,
+		height: 500,
+		filter: 'organisation',
+		div: 'top-stakeholders-svg',
+		limit: 10
+	});
 
 	//**************************
 	// finalScore chart
 	//**************************
 	var finalScoreChart = Deepviz.createFinalScoreChart();
 
+
 	//**************************
-	// top stakeholders chart
+	// assessment type chart
 	//**************************
-	var topStakeholdersChart = Deepviz.createTopStakeholdersChart();
+	var typeOfApproachChart = Deepviz.createBarChart({
+		title: 'TYPE OF APPROACH',
+		rows: 'assessment_type',
+		classname: 'assessment_type',
+		width: 500,
+		height: 420,
+		filter: 'assessmentType',
+		div: 'assessment-type-svg'
+	});
+
+	//**************************
+	// data collection technique chart
+	//**************************
+	var dataCollectionTechniqueChart = Deepviz.createBarChart({
+		title: 'DATA COLLECTION TECHNIQUE',
+		rows: 'data_collection_technique',
+		classname: 'data_collection_technique',
+		width: 500,
+		height: 420,
+		filter: 'dataCollectionTechnique',
+		div: 'data-collection-technique-svg'
+	});
+
+	//**************************
+	// unit of analysis chart
+	//**************************
+	var unitOfAnalysisChart = Deepviz.createBarChart({
+		title: 'UNIT OF ANALYSIS',
+		rows: 'type_of_unit_of_analysis',
+		classname: 'unit_of_analysis',
+		width: 500,
+		height: 420,
+		filter: 'unitOfAnalysis',
+		div: 'unit-of-analysis-svg'
+	});
+
+	//**************************
+	// unit of reporting chart
+	//**************************
+	var unitOfReportingChart = Deepviz.createBarChart({
+		title: 'UNIT OF REPORTING',
+		rows: 'type_of_unit_of_analysis',
+		classname: 'unit_of_reporting',
+		width: 500,
+		height: 420,
+		filter: 'unitOfReporting',
+		div: 'unit-of-reporting-svg'
+	});
+
+
+	//**************************
+	// description of methodology chart
+	//**************************
+	var descriptionOfMethodologyChart = Deepviz.createBarChart({
+		title: 'DESCRIPTION OF METHODOLOGY AND LIMITATIONS',
+		rows: 'methodology_content',
+		classname: 'methodology_content',
+		width: 500,
+		height: 190,
+		filter: 'methodologyContent',
+		div: 'methodology-content-svg'
+	});
+
+	//**************************
+	// documentation chart
+	//**************************
+	var documentationChart = Deepviz.createBarChart({
+		title: 'ADDITIONAL DOCUMENTATION AVAILABLE',
+		rows: 'additional_documentation_array',
+		classname: 'additional_documentation',
+		width: 500,
+		height: 190,
+		filter: 'additionalDocumentation',
+		div: 'additional-documentation-svg'
+	});
+
+	//**************************
+	// language chart
+	//**************************
+	var languageChart = Deepviz.createBarChart({
+		title: 'ASSESSMENTS BY LANGUAGE',
+		rows: 'language',
+		classname: 'language',
+		width: 500,
+		height: 190,
+		filter: 'language',
+		div: 'language-svg'
+	});
+
+	//**************************
+	// sampling approach chart
+	//**************************
+	var samplingApproachChart = Deepviz.createBarChart({
+		title: 'SAMPLING APPROACH',
+		rows: 'sampling_approach',
+		classname: 'sampling_approach',
+		width: 500,
+		height: 190,
+		filter: 'samplingApproach',
+		div: 'sampling-approach-svg'
+	});
+
 
 	//**************************
 	// polar charts

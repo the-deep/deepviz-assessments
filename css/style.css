@@ -35,9 +35,8 @@ svg text {
   -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
 
-#main-content {
+.main-content {
 	padding-bottom: 0px;
-	min-height: 500px;
 	opacity: 0;
 	position: relative;
 }
@@ -64,11 +63,36 @@ svg text {
 	border-right: 1px solid #FFF;
 }
 
-#container {
+.container1 {
 	padding: 0px 15px 0px 15px;
 	margin: 0px auto;
 	background-color: #FFF;
+	min-height: 500px;
+
 }
+
+.container2 {
+	padding: 0px 15px 0px 15px;
+	margin: 0px auto;
+	background-color: #FAFAFA;
+}
+
+#methodology {
+    margin-top: 4px;
+    padding-top: 1px;
+}
+
+#methodology h2 {
+    margin-top: 7px;
+    margin-bottom: 0px;
+}
+
+#methodology hr {
+	display: block; height: 1px;
+    border: 0; border-top: 1px dotted #ececec;
+    margin: 1em 0; padding: 0; 
+}
+
 
 .leftcol {
 	width: 34%;
@@ -899,27 +923,11 @@ font-size: 15px;
 	vertical-align: top;
 }
 
-.col-content {
-	padding-top: 6px;
-	/*background-color: lightgreen;*/
-}
 
 .clearfix::after {
   content: "";
   clear: both;
   display: table;
-}
-
-
-#col1 {
-
-}
-
-#col2 {
-
-}
-
-#col3 {
 }
 
 #tooltip {

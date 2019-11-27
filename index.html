@@ -18,15 +18,15 @@
 	<link href="js/vendor/select2.min.css" rel="stylesheet" />
 
 	<!-- load custom CSS -->
-	<link href="css/style.css?cache=253" rel="stylesheet" type="text/css" media="all">
+	<link href="css/style.css?cache=255" rel="stylesheet" type="text/css" media="all">
 
 </head>
 
 <body>
 
-	<div id="container">
+	<div class="container1">
 
-	<div id="main-content">
+	<div class="main-content">
 
 		<div id="top_row">
 			<h2>Summary</h2>
@@ -125,28 +125,66 @@
 
 
 
-		<div id="chartRow"><br/>
-
-			<div id="col1" class="chartCol">
+		<div id="firstChartRow"><br/>
+			<div class="chartCol">
 				<div id="focus-svg" class="col-content"></div>
 			</div>
-			<div id="col2" class="chartCol">
+			<div class="chartCol">
 				<div id="sector-svg" class="col-content"></div>
 			</div>
-			<div id="col3" class="chartCol">
+			<div class="chartCol">
 				<div id="affected-groups-svg" class="col-content"></div>
 			</div>
-			<div id="col4" class="chartCol">
+			<div class="chartCol">
 				<div id="top-stakeholders-svg" class="col-content"></div>
 			</div>	
-		</div><!-- /#chartRow -->
-	</div><!-- /#main-content -->
+		</div><!-- /#firstChartRow -->
 
 			<br/>
 
 	<div id="svg_quality_div"></div>
-	<br/>
+
+	</div><!-- /.main-content -->
 </div>
+
+<div class="container2 main-content">
+
+
+	<div id="methodology">
+	<h2>Methodology</h2>
+
+	<div id="secondChartRow">
+		<hr/>
+		<div class="chartCol">
+			<div id="assessment-type-svg" class="col-content"></div>
+		</div>
+		<div class="chartCol">
+			<div id="data-collection-technique-svg" class="col-content"></div>
+		</div>
+		<div class="chartCol">
+			<div id="unit-of-analysis-svg" class="col-content"></div>
+		</div>
+		<div class="chartCol">
+			<div id="unit-of-reporting-svg" class="col-content"></div>
+		</div>	<br/>
+	</div><!-- /#secondChartRow -->
+<hr/>
+	<div id="thirdChartRow">
+		<div class="chartCol">
+			<div id="methodology-content-svg" class="col-content"></div>
+		</div>
+		<div class="chartCol">
+			<div id="additional-documentation-svg" class="col-content"></div>
+		</div>
+		<div class="chartCol">
+			<div id="language-svg" class="col-content"></div>
+		</div>
+		<div class="chartCol">
+			<div id="sampling-approach-svg" class="col-content"></div>
+		</div>	
+	</div><!-- /#thirdChartRow -->
+	<hr/>
+	</div>
 
 	<!-- load vendor JavaScript -->
 	<script type="text/javascript" src="js/vendor/jquery-3.4.1.min.js"></script>
@@ -160,8 +198,8 @@
 	<script src='js/vendor/mapbox-gl.js'></script>
 
 	<!-- load custom JavaScript -->
-	<script type="text/javascript" src="js/deepviz.js?cache=253"></script>
-	<script type="text/javascript" src="js/main.js?cache=253"></script>
+	<script type="text/javascript" src="js/deepviz.js?cache=255"></script>
+	<script type="text/javascript" src="js/main.js?cache=255"></script>
 
 </body>
 </html>
