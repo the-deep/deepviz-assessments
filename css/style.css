@@ -43,6 +43,7 @@ svg text {
 
 #summary_row {
 	position: relative;
+    margin-top: 7px;
 }
 
 #avg_slider_svg {
@@ -63,6 +64,10 @@ svg text {
 	border-right: 1px solid #FFF;
 }
 
+#top_row {
+	margin-top: 5px;
+	
+}
 .container1 {
 	padding: 0px 15px 0px 15px;
 	margin: 0px auto;
