@@ -43,14 +43,14 @@ var Deepviz = new Deepviz(sources, function(data){
 		classname: 'affected_groups',
 		width: 500,
 		height: 500,
-		filter: 'affectedGroups',
+		filter: 'affected_groups',
 		div: 'affected-groups-svg'
 	});
 
 	//**************************
 	// top stakeholders chart
 	//**************************
-	var topStakeholdersChart = Deepviz.createBarChart({
+	var topStakeholdersChart = Deepviz.createStackedBarChart({
 		title: 'TOP 10 STAKEHOLDERS',
 		rows: 'organization',
 		classname: 'organisation',
@@ -76,7 +76,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		classname: 'assessment_type',
 		width: 500,
 		height: 420,
-		filter: 'assessmentType',
+		filter: 'assessment_type',
 		div: 'assessment-type-svg'
 	});
 
@@ -89,7 +89,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		classname: 'data_collection_technique',
 		width: 500,
 		height: 420,
-		filter: 'dataCollectionTechnique',
+		filter: 'data_collection_technique',
 		div: 'data-collection-technique-svg'
 	});
 
@@ -102,7 +102,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		classname: 'unit_of_analysis',
 		width: 500,
 		height: 420,
-		filter: 'unitOfAnalysis',
+		filter: 'unit_of_analysis',
 		div: 'unit-of-analysis-svg'
 	});
 
@@ -115,7 +115,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		classname: 'unit_of_reporting',
 		width: 500,
 		height: 420,
-		filter: 'unitOfReporting',
+		filter: 'unit_of_reporting',
 		div: 'unit-of-reporting-svg'
 	});
 
@@ -129,7 +129,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		classname: 'methodology_content',
 		width: 500,
 		height: 190,
-		filter: 'methodologyContent',
+		filter: 'methodology_content',
 		div: 'methodology-content-svg'
 	});
 
@@ -142,7 +142,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		classname: 'additional_documentation',
 		width: 500,
 		height: 190,
-		filter: 'additionalDocumentation',
+		filter: 'additional_documentation',
 		div: 'additional-documentation-svg'
 	});
 

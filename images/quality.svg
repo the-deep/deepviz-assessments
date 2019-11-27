@@ -18,10 +18,10 @@
             <tspan x="11" y="67">FIT FOR PURPOSE</tspan>
         </text>
         <text id="quality1val" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="28" font-weight="bold" fill="#4A4A4A">
-            <tspan x="289.432" y="71">18</tspan>
+            <tspan x="261.432" y="72">18</tspan>
         </text>
-        <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="11" font-weight="normal" fill="#8D8D8D">
-            <tspan x="290" y="88">/ 25</tspan>
+        <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="15" font-weight="normal" fill="#8D8D8D">
+            <tspan x="294" y="70">/ 25</tspan>
         </text>
         <g id="Group-3" transform="translate(329.000000, 43.000000)">
             <path d="M0.5,4.61568469 L0.5,330.505717 L320.5,330.505717 L320.5,4.61568469 L0.5,4.61568469 Z M0.5,4.61568469 L0.5,330.505717 L320.5,330.505717 L320.5,4.61568469 L0.5,4.61568469 Z M0.5,4.61568469 L0.5,330.505717 L320.5,330.505717 L320.5,4.61568469 L0.5,4.61568469 Z" id="Rectangle-11" stroke="#979797" fill="#D8D8D8"></path>
@@ -34,10 +34,10 @@
                 <tspan x="8.83486239" y="24.1101359">TRUSTWORTHINESS</tspan>
             </text>
             <text id="quality2val" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="28" font-weight="bold" fill="#4A4A4A">
-                <tspan x="287.432" y="28.1121974">17</tspan>
+                <tspan x="260.432" y="28.1121974">17</tspan>
             </text>
-            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="11" font-weight="normal" fill="#8D8D8D">
-                <tspan x="287.623853" y="47.1025693">/ 25</tspan>
+            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="15" font-weight="normal" fill="#8D8D8D">
+                <tspan x="290.542441" y="27">/ 25</tspan>
             </text>
         </g>
         <g id="Group-3" transform="translate(657.000000, 43.000000)">
@@ -51,10 +51,10 @@
                 <tspan x="8.83486239" y="24.1101359">ANALYTICAL RIGOR</tspan>
             </text>
             <text id="quality3val" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="28" font-weight="bold" fill="#4A4A4A">
-                <tspan x="285.172156" y="28.1121974">20</tspan>
+                <tspan x="259.172156" y="28.1121974">20</tspan>
             </text>
-            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="11" font-weight="normal" fill="#8D8D8D">
-                <tspan x="287.623853" y="47.1025693">/ 25</tspan>
+            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="15" font-weight="normal" fill="#8D8D8D">
+                <tspan x="289.623853" y="27">/ 25</tspan>
             </text>
         </g>
         <g id="Group-3" transform="translate(983.000000, 43.000000)">
@@ -68,10 +68,10 @@
                 <tspan x="8.83486239" y="24.1101359">ANALYTICAL WRITING</tspan>
             </text>
             <text id="quality4val" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="28" font-weight="bold" fill="#4A4A4A">
-                <tspan x="281.172156" y="28.1121974">15</tspan>
+                <tspan x="257.172156" y="28.1121974">15</tspan>
             </text>
-            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="11" font-weight="normal" fill="#8D8D8D">
-                <tspan x="287.623853" y="47.1025693">/ 25</tspan>
+            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="15" font-weight="normal" fill="#8D8D8D">
+                <tspan x="289.623853" y="27">/ 25</tspan>
             </text>
         </g>
         <g id="Group-3" transform="translate(1310.000000, 43.000000)">
@@ -85,10 +85,10 @@
                 <tspan x="8.83486239" y="24.1101359">ANALYTICAL DENSITY</tspan>
             </text>
             <text id="quality5val" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="28" font-weight="bold" fill="#4A4A4A">
-                <tspan x="285.172156" y="28.1121974">00</tspan>
+                <tspan x="259.172156" y="28.1121974">00</tspan>
             </text>
-            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="11" font-weight="normal" fill="#8D8D8D">
-                <tspan x="287.623853" y="47.1025693">/ 25</tspan>
+            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="15" font-weight="normal" fill="#8D8D8D">
+                <tspan x="290.581766" y="27">/ 25</tspan>
             </text>
         </g>
         <g id="Group-3" transform="translate(1637.000000, 43.000000)">
@@ -102,10 +102,10 @@
                 <tspan x="8.83486239" y="25.1101359">FINAL SCORE</tspan>
             </text>
             <text id="quality6val" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="28" font-weight="bold" fill="#FFFFFF">
-                <tspan x="284.147311" y="28.1109766">00</tspan>
+                <tspan x="257.147311" y="28.1109766">00</tspan>
             </text>
-            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="11" font-weight="normal" fill="#8D8D8D">
-                <tspan x="287.623853" y="47.1025693">/ 25</tspan>
+            <text id="/-25" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="15" font-weight="normal" fill="#D6D6D6">
+                <tspan x="290.623853" y="27">/ 25</tspan>
             </text>
         </g>
     </g>

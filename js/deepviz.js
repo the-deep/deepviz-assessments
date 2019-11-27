@@ -119,18 +119,18 @@ var Deepviz = function(sources, callback){
 	// filters
 	var filters = {
 		sector: [],
-		samplingApproach: [],
+		sampling_approach: [],
 		language: [],
-		additionalDocumentation: [],
-		methodologyContent: [],
-		unitOfReporting: [],
-		unitOfAnalysis: [],
-		dataCollectionTechnique: [],
-		assessmentType: [],
+		additional_documentation: [],
+		methodology_content: [],
+		unit_of_reporting: [],
+		unit_of_analysis: [],
+		data_collection_technique: [],
+		assessment_type: [],
 		finalScore: [],
 		reliability: [],
-		affectedGroups: [],
-		specificNeeds: [],
+		affected_groups: [],
+		specific_needs: [],
 		context: [],
 		focus: [],
 		organisation: [],
@@ -771,11 +771,11 @@ var Deepviz = function(sources, callback){
 			dataByAssessmentType.push({"date": d.date, 'assessment_type': parseInt(d.assessment_type)});
 
 			d.organisation_and_stakeholder_type.forEach(function(dd,ii){
-				var org_name;
+				var name;
 				metadata.organization.forEach(function(ddd,ii){
 					if(parseInt(ddd.id)==parseInt(dd[1])){
-						org_name = ddd.name;
-						dataByOrganisation.push({"date": d.date,  "stakeholder_type": dd[0], "organisation": dd[1], 'org_name': org_name });
+						name = ddd.name;
+						dataByOrganisation.push({"date": d.date,  "stakeholder_type": dd[0], "organisation": dd[1], 'name': name, 's': d.finalScore });
 					}
 				});
 			});
@@ -940,7 +940,7 @@ var Deepviz = function(sources, callback){
 		updateBars('language', dataByLanguage);
 		updateStackedBars('sector', dataBySector);
 		updateBars('focus', dataByFocusArray);
-		updateOrganisationBars('organisation', dataByOrganisation)
+		updateStackedBars('organisation', dataByOrganisation)
 		return dataByDate;
 
 	}
@@ -2206,7 +2206,7 @@ var Deepviz = function(sources, callback){
 	    	updateBars('language', dataByLanguage);
 	    	updateStackedBars('sector', dataBySector);
 	    	updateBars('focus', dataByFocusArray);
-	    	updateOrganisationBars('organisation', dataByOrganisation)
+	    	updateStackedBars('organisation', dataByOrganisation)
 
 	    	handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
 	    	handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + (timechartSvgHeight - margin.top) + ")"; });
@@ -2291,7 +2291,7 @@ var Deepviz = function(sources, callback){
 			updateBars('language', dataByLanguage);
 			updateStackedBars('sector', dataBySector);
 			updateBars('focus', dataByFocusArray);
-			updateOrganisationBars('organisation', dataByOrganisation)
+			updateStackedBars('organisation', dataByOrganisation)
 
 			d3.select(this).call(d3.event.target.move, dateRange.map(scale.timechart.x));
 			handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
@@ -2354,7 +2354,7 @@ var Deepviz = function(sources, callback){
 			updateBars('language', dataByLanguage);
 			updateStackedBars('sector', dataBySector);
 			updateBars('focus', dataByFocusArray);
-			updateOrganisationBars('organisation', dataByOrganisation)
+			updateStackedBars('organisation', dataByOrganisation)
 
 			d3.select(this).call(d3.event.target.move, dateRange.map(scale.timechart.x));
 			handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
@@ -2390,7 +2390,7 @@ var Deepviz = function(sources, callback){
 
 		updateStackedBars('sector', dataBySector);
 		updateBars('focus', dataByFocusArray);
-		updateOrganisationBars('organisation', dataByOrganisation)
+		updateStackedBars('organisation', dataByOrganisation)
 
 		return bars;
 	}
@@ -2577,7 +2577,7 @@ var Deepviz = function(sources, callback){
 		.data(a.rows)
 		.enter()
 		.append('g')
-		.attr('class', function(d,i) { return 'bar-row ' +a.classname+'-bar-row'+i; })
+		.attr('class', function(d,i) { return 'bar-row '+ a.classname+'-row ' + a.classname+'-bar-row'+i; })
 		.attr('transform', function(d,i){
 			return 'translate(0,' + ((i*rowHeight) + padding.top) + ')';
 		});
@@ -2621,12 +2621,6 @@ var Deepviz = function(sources, callback){
 			d3.select(this).style('opacity', 0)
 		})
 		.on('click', function(d,i){
-			if(a.classname=='focus'){
-				return filter ('focus', i+1);
-			}
-			if(a.classname=='affected_groups'){
-				return filter ('affectedGroups', i+1);
-			}
 			return filter (a.filter, i+1);
 		});
 
@@ -2693,6 +2687,10 @@ var Deepviz = function(sources, callback){
 
 		a.rows = metadata[a.rows];
 
+		if(a.classname=='organisation'){
+			a.rows = a.rows.splice(0,10);
+		}
+
 		var height = a.height - padding.top;
 		var rowHeight = height/a.rows.length;
 
@@ -2724,7 +2722,7 @@ var Deepviz = function(sources, callback){
 		.data(a.rows)
 		.enter()
 		.append('g')
-		.attr('class', 'stacked-bar-row')
+		.attr('class', 'stacked-bar-row '+a.clasname+'-row')
 		.attr('transform', function(d,i){
 			return 'translate(0,' + ((i*rowHeight) + padding.top) + ')';
 		});
@@ -2734,7 +2732,9 @@ var Deepviz = function(sources, callback){
 		.attr('class', function(d,i){ return a.classname + ' ' + a.classname+'-'+i })
 		.style('alignment-baseline', 'middle')
 		.text(function(d,i){
-			return d.name;
+			var name = d.name.substr(0,labelCharLimit-7);
+			if(name.length==labelCharLimit-7) name += '.';
+			return name;
 		}).style('text-anchor', 'end');
 
 		var labelWidth = chartarea.node().getBBox().width + padding.left;
@@ -3012,7 +3012,9 @@ var Deepviz = function(sources, callback){
 			})
 			median = median != null ? median : 0;
 			dataQuality[i] = {'axis': d.name, 'value': median };
-			d3.select('#quality'+d.id + 'val tspan').text(Math.round(median));
+			median = Math.round(median);
+			if(median<10) median = '0' + median;
+			d3.select('#quality'+d.id + 'val tspan').text(median);
 		});
 
 		var median = d3.median(dc, function(md){
@@ -3020,9 +3022,15 @@ var Deepviz = function(sources, callback){
 		})
 		median = median != null ? median : 0;
 		dataQuality.push({'axis': metadata.final_scores_array.score_matrix_pillar[0].name, 'value': median });
-		d3.select('#quality5val tspan').text(Math.round(median));
+
+		median = Math.round(median);
+		if(median<10) median = '0' + median;
+		d3.select('#quality5val tspan').text(median);
+
 		var dataQualityTotal = d3.median(dataQuality, d => d.value );
-		d3.select('#quality6val tspan').text(Math.round(dataQualityTotal));
+		dataQualityTotal = Math.round(dataQualityTotal);
+		if(dataQualityTotal<10) dataQualityTotal = '0' + dataQualityTotal;
+		d3.select('#quality6val tspan').text(dataQualityTotal);
 
 		radarChartOptions.maxValue = 25;
 		RadarChartUpdate("#quality6", [dataQuality], radarChartOptions);
@@ -3038,29 +3046,25 @@ var Deepviz = function(sources, callback){
 			filters.sector = [];
 			filters.finalScore = [];
 			filters.context = [];
-			filters.affectedGroups = [];
+			filters.affected_groups = [];
 			filters.organisation = [];
-			filters.samplingApproach = [];
+			filters.sampling_approach = [];
 			filters.geo = [];
 			filters.language = [];
-			filters.additionalDocumentation = [];
-			filters.methodologyContent = [];
-			filters.unitOfReporting = [];
-			filters.unitOfAnalysis = [];
-			filters.dataCollectionTechnique = [];
-			filters.assessmentType = [];
+			filters.additional_documentation = [];
+			filters.methodology_content = [];
+			filters.unit_of_reporting = [];
+			filters.unit_of_analysis = [];
+			filters.data_collection_technique = [];
+			filters.assessment_type = [];
 			filters.focus = [];
 		}
 
-		d3.selectAll('.sector-icon').style('opacity', 0.3);
-		d3.selectAll('.sector').style('opacity', 1);
-		d3.selectAll('.col-header-bg-selected').style('opacity', 0);	
-		d3.selectAll('.col-header-text').style('opacity', 1);	
 		d3.select('#frameworkRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#focusRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#sectorRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#contextRemoveFilter').style('display', 'none').style('cursor', 'default');
-		d3.select('#affectedGroupsRemoveFilter').style('display', 'none').style('cursor', 'default');
+		d3.select('#affected_groupsRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#organisationRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#sampling_approachRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#geoRemoveFilter').style('display', 'none').style('cursor', 'default');
@@ -3097,7 +3101,7 @@ var Deepviz = function(sources, callback){
 		  addOrRemove(filters[filterClass], value);		
 		}
 
-		if((filters['finalScore'].length>0)||(filters['context'].length>0)||(filters['reliability'].length>0)||(filters['sector'].length>0)||(filters['geo'].length>0)||(filters['specificNeeds'].length>0)||(filters['affectedGroups'].length>0)){
+		if((filters['finalScore'].length>0)||(filters['context'].length>0)||(filters['reliability'].length>0)||(filters['sector'].length>0)||(filters['geo'].length>0)||(filters['specific_needs'].length>0)||(filters['affected_groups'].length>0)){
 			d3.select('#globalRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		} else { 
 			d3.select('#globalRemoveFilter').style('display', 'none').style('cursor', 'default');
@@ -3173,46 +3177,19 @@ var Deepviz = function(sources, callback){
 				// return filters['sector'].includes(d['sector'][2]);
 			});
 			// bar/text shading
-			d3.selectAll('.sector').style('opacity', 0.2);
-			d3.selectAll('.sector-bg').style('opacity', 0);
-			d3.selectAll('.col-header-bg-selected').style('opacity', 0);	
-			d3.selectAll('.col-header-text').style('opacity', 0.3);	
 			d3.select('#frameworkRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 			d3.select('#sectorRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
-			filters.sector.forEach(function(d,i){
-				d3.selectAll('.sector-'+(d-1)).style('opacity', 1);
-				d3.selectAll('.sector-bg-'+(d-1)).style('opacity', 0);
-				d3.select('#col-header-bg-'+(d)).style('opacity', .1)
-				d3.selectAll('.sector-icon-'+(d)).style('opacity', 1)
-				d3.select('#col-header-'+(d) + ' .col-header-text' ).style('opacity', 1)
-			});
 		} 
 
-		if(filters['affectedGroups'].length>0){
+		if(filters['affected_groups'].length>0){
 			data = data.filter(function(d){
-				return d['affected_groups'].some(r=> filters['affectedGroups'].indexOf(r) >= 0);
+				return d['affected_groups'].some(r=> filters['affected_groups'].indexOf(r) >= 0);
 			});
-			// bar/text shading
-			d3.selectAll('.affected_groups').style('opacity', 0.2);
-			d3.selectAll('.affected_group-bg').style('opacity', 0);
-			filters.affectedGroups.forEach(function(d,i){
-				d3.selectAll('.affected_groups-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#affected_groupsRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
-		if(filters['assessmentType'].length>0){
-
-			data = data.filter(function(d){ return  filters['assessmentType'].includes(d['assessment_type']);});
-
-			// bar/text shading
-			d3.selectAll('.assessment_type').style('opacity', 0.2);
-			d3.selectAll('.assessment_type-bg').style('opacity', 0);
-			filters.assessmentType.forEach(function(d,i){
-				d3.selectAll('.assessment_type-'+(d-1)).style('opacity', 1);
-			});
-
+		if(filters['assessment_type'].length>0){
+			data = data.filter(function(d){ return  filters['assessment_type'].includes(d['assessment_type']);});
 			d3.select('#assessment_typeRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
@@ -3220,83 +3197,41 @@ var Deepviz = function(sources, callback){
 			data = data.filter(function(d){
 				return d['focus'].some(r=> filters['focus'].indexOf(r) >= 0);
 			});
-			// bar/text shading
-			d3.selectAll('.focus').style('opacity', 0.2);
-			d3.selectAll('.focus-bg').style('opacity', 0);
-			filters.focus.forEach(function(d,i){
-				d3.selectAll('.focus-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#focusRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
-		if(filters['dataCollectionTechnique'].length>0){
+		if(filters['data_collection_technique'].length>0){
 			data = data.filter(function(d){
-				return d['data_collection_technique'].some(r=> filters['dataCollectionTechnique'].indexOf(r) >= 0);
+				return d['data_collection_technique'].some(r=> filters['data_collection_technique'].indexOf(r) >= 0);
 			});
-			// bar/text shading
-			d3.selectAll('.data_collection_technique').style('opacity', 0.2);
-			d3.selectAll('.data_collection_technique-bg').style('opacity', 0);
-			filters.dataCollectionTechnique.forEach(function(d,i){
-				d3.selectAll('.data_collection_technique-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#data_collection_techniqueRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
-		if(filters['unitOfAnalysis'].length>0){
+		if(filters['unit_of_analysis'].length>0){
 			data = data.filter(function(d){
-				return d['unit_of_analysis'].some(r=> filters['unitOfAnalysis'].indexOf(r) >= 0);
+				return d['unit_of_analysis'].some(r=> filters['unit_of_analysis'].indexOf(r) >= 0);
 			});
-			// bar/text shading
-			d3.selectAll('.unit_of_analysis').style('opacity', 0.2);
-			d3.selectAll('.unit_of_analysis-bg').style('opacity', 0);
-			filters.unitOfAnalysis.forEach(function(d,i){
-				d3.selectAll('.unit_of_analysis-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#unit_of_analysisRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
-		if(filters['unitOfReporting'].length>0){
+		if(filters['unit_of_reporting'].length>0){
 			data = data.filter(function(d){
-				return d['unit_of_reporting'].some(r=> filters['unitOfReporting'].indexOf(r) >= 0);
+				return d['unit_of_reporting'].some(r=> filters['unit_of_reporting'].indexOf(r) >= 0);
 			});
-			// bar/text shading
-			d3.selectAll('.unit_of_reporting').style('opacity', 0.2);
-			d3.selectAll('.unit_of_reporting-bg').style('opacity', 0);
-			filters.unitOfReporting.forEach(function(d,i){
-				d3.selectAll('.unit_of_reporting-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#unit_of_reportingRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
-		if(filters['methodologyContent'].length>0){
+		if(filters['methodology_content'].length>0){
 			data = data.filter(function(d){
-				return d['methodology_content'].some(r=> filters['methodologyContent'].indexOf(r.id) >= 0);
+				return d['methodology_content'].some(r=> filters['methodology_content'].indexOf(r.id) >= 0);
 			});
-			// bar/text shading
-			d3.selectAll('.methodology_content').style('opacity', 0.2);
-			d3.selectAll('.methodology_content-bg').style('opacity', 0);
-			filters.methodologyContent.forEach(function(d,i){
-				d3.selectAll('.methodology_content-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#methodology_contentRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
-		if(filters['additionalDocumentation'].length>0){
+		if(filters['additional_documentation'].length>0){
 			data = data.filter(function(d){
-				return d['additional_documentation'].some(r=> filters['additionalDocumentation'].indexOf(r.id) >= 0);
+				return d['additional_documentation'].some(r=> filters['additional_documentation'].indexOf(r.id) >= 0);
 			});
-			// bar/text shading
-			d3.selectAll('.additional_documentation').style('opacity', 0.2);
-			d3.selectAll('.additional_documentation-bg').style('opacity', 0);
-			filters.additionalDocumentation.forEach(function(d,i){
-				d3.selectAll('.additional_documentation-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#additional_documentationRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
@@ -3305,30 +3240,14 @@ var Deepviz = function(sources, callback){
 			data = data.filter(function(d){
 				return d['language'].some(r=> filters['language'].indexOf(r) >= 0);
 			});
-
-			// bar/text shading
-			d3.selectAll('.language').style('opacity', 0.2);
-			d3.selectAll('.language-bg').style('opacity', 0);
-			filters.language.forEach(function(d,i){
-				d3.selectAll('.language-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#languageRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
-		if(filters['samplingApproach'].length>0){
+		if(filters['sampling_approach'].length>0){
 
 			data = data.filter(function(d){
-				return d['sampling_approach'].some(r=> filters['samplingApproach'].indexOf(r) >= 0);
+				return d['sampling_approach'].some(r=> filters['sampling_approach'].indexOf(r) >= 0);
 			});
-
-			// bar/text shading
-			d3.selectAll('.sampling_approach').style('opacity', 0.2);
-			d3.selectAll('.sampling_approach-bg').style('opacity', 0);
-			filters.samplingApproach.forEach(function(d,i){
-				d3.selectAll('.sampling_approach-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#sampling_approachRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
@@ -3337,29 +3256,9 @@ var Deepviz = function(sources, callback){
 			data = data.filter(function(d){
 				return d['organisation_and_stakeholder_type'].some(r=> filters['organisation'].indexOf(r[1]) >= 0);
 			});
-			// bar/text shading
-			// d3.selectAll('.organisation').style('opacity', 0.2);
-			d3.selectAll('.organisation-bg').style('opacity', 0);
-			filters.organisation.forEach(function(d,i){
-				d3.selectAll('.organisation-'+(d-1)).style('opacity', 1);
-			});
-
 			d3.select('#organisationRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
-
-		if(filters['specificNeeds'].length>0){
-			data = data.filter(function(d){
-				return d['special_needs'].some(r=> filters['specificNeeds'].indexOf(r) >= 0);
-			});
-			// bar/text shading
-			d3.selectAll('.sn').style('opacity', 0.2);
-			d3.selectAll('.sn-bg').style('opacity', 0);
-			filters.specificNeeds.forEach(function(d,i){
-				d3.selectAll('.sn-'+(d-1)).style('opacity', 1);
-			});
-			d3.select('#snRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
-		}
 		updateTimeline(filterClass);
 		d3.select('#globalRemoveFilter').on('click', function(){ filter('clear', 'clear'); });
 	}
@@ -3475,7 +3374,7 @@ var Deepviz = function(sources, callback){
 			updateBars('language', dataByLanguage);
 			updateStackedBars('sector', dataBySector);
 			updateBars('focus', dataByFocusArray);
-			updateOrganisationBars('organisation', dataByOrganisation)
+			updateStackedBars('organisation', dataByOrganisation)
 		});
 	}
 
@@ -4200,7 +4099,7 @@ var Deepviz = function(sources, callback){
 				finalScoreRolling[i] = finalScoreCount;
 			}
 
-			if((target=='init')||(target=='context')||(target=='geo')||(target=='specificNeeds')||(target=='affectedGroups')||(target=='brush')||(target=='sector')||(target=='clear')||(target=='map')||((target=='finalScore')&&(filters.finalScore.length == 0))){
+			if((target=='init')||(target=='context')||(target=='geo')||(target=='specific_needs')||(target=='affected_groups')||(target=='brush')||(target=='sector')||(target=='clear')||(target=='map')||((target=='finalScore')&&(filters.finalScore.length == 0))){
 				d3.selectAll('.finalScoreBar')
 				.transition()
 				.duration(duration)
@@ -4285,28 +4184,66 @@ var Deepviz = function(sources, callback){
 	//**************************
 	var updateStackedBars = function(group, dataset, duration = 0){
 
+		var sort = true;
+
+		var data_group = group;
+		if(data_group=='organisation') data_group = 'organization';
+		if(data_group=='sector') data_group = 'sector_array';
+
 		// affected groups
 		var dat = dataset.filter(function(d){
 			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]));
 		});
 
-		var d = d3.nest()
+		var nest = d3.nest()
 		.key(function(d) { return d[group]; })
-		// .rollup(function(leaves) { return leaves.length; })		
-		.key(function(d) { if(filters.toggle == 'finalScore'){ return d.s; } else { return d.r } }).sortKeys(d3.ascending)
+		.key(function(d) { return d.s }).sortKeys(d3.ascending)
 		.rollup(function(leaves) { return leaves.length; })		
 		.entries(dat);	
 
-		var labels = d3.nest().key(function(d) {
-			return d[group];
-		}).sortKeys(d3.ascending)
-		.rollup(function(leaves) {
-			return d3.sum(leaves, function(d) {
-				return 1;
-			});
-		}).entries(dat);
+		nest.forEach(function(d,i){
+			d.value = d3.sum(d.values, function(d){
+				return d.value;
+			})
+		});
 
-		var rowMax = d3.max(labels, function(d,i){
+		if(sort==true){
+			nest = nest.sort(function(x,y){
+				return d3.ascending(y.value, x.value);
+			});
+		}
+
+		if(group=='organisation'){
+			nest = nest.splice(0,10);
+		}
+
+		var d = [];
+		metadata[data_group].forEach(function(mt,ii){
+			var name = mt.name.substr(0,labelCharLimit-7);
+			if(name.length==labelCharLimit-7) name += '.';
+			var key = mt.id;
+			var value = 0;
+			var values = [];
+			nest.forEach(function(dd,ii){
+				if(mt.id==dd.key){
+					value = dd.value;
+					values = dd.values;
+				}
+			});
+			d.push({'key': key, 'value': value, 'values': values, 'name': name});
+		});
+
+		if(sort==true){
+			d = d.sort(function(x,y){
+				return d3.ascending(y.value, x.value);
+			});
+		}
+
+		if(group=='organisation'){
+			d = d.splice(0,10);
+		}
+
+		var rowMax = d3.max(d, function(d,i){
 			return d.value
 		});
 
@@ -4314,28 +4251,60 @@ var Deepviz = function(sources, callback){
 
 	    // reset all bars to zero width
 	    d3.selectAll('.'+group+'-bar').attr('width', 0);
-		// reset all text labels to zero and hide
-		d3.selectAll('.'+group+'-label').text('').style('opacity', 0);
 
-		labels.forEach(function(dd,ii){
-			d3.select('#'+group+dd.key+'label').text(dd.value).style('opacity', 1)
-			.style('fill', function(){
-				if(filters.toggle == 'finalScore'){
-					return colorNeutral[4];
-				} else {
-					return colorNeutral[4];
-				}
-			});
-			var row = dd.key;
+		var rows = d3.selectAll('.'+group+'-row')
+		.data(d)
+		.attr('class', function(d,i){
+			return 'bar-row '+group+'-row '+group+'-bar-row'+d.key;
 		});
+
+		var labels =d3.selectAll('text.'+group)
+		.data(d)
+		.text(function(d,ii){
+			return d.name;
+		})
+		.attr('class', function(d,i){
+			return group + ' ' +group +'-'+d.key;``
+		})
+		.style('opacity', 1);
+
+		d3.selectAll('.'+group+'-bg')
+		.data(d)
+		.attr('class', function(d,i) { 
+			return group+'-bg ' + group + '-bg-'+d.key;
+		}).on('click', function(d,i){
+			return filter (group, d.key);
+		});
+
 
 		d.forEach(function(d,i){
 			var key = d.key;
 			var wcount = scale[group].paddingLeft;
 			var xcount = scale[group].paddingLeft;
+			var value = d.value; 
+			var name = d.name;
+
+			d3.select('#'+group+(i+1)+'label').text(function(d,i){
+				if(value>0){ return value; } else { return ''};
+			});
+
+			if(group=='sector'){
+				d3.select('.'+group+'-icon-'+(i+1))
+				.attr('href', function(d,i){
+					return 'images/sector-icons/'+name+'.svg'
+				})
+				.style('opacity', function(d,i){
+					if(filters['sector'].includes(key)){
+						return 1;
+					} else {
+						return 0.2;
+					}
+				})				
+			}
+
 			d.values.forEach(function(dd,ii){
 				var s = dd.key;
-				var id = group+(key)+'s'+(s);
+				var id = group+(i+1)+'s'+(s);
 				var w = scale[group].x(dd.value)-wcount;
 				d3.select('#'+id )
 				.attr('x', xcount)
@@ -4369,6 +4338,15 @@ var Deepviz = function(sources, callback){
 				xcount = xcount + w;
 			});
 		});
+
+		if(filters[group].length>0){
+			d3.selectAll('.'+group).style('opacity', 0.2);
+			d3.selectAll('.'+group+'-bg').style('opacity', 0);
+		}
+		filters[group].forEach(function(d,i){
+			d3.selectAll('.'+group+'-'+(d)).style('opacity', 1);
+		});
+
 	}
 
 	var setBarName = function(s,v){
@@ -4383,12 +4361,14 @@ var Deepviz = function(sources, callback){
 	//**************************
 	var updateBars = function(group, dataset, duration = 0){
 
+		var sort = true;
+
 		// affected groups
 		var dat = dataset.filter(function(d){
 			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]));
 		});
 
-		var d = d3.nest()
+		var nest = d3.nest()
 		.key(function(d) {  return d[group]; })
 		.rollup(function(leaves) { return leaves.length; })		
 		.entries(dat);	
@@ -4402,6 +4382,37 @@ var Deepviz = function(sources, callback){
 			});
 		}).entries(dat);
 
+		var data_group = group;
+		if(data_group=='focus') data_group = 'focus_array';
+		if(data_group=='affected_groups') data_group = 'affected_groups_array';
+		if(data_group=='additional_documentation') data_group = 'additional_documentation_array';
+		if(data_group=='unit_of_reporting') data_group = 'type_of_unit_of_analysis';
+		if(data_group=='unit_of_analysis') data_group = 'type_of_unit_of_analysis';
+		if(data_group=='organisation') data_group = 'organization';
+
+		var d = [];
+		metadata[data_group].forEach(function(mt,ii){
+			var name = mt.name;
+			var key = mt.id;
+			var value = 0;
+			nest.forEach(function(dd,ii){
+				if(mt.id==dd.key){
+					value = dd.value;
+				}
+			});
+			d.push({'key': key, 'value': value, 'name': name});
+		});
+
+		if(sort==true){
+			d = d.sort(function(x,y){
+				return d3.ascending(y.value, x.value);
+			});
+		}
+
+		if(group=='organisation'){
+			d = d.splice(0,10);
+		}
+
 		var rowMax = d3.max(labels, function(d,i){
 			return d.value
 		});
@@ -4410,166 +4421,106 @@ var Deepviz = function(sources, callback){
 
 	    // reset all bars to zero width
 	    d3.selectAll('.'+group+'-bar').attr('width', 0);
-		// reset all text labels to zero and hide
-		d3.selectAll('.'+group+'-label').text('').style('opacity', 0);
 
-		labels.forEach(function(dd,ii){
-			d3.select('#'+group+dd.key+'label').text(dd.value).style('opacity', 1)
-			.style('fill', function(){
-				if(filters.toggle == 'finalScore'){
-					return colorNeutral[4];
-				} else {
-					return colorNeutral[4];
-				}
-			});
-			var row = dd.key;
+		var rows = d3.selectAll('.'+group+'-row')
+		.data(d)
+		.attr('class', function(d,i){
+			return 'bar-row '+group+'-row '+group+'-bar-row'+d.key;
 		});
 
-		d.forEach(function(d,i){
-			var key = d.key;
-			var wcount = scale[group].paddingLeft;
-			var xcount = scale[group].paddingLeft;
-				var s = d.key;
-				var id = group+(key)+'s0';
-				var w = scale[group].x(d.value)-wcount;
-				d3.select('#'+id )
-				.attr('x', xcount)
-				.attr('width', w)
-				.attr('data-value', d.value)
-				.style('fill', function(){
-					if(filters.toggle == 'finalScore'){
-						return colorPrimary[3];
-					} else {
-						return colorSecondary[s];
-					}
-				});
-				var rect = document.querySelector('#'+id)
-				tippy(rect, { 
-					content: '1',
-					theme: 'light-border',
-					delay: [250,100],
-					inertia: false,
-					distance: 8,
-					allowHTML: true,
-					animation: 'shift-away',
-					arrow: true,
-					size: 'small',
-					onShow(instance) {
-				        var v = d3.select('#'+id).attr('data-value');
-						return '<div style="width: 100px; height: 10px; display: inline; background-color: '+ colorPrimary[2] + '">&nbsp;&nbsp;</div>&nbsp;&nbsp;<div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + v + ' entries</div>';
-					}
-				});
-		});
-	}
+		var labels =d3.selectAll('text.'+group)
+		.data(d)
+		.text(function(d,ii){
+			return d.name;
+		})
+		.attr('class', function(d,i){
+			return group + ' ' +group +'-'+d.key;``
+		})
 
-
-	//**************************
-	// update top-stake holder bar charts
-	//**************************
-	var updateOrganisationBars = function(group, dataset, duration = 0){
-
-		// affected groups
-		var dat = dataset.filter(function(d){
-			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]));
+		rows.select('.'+group+'-bg')
+		.attr('class', function(d,i) { 
+			return group+'-bg ' + group + '-bg-'+d.key;
+		}).on('click', function(d,i){
+			return filter (group, d.key);
 		});
 
-		var d = d3.nest()
-		.key(function(d) { return d.org_name; })
-		.key(function(d) { return d.organisation; })
-		.rollup(function(leaves) { return leaves.length; })		
-		.entries(dat);	
-
-		d.sort(function(x,y){
-			return d3.ascending(y.values[0].value, x.values[0].value);
-		});
-
-		// d.splice(0,10);
-
-		var labels = d3.nest().key(function(d) {
-			return d[group];
-		}).sortKeys(d3.ascending)
-		.rollup(function(leaves) {
-			return d3.sum(leaves, function(d) {
-				return 1;
-			});
-		}).entries(dat);
-
-		var rowMax = d3.max(labels, function(d,i){
+		rows.select('.'+group+'-bar')
+		.attr('width', function(d,i){
+			if(d.value>0){
+				return scale[group].x(d.value)-scale[group].paddingLeft;
+			} else {
+				return 0;
+			}
+		})
+		.attr('x', function(d,i){
+			return scale[group].paddingLeft;
+		})
+		.style('fill', colorPrimary[3])
+		.attr('data-value', function(d,i){
 			return d.value;
 		});
 
-
-		scale[group].x.domain([0, rowMax]);// finalScore/reliability x xcale
-
-	    // reset all bars to zero width
-	    d3.selectAll('.'+group+'-bar').attr('width', 0);
-		// reset all text labels to zero and hide
-		d3.selectAll('.'+group+'-label').text('').style('opacity', 0);
-
-
-
-		d3.selectAll('.bar-row .organisation').text('');
-
-		d.forEach(function(d,i){
-			if(i>10) return false;
-			var wcount = scale[group].paddingLeft;
-			var xcount = scale[group].paddingLeft;
-			var name = d.key.substr(0,labelCharLimit);
-			if(name.length==labelCharLimit) name += '.';
-			d3.select('.organisation-'+i)
-			.text(name)
-			.style('opacity', function(dd,i){
-				if(filters.organisation.length>0){
-					if(filters.organisation.includes(parseInt(d.values[0].key))) { return 1 } else { return 0.2};
-				} else {
-					return 1;
-				}
-			});
-
-			d3.select('.organisation-bar-row'+i + ' .organisation-label')
-			.text(d.values[0].value)
-			.style('opacity', 1)
-
-			// 	var id = group+(key)+'s0';
-			var w = scale[group].x(d.values[0].value)-wcount;
-
-			d3.select('.organisation-bar-row'+i+' .organisation-bar')
-			.attr('x', xcount)
-			.attr('width', w)
-			.attr('data-value', d.values[0].value)
-			.style('fill', function(){
-				if(filters.toggle == 'finalScore'){
-					return colorPrimary[3];
-				} else {
-					return colorSecondary[s];
-				}
-			});
-
-			d3.select('.organisation-bar-row'+i+' .organisation-bg')
-			.on('click', function(dd,i){
-				return filter ('organisation', parseInt(d.values[0].key));
-			});
-
-
-			// 	var rect = document.querySelector('#'+id)
-			// 	tippy(rect, { 
-			// 		content: '1',
-			// 		theme: 'light-border',
-			// 		delay: [250,100],
-			// 		inertia: false,
-			// 		distance: 8,
-			// 		allowHTML: true,
-			// 		animation: 'shift-away',
-			// 		arrow: true,
-			// 		size: 'small',
-			// 		onShow(instance) {
-			// 	        var v = d3.select('#'+id).attr('data-value');
-			// 			return '<div style="width: 100px; height: 10px; display: inline; background-color: '+ colorPrimary[2] + '">&nbsp;&nbsp;</div>&nbsp;&nbsp;<div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + v + ' entries</div>';
-			// 		}
-			// 	});
+		rows.select('.'+group+'-label').text(function(d,i){
+			if(d.value>0){ return d.value; } else { return ''}
 		});
-	}
 
+		if(filters[group].length>0){
+			d3.selectAll('.'+group).style('opacity', 0.2);
+			d3.selectAll('.'+group+'-bg').style('opacity', 0);
+		}
+		filters[group].forEach(function(d,i){
+			d3.selectAll('.'+group+'-'+(d)).style('opacity', 1);
+		});
+
+		// labels.forEach(function(dd,ii){
+
+		// 	d3.select('#'+group+dd.key+'label').text(dd.value).style('opacity', 1)
+		// 	.style('fill', function(){
+		// 		if(filters.toggle == 'finalScore'){
+		// 			return colorNeutral[4];
+		// 		} else {
+		// 			return colorNeutral[4];
+		// 		}
+		// 	});
+		// 	var row = dd.key;
+		// });
+
+		// d.forEach(function(d,i){
+		// 	var key = d.key;
+		// 	var wcount = scale[group].paddingLeft;
+		// 	var xcount = scale[group].paddingLeft;
+		// 		var s = d.key;
+		// 		var id = group+(key)+'s0';
+		// 		var w = scale[group].x(d.value)-wcount;
+		// 		d3.select('#'+id )
+		// 		.attr('x', xcount)
+		// 		.attr('width', w)
+		// 		.attr('data-value', d.value)
+		// 		.style('fill', function(){
+		// 			if(filters.toggle == 'finalScore'){
+		// 				return colorPrimary[3];
+		// 			} else {
+		// 				return colorSecondary[s];
+		// 			}
+		// 		});
+		// 		var rect = document.querySelector('#'+id)
+		// 		tippy(rect, { 
+		// 			content: '1',
+		// 			theme: 'light-border',
+		// 			delay: [250,100],
+		// 			inertia: false,
+		// 			distance: 8,
+		// 			allowHTML: true,
+		// 			animation: 'shift-away',
+		// 			arrow: true,
+		// 			size: 'small',
+		// 			onShow(instance) {
+		// 		        var v = d3.select('#'+id).attr('data-value');
+		// 				return '<div style="width: 100px; height: 10px; display: inline; background-color: '+ colorPrimary[2] + '">&nbsp;&nbsp;</div>&nbsp;&nbsp;<div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + v + ' entries</div>';
+		// 			}
+		// 		});
+		// });
+	}
 
 	//**************************
 	// toggle between finalScore and reliability
