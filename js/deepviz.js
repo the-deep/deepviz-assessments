@@ -2970,8 +2970,8 @@ var Deepviz = function(sources, callback){
 				dataQuality[i] = {'axis': d.name, 'value': median }
 			});
 
-			var dataQualityTotal = d3.sum(dataQuality, d => d.value );
-			d3.select('#quality'+(i+1)+'val tspan').text(Math.round(dataQualityTotal));
+			// var dataQualityTotal = d3.sum(dataQuality, d => d.value );
+			// d3.select('#quality'+(i+1)+'val tspan').text(Math.round(dataQualityTotal));
 			radarChartOptions.maxValue = 5;
 			RadarChartUpdate("#quality"+(i+1), [dataQuality], radarChartOptions);
 		});
@@ -3011,7 +3011,8 @@ var Deepviz = function(sources, callback){
 				return md.scores.final_scores.score_pillar[d.id];
 			})
 			median = median != null ? median : 0;
-			dataQuality[i] = {'axis': d.name, 'value': median }
+			dataQuality[i] = {'axis': d.name, 'value': median };
+			d3.select('#quality'+d.id + 'val tspan').text(Math.round(median));
 		});
 
 		var median = d3.median(dc, function(md){
@@ -3020,17 +3021,13 @@ var Deepviz = function(sources, callback){
 		median = median != null ? median : 0;
 		dataQuality.push({'axis': metadata.final_scores_array.score_matrix_pillar[0].name, 'value': median });
 		d3.select('#quality5val tspan').text(Math.round(median));
-
 		var dataQualityTotal = d3.median(dataQuality, d => d.value );
 		d3.select('#quality6val tspan').text(Math.round(dataQualityTotal));
 
 		radarChartOptions.maxValue = 25;
 		RadarChartUpdate("#quality6", [dataQuality], radarChartOptions);
 
-
 	}
-
-
 
 	//**************************
 	// filtering (push values to filter array)
