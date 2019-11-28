@@ -2225,8 +2225,15 @@ var Deepviz = function(sources, callback){
 
 		    if(e.keyCode == 37){ // arrow left
 	        	if(dateRange[0]>minDate){
-		        	dateRange[0] = new Date(moment(dateRange[0]).subtract(1, unit));
-		        	dateRange[1] = new Date(moment(dateRange[1]).subtract(1, unit));
+	        		if(e.shiftKey){
+	        			var d = new Date(moment(dateRange[1]).subtract(1, unit));
+	        			if(d>dateRange[0]){
+				        	dateRange[1] = d;
+				        }
+			        } else {
+			        	dateRange[0] = new Date(moment(dateRange[0]).subtract(1, unit));
+			        	dateRange[1] = new Date(moment(dateRange[1]).subtract(1, unit));
+			        }
 			    	gBrush.call(brush.move, dateRange.map(scale.timechart.x));	
 			    	update();	        		
 	        	}
@@ -2234,8 +2241,12 @@ var Deepviz = function(sources, callback){
 
 		    if(e.keyCode == 39){ // arrow right
 	        	if(dateRange[1]<maxDate){
-		        	dateRange[0] = new Date(moment(dateRange[0]).add(1, unit));
-		        	dateRange[1] = new Date(moment(dateRange[1]).add(1, unit));
+	        		if(e.shiftKey){
+			        	dateRange[1] = new Date(moment(dateRange[1]).add(1, unit));
+	        		} else {
+	        			dateRange[0] = new Date(moment(dateRange[0]).add(1, unit));
+			        	dateRange[1] = new Date(moment(dateRange[1]).add(1, unit));
+	        		}
 			    	gBrush.call(brush.move, dateRange.map(scale.timechart.x));	
 			    	update();	
 	        	}
@@ -2284,7 +2295,7 @@ var Deepviz = function(sources, callback){
 		    if(e.keyCode == 53){ // 5
 		    	filter(filters.toggle, 5);
 		    }
-		    
+
 		    function dateKey(v){
 				if(v!=filters.time){
 					filters.time = v;
