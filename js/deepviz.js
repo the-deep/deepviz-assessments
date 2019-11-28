@@ -2215,6 +2215,111 @@ var Deepviz = function(sources, callback){
 	    	updateRadarCharts();
 	    });
 
+	    // keyboard pagination
+		var k = 0;
+		document.body.onkeyup = function(e){
+
+			var unit = 'day';
+			if(filters.time=='m') unit = 'month';
+			if(filters.time=='y') unit = 'year';
+
+		    if(e.keyCode == 37){ // arrow left
+	        	if(dateRange[0]>minDate){
+		        	dateRange[0] = new Date(moment(dateRange[0]).subtract(1, unit));
+		        	dateRange[1] = new Date(moment(dateRange[1]).subtract(1, unit));
+			    	gBrush.call(brush.move, dateRange.map(scale.timechart.x));	
+			    	update();	        		
+	        	}
+		    }
+
+		    if(e.keyCode == 39){ // arrow right
+	        	if(dateRange[1]<maxDate){
+		        	dateRange[0] = new Date(moment(dateRange[0]).add(1, unit));
+		        	dateRange[1] = new Date(moment(dateRange[1]).add(1, unit));
+			    	gBrush.call(brush.move, dateRange.map(scale.timechart.x));	
+			    	update();	
+	        	}
+		    }
+
+		    if(e.keyCode == 77){ // M
+		    	dateKey('m');
+		    }
+
+		    if(e.keyCode == 68){ // D
+		    	dateKey('d');
+		    }
+
+		    if(e.keyCode == 89){ // Y
+		    	dateKey('y');
+		    }
+
+		    if(e.keyCode == 67){ // C
+		    	filter('clear', 'clear');
+		    }
+
+		    if(e.keyCode == 8){ // BACKSPACE
+		    	filter('clear', 'clear');
+		    }
+
+		    if(e.keyCode == 27){ // ESC
+		    	filter('clear', 'clear');
+		    }
+
+		    if(e.keyCode == 49){ // 1
+		    	filter(filters.toggle, 1);
+		    }
+
+		    if(e.keyCode == 50){ // 2
+		    	filter(filters.toggle, 2);
+		    }
+
+		    if(e.keyCode == 51){ // 3
+		    	filter(filters.toggle, 3);
+		    }
+
+		    if(e.keyCode == 52){ // 4
+		    	filter(filters.toggle, 4);
+		    }
+
+		    if(e.keyCode == 53){ // 5
+		    	filter(filters.toggle, 5);
+		    }
+		    
+		    function dateKey(v){
+				if(v!=filters.time){
+					filters.time = v;
+					redrawTimeline();
+				}
+				d3.selectAll('.time-select rect').style('fill', colorGrey[2]);
+				d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[4]);
+		    }
+
+		    function update(){
+		    	colorBars();
+		    	updateDate();
+		    	updateBubbles();
+		    	updateFinalScore('map', 200);
+		    	updateBars('affected_groups', dataByAffectedGroups);
+		    	updateBars('assessment_type', dataByAssessmentType);
+		    	updateBars('data_collection_technique', dataByDataCollectionTechnique);
+		    	updateBars('sampling_approach', dataBySamplingApproach);
+		    	updateBars('methodology_content', dataByMethodologyContent);
+		    	updateBars('additional_documentation', dataByAdditionalDocumentation);
+		    	updateBars('unit_of_reporting', dataByUnitOfReporting);
+		    	updateBars('unit_of_analysis', dataByUnitOfAnalysis);
+		    	updateBars('language', dataByLanguage);
+		    	updateStackedBars('sector', dataBySector);
+		    	updateBars('focus', dataByFocusArray);
+		    	updateStackedBars('organisation', dataByOrganisation)
+
+		    	handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
+		    	handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + (timechartSvgHeight - margin.top) + ")"; });
+
+		    	updateTotals();
+		    	updateRadarCharts();
+		    }
+		}
+
 	    // programattically set date range
 	    gBrush.call(brush.move, dateRange.map(scale.timechart.x));
 	    // function to handle the changes during slider dragging
