@@ -1195,24 +1195,13 @@ var Deepviz = function(sources, callback){
 				d3.select('#collapsed1').transition().duration(duration).style('opacity', 1);
 				d3.select('#collapsed0').transition().duration(duration).style('opacity', 0);
 
-				d3.select('#top_row')
-				.transition()
-				.duration(duration)
-				.style('height', ($('#svg_summary1_div').height()+$('#svg_summary3_div').height()+30) +'px')
-				// .on('end', function(){
-				// 	d3.select(this).style('height', 'auto');
-				// });
-
 				d3.select('#svg_summary2_div')
 				.transition()
 				.duration(duration)
-				.style('top', -$('#svg_summary1_div').height()+'px');
-
-				d3.select('#svg_summary3_div')
-				.transition()
-				.duration(duration)
-				.style('top', -($('#svg_summary1_div').height())  +'px' );
-
+				.style('margin-top', -$('#svg_summary1_div').height()+'px')
+				.on('end', function(d){
+					d3.select(this).style('opacity', 0).style('display', 'none');
+				})
 
 			} else {
 				collapsed = false;
@@ -1220,23 +1209,12 @@ var Deepviz = function(sources, callback){
 				d3.select('#collapsed1').transition().duration(duration).style('opacity', 0);
 				d3.select('#collapsed0').transition().duration(duration).style('opacity', 1);
 
-				d3.select('#top_row')
-				.transition()
-				.duration(duration)
-				.style('height', ($('#svg_summary1_div').height()+$('#svg_summary2_div').height()+$('#svg_summary3_div').height()+30)+'px')
-				.on('end', function(){
-					d3.select(this).style('height', 'auto');
-				});
-
 				d3.select('#svg_summary2_div')
 				.transition()
 				.duration(duration)
-				.style('top', '0px');
-
-				d3.select('#svg_summary3_div')
-				.transition()
-				.duration(duration)
-				.style('top', '0px');
+				.style('margin-top', '0px')
+				.style('display', 'block')
+				.style('opacity', 1);
 			}
 		});
 
