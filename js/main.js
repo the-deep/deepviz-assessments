@@ -1,5 +1,5 @@
 const urlQueryParams = new URLSearchParams(window.location.search);
-var sources = [urlQueryParams.get('assessmentsDataUrl'), urlQueryParams.get('entriesDataUrl'), 'images/summary.svg', 'images/quality.svg'];
+var sources = [urlQueryParams.get('assessmentsDataUrl'), urlQueryParams.get('entriesDataUrl'), 'images/summary_1.svg', 'images/summary_2.svg', 'images/summary_3.svg', 'images/quality.svg'];
 
 var Deepviz = new Deepviz(sources, function(data){
 
@@ -65,6 +65,11 @@ var Deepviz = new Deepviz(sources, function(data){
 	// finalScore chart
 	//**************************
 	var finalScoreChart = Deepviz.createFinalScoreChart();
+
+	//**************************
+	// severity chart
+	//**************************
+	var severityChart = Deepviz.createSeverityChart();
 
 
 	//**************************
@@ -168,7 +173,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		classname: 'sampling_approach',
 		width: 500,
 		height: 190,
-		filter: 'samplingApproach',
+		filter: 'sampling_approach',
 		div: 'sampling-approach-svg'
 	});
 

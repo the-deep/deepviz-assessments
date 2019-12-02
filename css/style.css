@@ -35,6 +35,10 @@ svg text {
   -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
 
+h2 {
+	font-size: 1.3em;
+}
+
 .main-content {
 	padding-bottom: 0px;
 	opacity: 0;
@@ -43,7 +47,23 @@ svg text {
 
 #summary_row {
 	position: relative;
-    margin-top: 7px;
+    margin-top: 16px;
+}
+
+#svg_summary1_div {
+	position: relative;
+	z-index: 5;
+}
+
+#svg_summary2_div {
+	position: relative;
+	z-index: 3;
+}
+
+#svg_summary3_div {
+	position: relative;
+	z-index: 2;
+	cursor: pointer;
 }
 
 #avg_slider_svg {
@@ -66,7 +86,7 @@ svg text {
 
 #top_row {
 	margin-top: 5px;
-	
+
 }
 .container1 {
 	padding: 0px 15px 0px 15px;
@@ -100,8 +120,9 @@ svg text {
 
 
 .leftcol {
-	width: 34%;
+	width: 36%;
 	margin-top: 2px;
+	position: relative;
 }
 
 .rightcol {
@@ -187,7 +208,7 @@ svg text {
 }
 
 #timechart-container {
-	width: 66%;
+	width: 64%;
 	float: right;
     position: absolute;
     top: 0px;
@@ -206,7 +227,7 @@ svg text {
 
 	.subtitle,
 	#dateRange {
-		font-size: 14px !important;
+		font-size: 12px !important;
 	}
 
 	#avg_slider {
@@ -231,9 +252,11 @@ svg text {
 		width: 97% !important;
 	}
 	#dateRangeText {
-		font-size: 15px !important;
+		font-size: 12px !important;
 	}
-
+	#dateRange {
+		width: 130px !important;
+	}
 }
 
 @media only screen and (max-width: 970px) {
@@ -242,7 +265,7 @@ svg text {
 	body { font-size: 12px; }
 
 	#dateRange {
-		font-size: 12px !important;
+		font-size: 9px !important;
 	}
 
 	#total_entries {
@@ -255,7 +278,7 @@ svg text {
 	}
 
 	.title {
-		font-size: 12px !important;
+		font-size: 11px !important;
 	}
 
 	#finalScore_value,
@@ -268,7 +291,7 @@ svg text {
 	}
 
 	.subtitle,
-	#reliabilityRemoveFilter,
+	#severityRemoveFilter,
 	#finalScoreRemoveFilter {
 		height: 12px !important;
 	}
@@ -298,7 +321,11 @@ svg text {
 	    padding-top: 10px !important;
 	}
 	#dateRangeText {
-		font-size: 13px !important;
+		font-size: 9px !important;
+	}
+
+	#dateRange {
+		width: 100px !important;
 	}
 
 }
@@ -320,7 +347,7 @@ svg text {
 
 	.subtitle,
 	#dateRange {
-		font-size: 10px !important;
+		font-size: 9px !important;
 	}
 
 	#timechart_legend {
@@ -352,7 +379,11 @@ svg text {
 	}
 
 	#dateRangeText {
-		font-size: 10px !important;
+		font-size: 9px !important;
+	}
+
+	#dateRange {
+		width: 90px !important;
 	}
 
 }
@@ -374,7 +405,7 @@ svg text {
 	}
 
 	#finalScore_value,
-	#reliability_value {
+	#severity_value {
 		font-size: 8px !important;
 	}
 
@@ -387,7 +418,7 @@ svg text {
 		font-size: 7px !important;
 	}
 
-	#reliabilityRemoveFilter,
+	#severityRemoveFilter,
 	#finalScoreRemoveFilter {
 		height: 12px !important;
 		width: 12px !important;
@@ -418,6 +449,10 @@ svg text {
 		font-size: 7px !important;
 	}
 
+	.selectedDate {
+		display: none !important;
+	}
+
 }
 
 @media only screen and (max-width: 600px) {
@@ -441,7 +476,7 @@ svg text {
 	}
 
 	#finalScore_value,
-	#reliability_value {
+	#severity_value {
 		font-size: 6px !important;
 	}
 
@@ -458,7 +493,7 @@ svg text {
 		display: none;
 	}
 
-	#reliabilityRemoveFilter,
+	#severityRemoveFilter,
 	#finalScoreRemoveFilter {
 		height: 10px !important;
 		width: 10px !important;
@@ -522,7 +557,7 @@ svg text {
 	}
 
 	#finalScore_value,
-	#reliability_value {
+	#severity_value {
 		font-size: 5px !important;
 	}
 
@@ -612,7 +647,7 @@ font-size: 15px;
 .toggle, .finalScoretoggle { cursor: pointer; }
 
 #finalScore img, 
-#reliability img {
+#severity img {
 	top: 2px;
     position: relative;
 }
@@ -630,8 +665,8 @@ font-size: 15px;
 	height: 16px;
 	display: none;
 	position: absolute;
-	top: 7px;
-	left: 94px;
+	top: 4px;
+	left: 84px;
 }
 
 .removeFilterBtn {
@@ -639,44 +674,12 @@ font-size: 15px;
 }
 
 #finalScoreRemoveFilter,
+#severityRemoveFilter,
 #geoRemoveFilter {
 	height: 13px;
 	padding-left: 3px;
 	display: none;
 	position: absolute;
-}
-
-#finalScore {
-	width: 37%;
-    display: inline-block;
-    fill: green;
-    position: absolute;
-    top: 4px;
-    right: 2px;
-    z-index: 2;
-}
-
-#finalScoreSvg text {
-	cursor: pointer;
-}
-
-#finalScore_bars {
-	width: 100%;
-	margin-top: 2px;
-}
-
-#finalScore_value {
-	color: #008974;
-	float: right;
-	display: inline;
-	font-size: 12px;
-	font-weight: bold;
-	padding-top: 3px;
-}
-
-.finalScoreBar {
-	cursor: pointer;
-	outline: none;
 }
 
 .top-bar {
@@ -739,18 +742,21 @@ font-size: 15px;
 	display: inline-block;
 	line-height: 1.4;
 	margin-bottom: 0px;
-	position: relative;
-    top: 4px;
+    float: right;
+    position: absolute;
+    /*left: 180px;*/
+    right: 30px;
+    top: 1px;
 }
 
 #dateRangeText {
 	    padding-top: 2px;
-    font-size: 17px;
+    font-size: 16px;
     color: #008974;
     cursor: default;
-    padding-left: 6px;
     padding-right: 2px;
     position: absolute;
+    font-size: 14px;
 }
 
 .monthly .table-condensed thead tr:nth-child(2),
@@ -758,10 +764,47 @@ font-size: 15px;
   display: none
 }
 
-/*.applyBtn {
-	background-color: #008974;
-	color: #FFF;
-}*/
+.scores { 
+	height: 50px;
+}
+
+.scores_left {
+	width: 49%;
+	float: left;
+}
+
+.scores_right {
+	width: 49%;
+	float: right;
+}
+
+#finalScore {
+    fill: green;
+    z-index: 2;
+}
+
+#finalScoreSvg text {
+	cursor: pointer;
+}
+
+#finalScore_bars, #severity_bars {
+	width: 100%;
+	margin-top: 2px;
+}
+
+#finalScore_value, #severity_value {
+	color: #008974;
+	float: right;
+	display: inline;
+	font-size: 12px;
+	font-weight: bold;
+	padding-top: 3px;
+}
+
+.finalScoreBar {
+	cursor: pointer;
+	outline: none;
+}
 
 #n-days {
 	opacity: 0;
@@ -777,7 +820,7 @@ font-size: 15px;
 
 #dateRange {
 	display: inline;
-	font-size: 16px;
+	font-size: 12px;
 	text-align: left;
 	font-weight: bold;
 	border: none;
@@ -786,8 +829,8 @@ font-size: 15px;
 	opacity: 0;
 	position: relative;
     top: 0px;
-    left: 0px;
-    width: 180px;
+    right: 0px;
+    width: 170px;
 	cursor: pointer;
 }
 

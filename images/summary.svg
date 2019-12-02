@@ -1,256 +1,247 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="1591px" height="275px" viewBox="0 0 1591 275" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="1591px" height="182px" viewBox="0 0 1591 182" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
     <title>summary</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="summary" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="Rectangle-6" fill="#008483" x="0" y="0" width="290" height="81"></rect>
-        <text id="total_assessments" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="52.3282828" font-weight="bold" fill="#FFFFFF">
-            <tspan x="13" y="68">120</tspan>
+        <rect id="Rectangle-6" fill="#008483" x="0" y="0" width="290" height="50"></rect>
+        <text id="total_assessments" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="50" font-weight="bold" fill="#FFFFFF">
+            <tspan x="7" y="40">0000</tspan>
         </text>
-        <text id="TOTAL-NEEDS-ASSESSME" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="14" y="23">TOTAL NEEDS ASSESSMENTS</tspan>
+        <text id="TOTAL-NEEDS-ASSESSME" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="120" y="19">TOTAL NEEDS </tspan>
+            <tspan x="120" y="39">ASSESSMENTS</tspan>
         </text>
-        <g id="Group" transform="translate(0.000000, 82.000000)">
-            <rect id="Rectangle-6" fill="#167868" x="0" y="0" width="289.818182" height="65.6731965"></rect>
-            <text id="TOTAL-STAKEHOLDERS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-                <tspan x="13.9112727" y="20.0587687">TOTAL STAKEHOLDERS</tspan>
-            </text>
-        </g>
-        <text id="total_stakeholders" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="40.2525253" font-weight="bold" fill="#FFFFFF">
-            <tspan x="13" y="138">0</tspan>
+        <rect id="Rectangle-6" fill="#167868" x="0" y="51" width="290" height="36"></rect>
+        <text id="TOTAL-STAKEHOLDERS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17" font-weight="bold" fill="#FFFFFF">
+            <tspan x="102" y="75">TOTAL STAKEHOLDERS</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#008B74" x="291" y="0" width="259" height="81"></rect>
-        <text id="COORDINATED-NEEDS-AS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="301" y="23">COORDINATED NEEDS </tspan>
-            <tspan x="301" y="46">ASSESSMENTS</tspan>
+        <text id="total_stakeholders" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="38.25" font-weight="bold" fill="#FFFFFF">
+            <tspan x="7" y="81">0000</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#008B74" x="551" y="0" width="259" height="81"></rect>
-        <text id="COORDINATED-NEEDS-AS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="562" y="23">COORDINATED NEEDS </tspan>
-            <tspan x="562" y="46">ASSESSMENTS</tspan>
+        <rect id="Rectangle-6" fill="#008B74" x="291" y="0" width="259" height="50"></rect>
+        <text id="COORDINATED-NEEDS-AS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="364" y="18">COORDINATED NEEDS </tspan>
+            <tspan x="364" y="38">ASSESSMENTS</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#008B74" x="811" y="0" width="259" height="81"></rect>
-        <rect id="Rectangle-6" fill="#008B74" x="1071" y="0" width="259" height="81"></rect>
-        <rect id="Rectangle-6" fill="#26A18C" x="291" y="82" width="184" height="66"></rect>
-        <rect id="Rectangle-6" fill="#26A18C" x="476" y="82" width="184" height="66"></rect>
-        <rect id="Rectangle-6" fill="#46BCAC" x="661" y="82" width="185" height="66"></rect>
-        <rect id="Rectangle-6" fill="#6BD1C0" x="1033" y="82" width="185" height="66"></rect>
-        <rect id="Rectangle-6" fill="#6BD1C0" x="1219" y="82" width="184" height="66"></rect>
-        <rect id="Rectangle-6" fill="#7FC2B7" x="1404" y="82" width="187" height="66"></rect>
-        <text id="LNGOStitle" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="300" y="102">LNGOS</tspan>
+        <rect id="Rectangle-6" fill="#008B74" x="551" y="0" width="259" height="50"></rect>
+        <text id="COORDINATED-NEEDS-AS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="625" y="18">COORDINATED NEEDS </tspan>
+            <tspan x="625" y="38">ASSESSMENTS</tspan>
         </text>
-        <text id="INGOStitle" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="485" y="102">INGOS</tspan>
+        <rect id="Rectangle-6" fill="#008B74" x="811" y="0" width="259" height="50"></rect>
+        <rect id="Rectangle-6" fill="#008B74" x="1071" y="0" width="259" height="50"></rect>
+        <rect id="Rectangle-6" fill="#26A18C" x="291" y="51" width="184" height="36"></rect>
+        <rect id="Rectangle-6" fill="#26A18C" x="476" y="51" width="184" height="36"></rect>
+        <rect id="Rectangle-6" fill="#46BCAC" x="661" y="51" width="185" height="36"></rect>
+        <rect id="Rectangle-6" fill="#6BD1C0" x="1033" y="51" width="185" height="36"></rect>
+        <rect id="Rectangle-6" fill="#6BD1C0" x="1219" y="51" width="184" height="36"></rect>
+        <rect id="Rectangle-6" fill="#7FC2B7" x="1404" y="51" width="187" height="36"></rect>
+        <text id="LNGOStitle" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="360" y="75">LNGOS</tspan>
         </text>
-        <text id="UN-AGENCIES" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="670" y="102">UN AGENCIES</tspan>
+        <text id="INGOStitle" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="545" y="75">INGOS</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#46BCAC" x="847" y="82" width="185" height="66"></rect>
-        <text id="CLUSTERSlabel" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="855" y="102">CLUSTERS</tspan>
+        <text id="UN-AGENCIES" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="728" y="75">UN AGENCIES</tspan>
         </text>
-        <text id="DONORSlabel" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="1040" y="102">DONORS</tspan>
+        <rect id="Rectangle-6" fill="#46BCAC" x="847" y="51" width="185" height="36"></rect>
+        <text id="CLUSTERSlabel" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="916" y="75">CLUSTERS</tspan>
         </text>
-        <text id="RCRClabel" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="1228" y="102">RCRC</tspan>
+        <text id="DONORSlabel" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1100" y="75">DONORS</tspan>
         </text>
-        <text id="GOVERNMENT-BODIES" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="1411" y="101">GOVERNMENT </tspan>
-            <tspan x="1411" y="124">BODIES</tspan>
+        <text id="RCRClabel" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1286" y="75">RCRC</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#828282" x="0" y="149" width="175" height="65"></rect>
-        <rect id="Rectangle-6" fill="#828282" x="176" y="149" width="176" height="65"></rect>
-        <rect id="Rectangle-6" fill="#828282" x="353" y="149" width="174" height="65"></rect>
-        <rect id="Rectangle-6" fill="#828282" x="528" y="149" width="177" height="65"></rect>
-        <rect id="Rectangle-6" fill="#828282" x="706" y="149" width="177" height="65"></rect>
-        <rect id="Rectangle-6" fill="#828282" x="884" y="149" width="177" height="65"></rect>
-        <rect id="Rectangle-6" fill="#828282" x="1062" y="149" width="176" height="65"></rect>
-        <text id="MULTI-SECTOR-NEEDS-A" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
-            <tspan x="9" y="169">MULTI-SECTOR NEEDS </tspan>
-            <tspan x="9" y="186">ASSESSMENTS</tspan>
+        <text id="GOVERNMENTlabel" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1474" y="75">GOVERNMENT </tspan>
+        </text>
+        <rect id="Rectangle-6" fill="#828282" x="0" y="88" width="175" height="53"></rect>
+        <rect id="Rectangle-6" fill="#828282" x="176" y="88" width="176" height="53"></rect>
+        <rect id="Rectangle-6" fill="#828282" x="353" y="88" width="174" height="53"></rect>
+        <rect id="Rectangle-6" fill="#828282" x="528" y="88" width="177" height="53"></rect>
+        <rect id="Rectangle-6" fill="#828282" x="706" y="88" width="177" height="53"></rect>
+        <rect id="Rectangle-6" fill="#828282" x="884" y="88" width="177" height="53"></rect>
+        <rect id="Rectangle-6" fill="#828282" x="1062" y="88" width="176" height="53"></rect>
+        <text id="MULTI-SECTOR-ASSESSM" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+            <tspan x="60" y="102">MULTI-SECTOR  </tspan>
+            <tspan x="60" y="119">ASSESSMENTS</tspan>
         </text>
         <text id="&gt;=5-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
-            <tspan x="9" y="202">&gt;=5 Sectors</tspan>
+            <tspan x="61" y="132">&gt;=5 Sectors</tspan>
         </text>
-        <text id="MULTI-SECTOR-NEEDS-A" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
-            <tspan x="186" y="169">MULTI-SECTOR NEEDS </tspan>
-            <tspan x="186" y="186">ASSESSMENTS</tspan>
+        <text id="MULTI-SECTOR-ASSESSM" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+            <tspan x="237" y="102">MULTI-SECTOR  </tspan>
+            <tspan x="237" y="119">ASSESSMENTS</tspan>
         </text>
-        <text id="HARMONIZED-NEEDS-ASS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="1083" y="23">HARMONIZED NEEDS </tspan>
-            <tspan x="1083" y="46">ASSESSMENTS</tspan>
+        <text id="HARMONIZED-NEEDS-ASS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1146" y="18">HARMONIZED NEEDS </tspan>
+            <tspan x="1146" y="38">ASSESSMENTS</tspan>
         </text>
         <text id="MULTI-SECTOR-MONITOR" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
-            <tspan x="716" y="169">MULTI-SECTOR </tspan>
-            <tspan x="716" y="186">MONITORING</tspan>
+            <tspan x="775" y="102">MULTI-SECTOR </tspan>
+            <tspan x="775" y="119">MONITORING</tspan>
         </text>
         <text id="INITIAL-NEEDS-ASSESS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
-            <tspan x="1071" y="169">INITIAL NEEDS </tspan>
-            <tspan x="1071" y="186">ASSESSMENTS</tspan>
+            <tspan x="1133" y="107">INITIAL NEEDS </tspan>
+            <tspan x="1133" y="124">ASSESSMENTS</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#828282" x="1239" y="149" width="176" height="65"></rect>
+        <rect id="Rectangle-6" fill="#828282" x="1239" y="88" width="176" height="53"></rect>
         <text id="RAPID-NEEDS-ASSESSME" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
-            <tspan x="1249" y="169">RAPID NEEDS </tspan>
-            <tspan x="1249" y="186">ASSESSMENTS</tspan>
+            <tspan x="1318" y="107">RAPID NEEDS </tspan>
+            <tspan x="1318" y="124">ASSESSMENTS</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#828282" x="1416" y="149" width="175" height="65"></rect>
+        <rect id="Rectangle-6" fill="#828282" x="1416" y="88" width="175" height="53"></rect>
         <text id="IN-DEPTH-NEEDS-ASSES" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
-            <tspan x="1423" y="169">IN-DEPTH NEEDS </tspan>
-            <tspan x="1423" y="186">ASSESSMENTS</tspan>
+            <tspan x="1479" y="107">IN-DEPTH NEEDS </tspan>
+            <tspan x="1479" y="124">ASSESSMENTS</tspan>
         </text>
-        <text id="SINGLE-SECTOR-NEEDS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
-            <tspan x="363" y="169">SINGLE-SECTOR NEEDS </tspan>
-            <tspan x="363" y="186">ASSESSMENTS</tspan>
+        <text id="SINGLE-SECTOR-ASSESS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+            <tspan x="420" y="102">SINGLE-SECTOR  </tspan>
+            <tspan x="420" y="119">ASSESSMENTS</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#EDEDED" x="318" y="215" width="318" height="60"></rect>
+        <rect id="Rectangle-6" fill="#EDEDED" x="318" y="142" width="318" height="39"></rect>
         <text id="HOUSEHOLDS-SURVEYED" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
-            <tspan x="331" y="238">HOUSEHOLDS </tspan>
-            <tspan x="331" y="260">SURVEYED</tspan>
+            <tspan x="431" y="165">HOUSEHOLDS SURVEYED</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#EDEDED" x="637" y="215" width="317" height="60"></rect>
+        <rect id="Rectangle-6" fill="#EDEDED" x="637" y="142" width="303" height="39"></rect>
         <text id="KEY-INFORMANT-INTERV" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
-            <tspan x="651" y="238">KEY INFORMANT </tspan>
-            <tspan x="651" y="260">INTERVIEWS</tspan>
+            <tspan x="703" y="165">KEY INFORMANT INTERVIEWS</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#EDEDED" x="955" y="215" width="317" height="60"></rect>
+        <rect id="Rectangle-6" fill="#EDEDED" x="941" y="142" width="317" height="39"></rect>
         <text id="focusgroup" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
-            <tspan x="971" y="238">FOCUS GROUP </tspan>
-            <tspan x="971" y="260">DISCUSSIONS</tspan>
+            <tspan x="1008" y="165">FOCUS GROUP DISCUSSIONS</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#EDEDED" x="1273" y="215" width="318" height="60"></rect>
+        <rect id="Rectangle-6" fill="#EDEDED" x="1259" y="142" width="332" height="39"></rect>
         <text id="COMMUNITY-GROUP-DISC" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
-            <tspan x="1288" y="238">COMMUNITY GROUP </tspan>
-            <tspan x="1288" y="260">DISCUSSIONS</tspan>
+            <tspan x="1323" y="165">COMMUNITY GROUP DISCUSSIONS</tspan>
         </text>
-        <rect id="Rectangle-6" fill="#EDEDED" x="0" y="215" width="317" height="60"></rect>
-        <rect id="Rectangle-6" fill="#008B74" x="1331" y="0" width="260" height="81"></rect>
-        <text id="UNCOORDINATED-NEEDS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="1342" y="23">UNCOORDINATED NEEDS </tspan>
-            <tspan x="1342" y="46">ASSESSMENTS</tspan>
+        <rect id="Rectangle-6" fill="#EDEDED" x="0" y="142" width="317" height="39"></rect>
+        <rect id="Rectangle-6" fill="#008B74" x="1331" y="0" width="260" height="50"></rect>
+        <text id="UNCOORDINATED-NEEDS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1402" y="18">UNCOORDINATED NEEDS </tspan>
+            <tspan x="1402" y="38">ASSESSMENTS</tspan>
         </text>
         <text id="MULTI-SECTOR-MONITOR" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
-            <tspan x="538" y="169">MULTI-SECTOR </tspan>
-            <tspan x="538" y="186">MONITORING</tspan>
+            <tspan x="587" y="102">MULTI-SECTOR </tspan>
+            <tspan x="587" y="119">MONITORING</tspan>
         </text>
         <text id="SINGLE-SECTOR-MONITO" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
-            <tspan x="895" y="169">SINGLE-SECTOR </tspan>
-            <tspan x="895" y="186">MONITORING</tspan>
+            <tspan x="954" y="102">SINGLE-SECTOR </tspan>
+            <tspan x="954" y="119">MONITORING</tspan>
         </text>
         <text id="&gt;=2-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="14.0883838" font-weight="300" fill="#FFFFFF">
-            <tspan x="564" y="66">&gt;=2 Sectors</tspan>
+            <tspan x="733" y="38">&gt;=2 Sectors</tspan>
         </text>
-        <g id="totals_right_align" transform="translate(120.000000, 20.000000)">
-            <text id="coordinated_5_sector" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
-                <tspan x="386.242667" y="44">00</tspan>
-            </text>
-            <text id="coordinated_2_sector" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
-                <tspan x="646.242667" y="44">00</tspan>
-            </text>
-            <text id="coordinated_1_sector" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
-                <tspan x="907.242667" y="44">00</tspan>
-            </text>
-            <text id="harmonized" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
-                <tspan x="1167.24267" y="44">00</tspan>
-            </text>
-            <text id="ingos" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
-                <tspan x="494.681333" y="118">00</tspan>
-            </text>
-            <text id="lngos" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
-                <tspan x="307.681333" y="118">00</tspan>
-            </text>
-            <text id="un_agencies" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
-                <tspan x="678.681333" y="119">00</tspan>
-            </text>
-            <text id="clusters" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
-                <tspan x="865.681333" y="119">00</tspan>
-            </text>
-            <text id="donors" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
-                <tspan x="1050.68133" y="118">00</tspan>
-            </text>
-            <text id="government" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
-                <tspan x="1427.68133" y="119">00</tspan>
-            </text>
-            <text id="rcrc" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="37.2335859" font-weight="bold" fill="#FFFFFF">
-                <tspan x="1237.68133" y="119">00</tspan>
-            </text>
-            <text id="uncoordinated" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="44.2777778" font-weight="bold" fill="#FFFFFF">
-                <tspan x="1428.24267" y="44">00</tspan>
-            </text>
-            <text id="mutli_sector_5" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#FFFFFF">
-                <tspan x="14.9903662" y="183">00</tspan>
-            </text>
-            <text id="multi_sector_2" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#FFFFFF">
-                <tspan x="191.990366" y="183">00</tspan>
-            </text>
-            <text id="sector_monitoring_5" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#FFFFFF">
-                <tspan x="544.990366" y="183">00</tspan>
-            </text>
-            <text id="sector_monitoring_2" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#FFFFFF">
-                <tspan x="722.990366" y="183">00</tspan>
-            </text>
-            <text id="sector_monitoring_1" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.22" font-weight="normal" fill="#FFFFFF">
-                <tspan x="899.99132" y="183">00</tspan>
-            </text>
-            <text id="total_initial" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#FFFFFF">
-                <tspan x="1076.99037" y="183">00</tspan>
-            </text>
-            <text id="total_rapid" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#FFFFFF">
-                <tspan x="1256.99037" y="183">00</tspan>
-            </text>
-            <text id="total_indepth" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#FFFFFF">
-                <tspan x="1429.99037" y="183">00</tspan>
-            </text>
-            <text id="single_sector" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#FFFFFF">
-                <tspan x="366.990366" y="183">00</tspan>
-            </text>
-            <text id="households" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#696969">
-                <tspan x="475.990366" y="241">00</tspan>
-            </text>
-            <text id="key_informants" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#696969">
-                <tspan x="793.990366" y="241">00</tspan>
-            </text>
-            <text id="focus_group_discussions" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#696969">
-                <tspan x="1111.99037" y="241">00</tspan>
-            </text>
-            <text id="community_group_discussions" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#696969">
-                <tspan x="1430.99037" y="241">00</tspan>
-            </text>
-            <text id="individuals" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="35.2209596" font-weight="normal" fill="#696969">
-                <tspan x="154.990366" y="241">00</tspan>
-            </text>
-        </g>
-        <text id="COORDINATED-NEEDS-AS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18.1136364" font-weight="bold" fill="#FFFFFF">
-            <tspan x="821" y="23">COORDINATED NEEDS </tspan>
-            <tspan x="821" y="46">ASSESSMENTS</tspan>
+        <text id="coordinated_5_sector" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="40" font-weight="bold" fill="#FFFFFF">
+            <tspan x="296" y="37">000</tspan>
+        </text>
+        <text id="coordinated_2_sector" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="40" font-weight="bold" fill="#FFFFFF">
+            <tspan x="556" y="37">000</tspan>
+        </text>
+        <text id="coordinated_1_sector" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="40" font-weight="bold" fill="#FFFFFF">
+            <tspan x="816" y="37">000</tspan>
+        </text>
+        <text id="harmonized" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="40" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1076" y="37">000</tspan>
+        </text>
+        <text id="ingos" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
+            <tspan x="481" y="79">000</tspan>
+        </text>
+        <text id="lngos" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
+            <tspan x="297" y="79">000</tspan>
+        </text>
+        <text id="un_agencies" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
+            <tspan x="665" y="79">000</tspan>
+        </text>
+        <text id="clusters" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
+            <tspan x="852" y="79">000</tspan>
+        </text>
+        <text id="donors" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1037" y="79">000</tspan>
+        </text>
+        <text id="government" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1412" y="79">000</tspan>
+        </text>
+        <text id="rcrc" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1224" y="79">000</tspan>
+        </text>
+        <text id="uncoordinated" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="40" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1335" y="37">000</tspan>
+        </text>
+        <text id="mutli_sector_5" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+            <tspan x="6" y="122">000</tspan>
+        </text>
+        <text id="multi_sector_2" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+            <tspan x="182" y="122">000</tspan>
+        </text>
+        <text id="sector_monitoring_5" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+            <tspan x="535" y="122">000</tspan>
+        </text>
+        <text id="sector_monitoring_2" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+            <tspan x="713" y="122">000</tspan>
+        </text>
+        <text id="sector_monitoring_1" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+            <tspan x="891" y="122">000</tspan>
+        </text>
+        <text id="total_initial" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+            <tspan x="1068" y="122">000</tspan>
+        </text>
+        <text id="total_rapid" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+            <tspan x="1245" y="122">000</tspan>
+        </text>
+        <text id="total_indepth" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+            <tspan x="1422" y="122">00</tspan>
+        </text>
+        <text id="single_sector" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+            <tspan x="358" y="122">000</tspan>
+        </text>
+        <text id="households" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+            <tspan x="324" y="169">000000</tspan>
+        </text>
+        <text id="key_informants" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+            <tspan x="642" y="169">000</tspan>
+        </text>
+        <text id="focus_group_discussions" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+            <tspan x="946" y="169">000</tspan>
+        </text>
+        <text id="community_group_discussions" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+            <tspan x="1265" y="169">000</tspan>
+        </text>
+        <text id="individuals" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+            <tspan x="6" y="169">000000</tspan>
+        </text>
+        <text id="COORDINATED-NEEDS-AS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="16" font-weight="bold" fill="#FFFFFF">
+            <tspan x="885" y="18">COORDINATED NEEDS </tspan>
+            <tspan x="885" y="38">ASSESSMENTS</tspan>
         </text>
         <text id="&gt;=2-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
-            <tspan x="186" y="202">&gt;=2 Sectors</tspan>
+            <tspan x="238" y="132">&gt;=2 Sectors</tspan>
         </text>
         <text id="=1-Sector" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
-            <tspan x="363" y="202">=1 Sector</tspan>
+            <tspan x="421" y="132">=1 Sector</tspan>
         </text>
         <text id="&gt;=5-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
-            <tspan x="540" y="202">&gt;=5 Sectors</tspan>
+            <tspan x="590" y="132">&gt;=5 Sectors</tspan>
         </text>
         <text id="&gt;=2-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
-            <tspan x="717" y="202">&gt;=2 Sectors</tspan>
+            <tspan x="777" y="132">&gt;=2 Sectors</tspan>
         </text>
         <text id="=1-Sector" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
-            <tspan x="894" y="202">=1 Sector</tspan>
+            <tspan x="954" y="132">=1 Sector</tspan>
         </text>
         <text id="=1-Sector" font-family="SourceSansPro-Light, Source Sans Pro" font-size="14.0883838" font-weight="300" fill="#FFFFFF">
-            <tspan x="823" y="66">=1 Sector</tspan>
+            <tspan x="994" y="38">=1 Sector</tspan>
         </text>
         <text id="&gt;=-5-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="14.0883838" font-weight="300" fill="#FFFFFF">
-            <tspan x="303" y="66">&gt;= 5 Sectors</tspan>
+            <tspan x="471" y="38">&gt;= 5 Sectors</tspan>
         </text>
         <text id="INDIVIDUALS-SURVEYED" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
-            <tspan x="13" y="238">INDIVIDUALS </tspan>
-            <tspan x="13" y="260">SURVEYED</tspan>
+            <tspan x="118" y="165">INDIVIDUALS SURVEYED</tspan>
         </text>
     </g>
 </svg>

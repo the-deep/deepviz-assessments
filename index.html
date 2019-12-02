@@ -29,28 +29,23 @@
 	<div class="main-content">
 
 		<div id="top_row">
-			<h2>Summary</h2>
+			<h2>Summary&nbsp; <img id="globalRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
 
-			<div id="svg_summary_div"></div>
+			<div id="svg_summary1_div"></div>
+			<div id="svg_summary2_div"></div>
+			<div id="svg_summary3_div"></div>
 		</div>
 
 		<div id="summary_row">
-
-				<div id="finalScore" class="widget">
-					<div class="title finalScoreToggle">
-						ASSESSMENTS BY FINAL ANALYTICAL SCORE&nbsp; 
-					</div>
-					<img id="finalScoreRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
-					<div id="finalScore_value"></div>
-
-					<div id="finalScore_bars">
-
-					</div>
-				</div>
-
 			<div class="leftcol">
 
-				<h2 style="display: inline">Assessment Details</h2><br/><br/>
+				<h2 style="margin-bottom: 3px; margin-top: 2px">Assessment Details</h2>
+
+				<div class="selectedDate">
+					<div class="title">
+						<div id="dateRangeContainer"><img src="images/calendar.jpg" height="11px"/> DATE RANGE</div>
+					<div><div id="dateRangeText"></div><input id="dateRange" value=""/></div></div><br/>
+				</div>
 
 				<div class="title">
 					ASSESSMENTS BY LOCATION
@@ -71,11 +66,27 @@
 
 			<div id="timechart-container" class="rightcol">
 
-
-				<div class="selectedDate">
-					<div class="title">
-						<div id="dateRangeContainer"><img src="images/calendar.jpg" height="11px"/> DATE RANGE</div>
-					<div><div id="dateRangeText"></div><input id="dateRange" value=""/></div></div><br/>
+				<div class="scores">
+					<div class="scores_left">
+						<div id="finalScore" class="widget">
+							<div class="title finalScoreToggle">
+								ASSESSMENTS BY FINAL ANALYTICAL SCORE&nbsp; 
+							</div>
+							<img id="finalScoreRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
+							<div id="finalScore_value"></div>
+							<div id="finalScore_bars"></div>
+						</div>
+					</div>
+					<div class="scores_right">
+						<div id="severity" class="widget">
+							<div class="title severityToggle">
+								ENTRIES BY SEVERITY&nbsp; 
+							</div>
+							<img id="severityRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
+							<div id="severity_value"></div>
+							<div id="severity_bars"></div>
+						</div>
+					</div>
 				</div>
 
 				<div class="header-row">

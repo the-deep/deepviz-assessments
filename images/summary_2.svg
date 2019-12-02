@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1591px" height="86px" viewBox="0 0 1591 86" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>summary_2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="summary_2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-6" fill="#EDEDED" x="318" y="54" width="318" height="36"></rect>
+        <text id="HOUSEHOLDS-SURVEYED" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
+            <tspan x="431" y="75">HOUSEHOLDS SURVEYED</tspan>
+        </text>
+        <rect id="Rectangle-6" fill="#EDEDED" x="0" y="54" width="317" height="36"></rect>
+        <g id="rapid_box" transform="translate(1239.000000, 1.000000)">
+            <rect id="Rectangle-6" fill="#828282" x="0" y="0" width="176" height="53"></rect>
+            <text id="RAPID-NEEDS-ASSESSME" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+                <tspan x="79" y="19">RAPID NEEDS </tspan>
+                <tspan x="79" y="36">ASSESSMENTS</tspan>
+            </text>
+            <text id="total_rapid" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+                <tspan x="6" y="34">000</tspan>
+            </text>
+            <path d="M1,50 L174,50" id="filter_rapid" stroke="#EFFFFD" stroke-width="3"></path>
+        </g>
+        <text id="households" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+            <tspan x="324" y="78">000000</tspan>
+        </text>
+        <text id="individuals" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+            <tspan x="6" y="78">000000</tspan>
+        </text>
+        <text id="INDIVIDUALS-SURVEYED" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
+            <tspan x="118" y="75">INDIVIDUALS SURVEYED</tspan>
+        </text>
+        <g id="sector_5_box" transform="translate(0.000000, 1.000000)">
+            <rect id="Rectangle-6" fill="#828282" x="0" y="0" width="175" height="53"></rect>
+            <text id="MULTI-SECTOR-ASSESSM" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+                <tspan x="60" y="14">MULTI-SECTOR  </tspan>
+                <tspan x="60" y="31">ASSESSMENTS</tspan>
+            </text>
+            <text id="&gt;=5-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
+                <tspan x="61" y="44">&gt;=5 Sectors</tspan>
+            </text>
+            <text id="mutli_sector_5" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+                <tspan x="6" y="34">000</tspan>
+            </text>
+            <path d="M2,50 L173,50" id="filter_sector_5" stroke="#EFFFFD" stroke-width="3"></path>
+        </g>
+        <g id="sector_2_box" transform="translate(176.000000, 1.000000)">
+            <rect id="Rectangle-6" fill="#828282" x="0" y="0" width="176" height="53"></rect>
+            <text id="MULTI-SECTOR-ASSESSM" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+                <tspan x="61" y="14">MULTI-SECTOR  </tspan>
+                <tspan x="61" y="31">ASSESSMENTS</tspan>
+            </text>
+            <text id="multi_sector_2" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+                <tspan x="6" y="34">000</tspan>
+            </text>
+            <text id="&gt;=2-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
+                <tspan x="62" y="44">&gt;=2 Sectors</tspan>
+            </text>
+            <path d="M2,50 L173,50" id="filter_sector_2" stroke="#EFFFFD" stroke-width="3"></path>
+        </g>
+        <g id="sector_1_box" transform="translate(353.000000, 1.000000)">
+            <rect id="Rectangle-6" fill="#828282" x="0" y="0" width="174" height="53"></rect>
+            <text id="SINGLE-SECTOR-ASSESS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+                <tspan x="67" y="14">SINGLE-SECTOR  </tspan>
+                <tspan x="67" y="31">ASSESSMENTS</tspan>
+            </text>
+            <text id="single_sector" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+                <tspan x="5" y="34">000</tspan>
+            </text>
+            <text id="=1-Sector" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
+                <tspan x="68" y="44">=1 Sector</tspan>
+            </text>
+            <path d="M2,50 L172,50" id="filter_sector_1" stroke="#EFFFFD" stroke-width="3"></path>
+        </g>
+        <g id="monitoring_5_box" transform="translate(528.000000, 1.000000)">
+            <rect id="Rectangle-6" fill="#828282" x="0" y="0" width="177" height="53"></rect>
+            <text id="MULTI-SECTOR-MONITOR" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+                <tspan x="59" y="14">MULTI-SECTOR </tspan>
+                <tspan x="59" y="31">MONITORING</tspan>
+            </text>
+            <text id="sector_monitoring_5" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+                <tspan x="7" y="34">000</tspan>
+            </text>
+            <text id="&gt;=5-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
+                <tspan x="62" y="44">&gt;=5 Sectors</tspan>
+            </text>
+            <path d="M2,50 L175,50" id="filter_monitoring_5" stroke="#EFFFFD" stroke-width="3"></path>
+        </g>
+        <g id="initial_box" transform="translate(1062.000000, 1.000000)">
+            <rect id="Rectangle-6" fill="#828282" x="0" y="0" width="176" height="53"></rect>
+            <text id="INITIAL-NEEDS-ASSESS" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+                <tspan x="71" y="19">INITIAL NEEDS </tspan>
+                <tspan x="71" y="36">ASSESSMENTS</tspan>
+            </text>
+            <text id="total_initial" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+                <tspan x="6" y="34">000</tspan>
+            </text>
+            <path d="M1,50 L174,50" id="filter_initial" stroke="#EFFFFD" stroke-width="3"></path>
+        </g>
+        <g id="in_depth_box" transform="translate(1416.000000, 1.000000)">
+            <rect id="Rectangle-6" fill="#828282" x="0" y="0" width="175" height="53"></rect>
+            <text id="IN-DEPTH-NEEDS-ASSES" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+                <tspan x="63" y="19">IN-DEPTH NEEDS </tspan>
+                <tspan x="63" y="36">ASSESSMENTS</tspan>
+            </text>
+            <text id="total_in_depth" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+                <tspan x="6" y="34">00</tspan>
+            </text>
+            <path d="M2,50 L173,50" id="filter_in_depth" stroke="#EFFFFD" stroke-width="3"></path>
+        </g>
+        <g id="monitoring_1_box" transform="translate(884.000000, 1.000000)">
+            <rect id="Rectangle-6" fill="#828282" x="0" y="0" width="177" height="53"></rect>
+            <text id="sector_monitoring_1" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+                <tspan x="7" y="34">000</tspan>
+            </text>
+            <text id="=1-Sector" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
+                <tspan x="70" y="44">=1 Sector</tspan>
+            </text>
+            <path d="M2,50 L175,50" id="filter_monitoring_1" stroke="#EFFFFD" stroke-width="3"></path>
+            <text id="SINGLE-SECTOR-MONITO" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+                <tspan x="70" y="14">SINGLE-SECTOR </tspan>
+                <tspan x="70" y="31">MONITORING</tspan>
+            </text>
+        </g>
+        <g id="monitoring_2_box" transform="translate(706.000000, 1.000000)">
+            <rect id="Rectangle-6" fill="#828282" x="0" y="0" width="177" height="53"></rect>
+            <text id="sector_monitoring_2" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#FFFFFF">
+                <tspan x="7" y="34">000</tspan>
+            </text>
+            <text id="&gt;=2-Sectors" font-family="SourceSansPro-Light, Source Sans Pro" font-size="12.9613134" font-weight="300" fill="#FFFFFF">
+                <tspan x="71" y="44">&gt;=2 Sectors</tspan>
+            </text>
+            <path d="M2,50 L175,50" id="filter_monitoring_2" stroke="#EFFFFD" stroke-width="3"></path>
+            <text id="MULTI-SECTOR-MONITOR" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="12.9613134" font-weight="bold" fill="#FFFFFF">
+                <tspan x="69" y="14">MULTI-SECTOR </tspan>
+                <tspan x="69" y="31">MONITORING</tspan>
+            </text>
+        </g>
+        <g id="key_informant_interview_box" transform="translate(637.000000, 50.000000)">
+            <rect id="Rectangle-6" fill="#EDEDED" x="0" y="4" width="303" height="36"></rect>
+            <text id="KEY-INFORMANT-INTERV" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
+                <tspan x="53" y="25">KEY INFORMANT INTERVIEWS</tspan>
+            </text>
+            <text id="key_informants" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+                <tspan x="6" y="28">000</tspan>
+            </text>
+            <path d="M2,33 L300,33" id="filter_key_informant_interview" stroke="#FFFFFF" stroke-width="3"></path>
+        </g>
+        <g id="focus_group_discussion_box" transform="translate(941.000000, 50.000000)">
+            <rect id="Rectangle-6" fill="#EDEDED" x="0" y="4" width="317" height="36"></rect>
+            <text id="focusgroup" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
+                <tspan x="56" y="25">FOCUS GROUP DISCUSSIONS</tspan>
+            </text>
+            <text id="focus_group_discussions" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+                <tspan x="6" y="28">000</tspan>
+            </text>
+            <path d="M3,33 L314,33" id="filter_focus_group_discussion" stroke="#FFFFFF" stroke-width="3"></path>
+        </g>
+        <g id="community_group_discussion_box" transform="translate(1259.000000, 50.000000)">
+            <rect id="Rectangle-6" fill="#EDEDED" x="0" y="4" width="332" height="36"></rect>
+            <text id="COMMUNITY-GROUP-DISC" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="17.1073232" font-weight="bold" fill="#696969">
+                <tspan x="54" y="25">COMMUNITY GROUP DISCUSSIONS</tspan>
+            </text>
+            <text id="community_group_discussions" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="28" font-weight="normal" fill="#696969">
+                <tspan x="7" y="28">000</tspan>
+            </text>
+            <path d="M3,33 L330,33" id="filter_community_group_discussion" stroke="#FFFFFF" stroke-width="3"></path>
+        </g>
+    </g>
+</svg>
