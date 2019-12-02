@@ -1187,7 +1187,7 @@ var Deepviz = function(sources, callback){
 		}).on('mouseout', function(){
 			d3.select('#collapse_bg').transition().duration(200).style('fill', '#E9E9E9');
 		});
-
+		var origHeight = 
 		d3.select('#svg_summary3_div').on('click', function(){
 			if(collapsed==false){
 				collapsed = true;
@@ -1198,17 +1198,20 @@ var Deepviz = function(sources, callback){
 				d3.select('#top_row')
 				.transition()
 				.duration(duration)
-				.style('height', '110px');
+				.style('height', ($('#svg_summary1_div').height()+$('#svg_summary3_div').height()+30) +'px')
+				// .on('end', function(){
+				// 	d3.select(this).style('height', 'auto');
+				// });
 
 				d3.select('#svg_summary2_div')
 				.transition()
 				.duration(duration)
-				.style('top', '-64px');
+				.style('top', -$('#svg_summary1_div').height()+'px');
 
 				d3.select('#svg_summary3_div')
 				.transition()
 				.duration(duration)
-				.style('top', '-62px');
+				.style('top', -($('#svg_summary1_div').height())  +'px' );
 
 
 			} else {
@@ -1220,7 +1223,10 @@ var Deepviz = function(sources, callback){
 				d3.select('#top_row')
 				.transition()
 				.duration(duration)
-				.style('height', '176px');
+				.style('height', ($('#svg_summary1_div').height()+$('#svg_summary2_div').height()+$('#svg_summary3_div').height()+30)+'px')
+				.on('end', function(){
+					d3.select(this).style('height', 'auto');
+				});
 
 				d3.select('#svg_summary2_div')
 				.transition()
