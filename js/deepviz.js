@@ -1250,7 +1250,7 @@ var Deepviz = function(sources, callback){
 		topFilters.forEach(function(d,i){
 			var name = d.name.slice(0,-4);
 			var f = 'filter_'+ name;
-			d3.select('#'+f).style('opacity', 0.01);
+			d3.select('#'+f).style('opacity', 0.01).attr('class', 'top_filter');
 			d3.select('#top_row #'+d.name).style('cursor', 'pointer')
 			.on('mouseover', function(d,i){
 				if(!filters['top'].includes(name)) {
@@ -3629,6 +3629,7 @@ var Deepviz = function(sources, callback){
 
 		if(value=='clear'){
 			filters[filterClass] = [];
+			d3.selectAll('.top_filter').style('opacity', 0.01);
 		} else if(value == 'clearFramework'){
 			filters['sector'] = [];
 			filters['context'] = [];
