@@ -11,7 +11,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// sector chart
 	//**************************
-	var sectorChart = Deepviz.createStackedBarChart({
+	var sectorChart = BarChart.createStackedBarChart({
 		title: 'ASSESSMENTS BY SECTOR AND ANALYITICAL SCORE',
 		rows: 'sector_array',
 		width: 500,
@@ -24,7 +24,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// focus chart
 	//**************************
-	var focusChart = Deepviz.createBarChart({
+	var focusChart = BarChart.createBarChart({
 		title: 'ASSESSMENTS BY FOCUS',
 		rows: 'focus_array',
 		width: 500,
@@ -37,7 +37,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	// **************************
 	// affected groups chart
 	// **************************
-	var affectedGroupsChart = Deepviz.createStackedBarChart({
+	var affectedGroupsChart = BarChart.createStackedBarChart({
 		title: 'ASSESSMENTS BY AFFECTED GROUPS',
 		rows: 'affected_groups_array',
 		classname: 'affected_groups',
@@ -50,7 +50,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// top stakeholders chart
 	//**************************
-	var topStakeholdersChart = Deepviz.createStackedBarChart({
+	var topStakeholdersChart = BarChart.createStackedBarChart({
 		title: 'TOP 10 STAKEHOLDERS',
 		rows: 'organization',
 		classname: 'organisation',
@@ -75,7 +75,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// assessment type chart
 	//**************************
-	var typeOfApproachChart = Deepviz.createStackedBarChart({
+	var typeOfApproachChart = BarChart.createStackedBarChart({
 		title: 'TYPE OF APPROACH',
 		rows: 'assessment_type',
 		classname: 'assessment_type',
@@ -88,7 +88,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// data collection technique chart
 	//**************************
-	var dataCollectionTechniqueChart = Deepviz.createStackedBarChart({
+	var dataCollectionTechniqueChart = BarChart.createStackedBarChart({
 		title: 'DATA COLLECTION TECHNIQUE',
 		rows: 'data_collection_technique',
 		classname: 'data_collection_technique',
@@ -101,7 +101,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// unit of analysis chart
 	//**************************
-	var unitOfAnalysisChart = Deepviz.createStackedBarChart({
+	var unitOfAnalysisChart = BarChart.createStackedBarChart({
 		title: 'UNIT OF ANALYSIS',
 		rows: 'type_of_unit_of_analysis',
 		classname: 'unit_of_analysis',
@@ -114,7 +114,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// unit of reporting chart
 	//**************************
-	var unitOfReportingChart = Deepviz.createStackedBarChart({
+	var unitOfReportingChart = BarChart.createStackedBarChart({
 		title: 'UNIT OF REPORTING',
 		rows: 'type_of_unit_of_analysis',
 		classname: 'unit_of_reporting',
@@ -127,7 +127,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// description of methodology chart
 	//**************************
-	var descriptionOfMethodologyChart = Deepviz.createBarChart({
+	var descriptionOfMethodologyChart = BarChart.createBarChart({
 		title: 'DESCRIPTION OF METHODOLOGY AND LIMITATIONS',
 		rows: 'methodology_content',
 		classname: 'methodology_content',
@@ -140,7 +140,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// documentation chart
 	//**************************
-	var documentationChart = Deepviz.createBarChart({
+	var documentationChart = BarChart.createBarChart({
 		title: 'ADDITIONAL DOCUMENTATION AVAILABLE',
 		rows: 'additional_documentation_array',
 		classname: 'additional_documentation',
@@ -153,7 +153,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// language chart
 	//**************************
-	var languageChart = Deepviz.createStackedBarChart({
+	var languageChart = BarChart.createStackedBarChart({
 		title: 'ASSESSMENTS BY LANGUAGE',
 		rows: 'language',
 		classname: 'language',
@@ -166,7 +166,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// sampling approach chart
 	//**************************
-	var samplingApproachChart = Deepviz.createStackedBarChart({
+	var samplingApproachChart = BarChart.createStackedBarChart({
 		title: 'SAMPLING APPROACH',
 		rows: 'sampling_approach',
 		classname: 'sampling_approach',

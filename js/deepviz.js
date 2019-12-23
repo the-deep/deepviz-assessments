@@ -1,170 +1,170 @@
+//**************************
+// define variables
+//**************************
+var dateRange  = [new Date(2019, 4, 15), new Date(2019, 7, 31)]; // selected dateRange on load
+// var minDate = new Date('2019-08-05');
+
+// use url parameters
+var url = new URL(window.location.href);
+// minDate = new Date(url.searchParams.get("min_date"));
+
+var maxDate;
+var dateIndex;
+var scale = {
+	'timechart': {x: '', y1: '', y2: ''},
+	'entrieschart': {x: '', y: ''},
+	'map': '',
+	'eventdrop': '',
+	'finalScore': {x: '', y: ''},
+	'sector': {x: '', y: ''},
+	'severity': {x: '', y: ''},
+	'affected_groups': {x: '', y: ''},
+	'organisation': {x: '', y: ''},
+};
+
+var atype_keys = {};
+var data_collection_technique_keys = {};
+
+var mapbox;
+var lassoActive = false;
+var collapsed = false;
+// data related
+var metadata;
+var metadataEntries;
+var originalData; // full original dataset without filters (used to refresh/clear filters)
+var originalDataEntries; // full original dataset without filters (used to refresh/clear filters)
+var data; // active dataset after filters applied
+var dataEntries;
+var dataByDate;
+var dataByMonth;
+var dataByYear;
+var dataByLocation;
+var dataByAssessmentType;
+var dataByOrganisation;
+var dataByOrganisationType;
+var dataByDataCollectionTechnique;
+var dataByUnitOfAnalysis;
+var dataByUnitOfReporting;
+var dataByMethodologyContent;
+var dataByAdditionalDocumentation;
+var dataByLanguage;
+var dataBySamplingApproach;
+var dataByLocationSum;
+var dataByLocationArray;
+var dataByFocus;
+var dataByFocusArray;
+var dataBySector;
+var dataByFramework;
+var dataByFrameworkSector;
+var	databyFrameworkContext;
+var dataBySpecificNeeds;
+var dataByAffectedGroups;
+var dataFitForPurpose;
+var coordinatedJointId;
+var coordinatedHarmonizedId;
+var uncoordinatedId;
+var stakeholder_type_keys = {};
+var total = 0;
+var maxValue; // max value on a given date
+var maxFocusValue;
+var tp_finalScore = [];
+var tp_reliability = [];
+var duration = 700;
+// timechart variables
+var timechartInit = 0;
+var timechartyAxis;
+var timechartyGrids;
+var entriesAxis;
+var entriesMax;
+var width = 1300;
+var margin = {top: 18, right: 17, bottom: 0, left: 45};
+var timechartViewBoxHeight = 1100;
+var timechartViewBoxWidth = width;
+var timechartSvgHeight = 1050;
+var timechartHeight = 346;
+var timechartHeight2 = timechartHeight;
+var timechartHeightOriginal = timechartHeight;
+var entriesChartHeight = 100;
+var entriesTopMargin = 34;
+var brush;
+var gBrush; 
+var barWidth;
+var numContextualRows;
+var numCategories;
+var frameworkToggleImg;
+// trendline
+var trendlinePoints;
+var avgSliderBrushing = false; // brush state
+var pathData = {};
+var clickTimer = 0;
+var smoothingVal = 10;
+var curvedLine = d3.line()
+.x(function(d,i){
+	return scale.timechart.x(dataByDate[i].date);
+})
+.y(d => (d))
+.curve(d3.curveLinear);
+
+var labelCharLimit = 30;
+
+// map
+var maxMapBubbleValue;
+var mapAspectRatio = 1.5;
+var geoBounds = {'lat': [], 'lon': []};
+// radar
+var radarChartOptions;
+var radarMargin;
+var radarHeight;
+var radarWidth;
+var radarColor; 
+
+// filters
+var filters = {
+	sector: [],
+	sector_count: [],
+	sampling_approach: [],
+	language: [],
+	additional_documentation: [],
+	methodology_content: [],
+	unit_of_reporting: [],
+	unit_of_analysis: [],
+	data_collection_technique: [],
+	assessment_type: [],
+	finalScore: [],
+	severity: [],
+	affected_groups: [],
+	stakeholder_type: [],
+	context: [],
+	focus: [],
+	organisation: [],
+	coordination: [],
+	top: [],
+	geo: [],
+	toggle: 'finalScore',
+	frameworkToggle: 'entries',
+	time: 'd'
+};
+
+var svg_summary1;
+var svg_summary2;
+var svg_summary3;
+var svg_quality;
+
+// colors
+var colorPrimary = ['#A1E6DB','#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']; // finalScore (multi-hue)
+var colorGrey = ['#CDCDCD', '#AFAFAF', '#939393', '#808080', '#646464'];
+var colorLightgrey = ['#EBEBEB', '#CFCFCF', '#B8B8B7', '#A8A9A8', '#969696'];
+var colorLightgrey = ['#fafafa','#F5F5F5', '#DFDFDF', '#D0D0D0', '#C7C7C7', '#BABABA'];
+var colorBlue = ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'];
+var colorNeutral = ['#ddf6f2', '#76D1C3', '#36BBA6', '#1AA791', '#008974'];
+var colorPrimary = ['#ddf6f2', '#76D1C3', '#36BBA6', '#1AA791', '#008974'];
+var colorSecondary = ['#A1E6DB','#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']; // finalScore (multi-hue)
+
+var maxCellSize = 4;
+var cellColorScale = d3.scaleSequential().domain([1,maxCellSize])
+.interpolator(d3.interpolateReds);
+
 var Deepviz = function(sources, callback){
-
-	//**************************
-	// define variables
-	//**************************
-	var dateRange  = [new Date(2019, 4, 15), new Date(2019, 7, 31)]; // selected dateRange on load
-	// var minDate = new Date('2019-08-05');
-
-	// use url parameters
-	var url = new URL(window.location.href);
-	// minDate = new Date(url.searchParams.get("min_date"));
-
-	var maxDate;
-	var dateIndex;
-	var scale = {
-		'timechart': {x: '', y1: '', y2: ''},
-		'entrieschart': {x: '', y: ''},
-		'map': '',
-		'eventdrop': '',
-		'finalScore': {x: '', y: ''},
-		'sector': {x: '', y: ''},
-		'severity': {x: '', y: ''},
-		'affected_groups': {x: '', y: ''},
-		'organisation': {x: '', y: ''},
-	};
-
-	var atype_keys = {};
-	var data_collection_technique_keys = {};
-
-	var mapbox;
-	var lassoActive = false;
-	var collapsed = false;
-	// data related
-	var metadata;
-	var metadataEntries;
-	var originalData; // full original dataset without filters (used to refresh/clear filters)
-	var originalDataEntries; // full original dataset without filters (used to refresh/clear filters)
-	var data; // active dataset after filters applied
-	var dataEntries;
-	var dataByDate;
-	var dataByMonth;
-	var dataByYear;
-	var dataByLocation;
-	var dataByAssessmentType;
-	var dataByOrganisation;
-	var dataByOrganisationType;
-	var dataByDataCollectionTechnique;
-	var dataByUnitOfAnalysis;
-	var dataByUnitOfReporting;
-	var dataByMethodologyContent;
-	var dataByAdditionalDocumentation;
-	var dataByLanguage;
-	var dataBySamplingApproach;
-	var dataByLocationSum;
-	var dataByLocationArray;
-	var dataByFocus;
-	var dataByFocusArray;
-	var dataBySector;
-	var dataByFramework;
-	var dataByFrameworkSector;
-	var	databyFrameworkContext;
-	var dataBySpecificNeeds;
-	var dataByAffectedGroups;
-	var dataFitForPurpose;
-	var coordinatedJointId;
-	var coordinatedHarmonizedId;
-	var uncoordinatedId;
-	var stakeholder_type_keys = {};
-	var total = 0;
-	var maxValue; // max value on a given date
-	var maxFocusValue;
-	var tp_finalScore = [];
-	var tp_reliability = [];
-	var duration = 700;
-	// timechart variables
-	var timechartInit = 0;
-	var timechartyAxis;
-	var timechartyGrids;
-	var entriesAxis;
-	var entriesMax;
-	var width = 1300;
-	var margin = {top: 18, right: 17, bottom: 0, left: 45};
-	var timechartViewBoxHeight = 1100;
-	var timechartViewBoxWidth = width;
-	var timechartSvgHeight = 1050;
-	var timechartHeight = 346;
-	var timechartHeight2 = timechartHeight;
-	var timechartHeightOriginal = timechartHeight;
-	var entriesChartHeight = 100;
-	var entriesTopMargin = 34;
-	var brush;
-	var gBrush; 
-	var barWidth;
-	var numContextualRows;
-	var numCategories;
-	var frameworkToggleImg;
-	// trendline
-	var trendlinePoints;
-	var avgSliderBrushing = false; // brush state
-	var pathData = {};
-	var clickTimer = 0;
-	var smoothingVal = 10;
-	var curvedLine = d3.line()
-	.x(function(d,i){
-		return scale.timechart.x(dataByDate[i].date);
-	})
-	.y(d => (d))
-	.curve(d3.curveLinear);
-
-	var labelCharLimit = 30;
-
-	// map
-	var maxMapBubbleValue;
-	var mapAspectRatio = 1.5;
-	var geoBounds = {'lat': [], 'lon': []};
-	// radar
-	var radarChartOptions;
-	var radarMargin;
-	var radarHeight;
-	var radarWidth;
-	var radarColor; 
-
-	// filters
-	var filters = {
-		sector: [],
-		sector_count: [],
-		sampling_approach: [],
-		language: [],
-		additional_documentation: [],
-		methodology_content: [],
-		unit_of_reporting: [],
-		unit_of_analysis: [],
-		data_collection_technique: [],
-		assessment_type: [],
-		finalScore: [],
-		severity: [],
-		affected_groups: [],
-		stakeholder_type: [],
-		context: [],
-		focus: [],
-		organisation: [],
-		coordination: [],
-		top: [],
-		geo: [],
-		toggle: 'finalScore',
-		frameworkToggle: 'entries',
-		time: 'd'
-	};
-
-	var svg_summary1;
-	var svg_summary2;
-	var svg_summary3;
-	var svg_quality;
-
-	// colors
-	var colorPrimary = ['#A1E6DB','#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']; // finalScore (multi-hue)
-	var colorGrey = ['#CDCDCD', '#AFAFAF', '#939393', '#808080', '#646464'];
-	var colorLightgrey = ['#EBEBEB', '#CFCFCF', '#B8B8B7', '#A8A9A8', '#969696'];
-	var colorLightgrey = ['#fafafa','#F5F5F5', '#DFDFDF', '#D0D0D0', '#C7C7C7', '#BABABA'];
-	var colorBlue = ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'];
-	var colorNeutral = ['#ddf6f2', '#76D1C3', '#36BBA6', '#1AA791', '#008974'];
-	var colorPrimary = ['#ddf6f2', '#76D1C3', '#36BBA6', '#1AA791', '#008974'];
-	var colorSecondary = ['#A1E6DB','#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']; // finalScore (multi-hue)
-
-	var maxCellSize = 4;
-	var cellColorScale = d3.scaleSequential().domain([1,maxCellSize])
-	.interpolator(d3.interpolateReds);
 
 	//**************************
 	// load data
@@ -1087,18 +1087,18 @@ var Deepviz = function(sources, callback){
 
 		updateTotals();
 		updateRadarCharts();
-		updateStackedBars('affected_groups', dataByAffectedGroups);
-		updateStackedBars('assessment_type', dataByAssessmentType);
-		updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
-		updateStackedBars('sampling_approach', dataBySamplingApproach);
-		updateBars('methodology_content', dataByMethodologyContent);
-		updateBars('additional_documentation', dataByAdditionalDocumentation);
-		updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
-		updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
-		updateStackedBars('language', dataByLanguage);
-		updateStackedBars('sector', dataBySector);
-		updateBars('focus', dataByFocusArray);
-		updateStackedBars('organisation', dataByOrganisation)
+		BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+		BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
+		BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+		BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
+		BarChart.updateBars('methodology_content', dataByMethodologyContent);
+		BarChart.updateBars('additional_documentation', dataByAdditionalDocumentation);
+		BarChart.updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+		BarChart.updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+		BarChart.updateStackedBars('language', dataByLanguage);
+		BarChart.updateStackedBars('sector', dataBySector);
+		BarChart.updateBars('focus', dataByFocusArray);
+		BarChart.updateStackedBars('organisation', dataByOrganisation)
 		return dataByDate;
 
 	}
@@ -1252,30 +1252,30 @@ var Deepviz = function(sources, callback){
 		// topline filters
 
 		var topFilters = [
-			{'name': 'coordination_5_box', 'filterFn': function(){ filter('top', 'coordination_5' ); }}, 
-			{'name': 'coordination_2_box', 'filterFn': function(){ filter('top', 'coordination_2' ); }}, 
-			{'name': 'coordination_1_box', 'filterFn': function(){ filter('top', 'coordination_1' ); }}, 
-			{'name': 'harmonized_box', 'filterFn': function(){ filter('top', 'harmonized') }}, 
-			{'name': 'uncoordinated_box', 'filterFn': function(){ filter('top', 'uncoordinated') }}, 
-			{'name': 'lngo_box', 'filterFn': function(){ filter('top', 'lngo') }}, 
-			{'name': 'ingo_box', 'filterFn': function(){ filter('top', 'ingo') }}, 
-			{'name': 'un_agency_box', 'filterFn': function(){ filter('top', 'un_agency') }}, 
-			{'name': 'cluster_box', 'filterFn': function(){ filter('top', 'cluster') }}, 
-			{'name': 'donor_box', 'filterFn': function(){ filter('top', 'donor') }}, 
-			{'name': 'rcrc_box', 'filterFn': function(){ filter('top', 'rcrc') }}, 
-			{'name': 'government_box', 'filterFn': function(){ filter('top', 'government') }},
-			{'name': 'community_group_discussion_box', 'filterFn': function(){ filter('top', 'community_group_discussion' ) }},
-			{'name': 'focus_group_discussion_box', 'filterFn': function(){ filter('top', 'focus_group_discussion' ) }},
-			{'name': 'key_informant_interview_box', 'filterFn': function(){ filter('top', 'key_informant_interview' )}},
-			{'name': 'monitoring_5_box', 'filterFn': function(){ filter('top', 'monitoring_5' ) }},
-			{'name': 'monitoring_2_box', 'filterFn': function(){ filter('top', 'monitoring_2' ) }},
-			{'name': 'monitoring_1_box', 'filterFn': function(){ filter('top', 'monitoring_1' ) }},
-			{'name': 'in_depth_box', 'filterFn': function(){ filter('top', 'in_depth') }},
-			{'name': 'initial_box', 'filterFn': function(){ filter('top', 'initial') }},
-			{'name': 'rapid_box', 'filterFn': function(){ filter('top', 'rapid')}},
-			{'name': 'sector_1_box', 'filterFn': function(){ filter('top', 'sector_1' ) }},
-			{'name': 'sector_2_box', 'filterFn': function(){ filter('top', 'sector_2' ) }},
-			{'name': 'sector_5_box', 'filterFn': function(){ filter('top', 'sector_5' ) }}
+			{'name': 'coordination_5_box', 'filterFn': function(){ Deepviz.filter('top', 'coordination_5' ); }}, 
+			{'name': 'coordination_2_box', 'filterFn': function(){ Deepviz.filter('top', 'coordination_2' ); }}, 
+			{'name': 'coordination_1_box', 'filterFn': function(){ Deepviz.filter('top', 'coordination_1' ); }}, 
+			{'name': 'harmonized_box', 'filterFn': function(){ Deepviz.filter('top', 'harmonized') }}, 
+			{'name': 'uncoordinated_box', 'filterFn': function(){ Deepviz.filter('top', 'uncoordinated') }}, 
+			{'name': 'lngo_box', 'filterFn': function(){ Deepviz.filter('top', 'lngo') }}, 
+			{'name': 'ingo_box', 'filterFn': function(){ Deepviz.filter('top', 'ingo') }}, 
+			{'name': 'un_agency_box', 'filterFn': function(){ Deepviz.filter('top', 'un_agency') }}, 
+			{'name': 'cluster_box', 'filterFn': function(){ Deepviz.filter('top', 'cluster') }}, 
+			{'name': 'donor_box', 'filterFn': function(){ Deepviz.filter('top', 'donor') }}, 
+			{'name': 'rcrc_box', 'filterFn': function(){ Deepviz.filter('top', 'rcrc') }}, 
+			{'name': 'government_box', 'filterFn': function(){ Deepviz.filter('top', 'government') }},
+			{'name': 'community_group_discussion_box', 'filterFn': function(){ Deepviz.filter('top', 'community_group_discussion' ) }},
+			{'name': 'focus_group_discussion_box', 'filterFn': function(){ Deepviz.filter('top', 'focus_group_discussion' ) }},
+			{'name': 'key_informant_interview_box', 'filterFn': function(){ Deepviz.filter('top', 'key_informant_interview' )}},
+			{'name': 'monitoring_5_box', 'filterFn': function(){ Deepviz.filter('top', 'monitoring_5' ) }},
+			{'name': 'monitoring_2_box', 'filterFn': function(){ Deepviz.filter('top', 'monitoring_2' ) }},
+			{'name': 'monitoring_1_box', 'filterFn': function(){ Deepviz.filter('top', 'monitoring_1' ) }},
+			{'name': 'in_depth_box', 'filterFn': function(){ Deepviz.filter('top', 'in_depth') }},
+			{'name': 'initial_box', 'filterFn': function(){ Deepviz.filter('top', 'initial') }},
+			{'name': 'rapid_box', 'filterFn': function(){ Deepviz.filter('top', 'rapid')}},
+			{'name': 'sector_1_box', 'filterFn': function(){ Deepviz.filter('top', 'sector_1' ) }},
+			{'name': 'sector_2_box', 'filterFn': function(){ Deepviz.filter('top', 'sector_2' ) }},
+			{'name': 'sector_5_box', 'filterFn': function(){ Deepviz.filter('top', 'sector_5' ) }}
 		];
 
 		topFilters.forEach(function(d,i){
@@ -1414,7 +1414,7 @@ var Deepviz = function(sources, callback){
 		}).on('click', function(d,i){
 			if(lassoActive) return false;
 			var geo = metadata.geo_array[i];
-			filter('geo',geo.id);
+			Deepviz.filter('geo',geo.id);
 			updateFinalScore('map', 500);
 		});
 
@@ -1512,7 +1512,7 @@ var Deepviz = function(sources, callback){
 			d3.select('#geoRemoveFilter').style('display', 'none').style('cursor', 'default');
 			$('#location-search').val(); 
 			$('#location-search').trigger('change.select2');
-			return filter('geo', 'clear'); 
+			return Deepviz.filter('geo', 'clear'); 
 		});
 
 		this.createSearch();
@@ -1596,10 +1596,10 @@ var Deepviz = function(sources, callback){
 			});
 
 			if(bbox.width==0){
-				filter('geo', 'clear');
+				Deepviz.filter('geo', 'clear');
 			} else {
 				filters.geo = geoArray;
-				filter('geo', 0);
+				Deepviz.filter('geo', 0);
 			}
 		};
 
@@ -1667,12 +1667,12 @@ var Deepviz = function(sources, callback){
 		    });
 
 		    $('#location-search').on('select2:select', function (e) {
-		    	filter('geo', parseInt(e.params.data.id));
+		    	Deepviz.filter('geo', parseInt(e.params.data.id));
 			});
 
 
 			$('#location-search').on('select2:unselect', function (e) {
-				filter('geo', parseInt(e.params.data.id));
+				Deepviz.filter('geo', parseInt(e.params.data.id));
 				if(!e.params.originalEvent) {
 					return;
 				}
@@ -2514,27 +2514,26 @@ var Deepviz = function(sources, callback){
 
 	    	colorBars();
 	    	updateDate();
+	    	updateTotals();
 	    	updateBubbles();
+	    	updateRadarCharts();
 	    	updateFinalScore('map', 500);
 	    	updateSeverity('map', 500);
-	    	updateStackedBars('affected_groups', dataByAffectedGroups);
-	    	updateStackedBars('assessment_type', dataByAssessmentType);
-	    	updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
-	    	updateStackedBars('sampling_approach', dataBySamplingApproach);
-	    	updateBars('methodology_content', dataByMethodologyContent);
-	    	updateBars('additional_documentation', dataByAdditionalDocumentation);
-	    	updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
-	    	updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
-	    	updateStackedBars('language', dataByLanguage);
-	    	updateStackedBars('sector', dataBySector);
-	    	updateBars('focus', dataByFocusArray);
-	    	updateStackedBars('organisation', dataByOrganisation)
+	    	BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+	    	BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
+	    	BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+	    	BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
+	    	BarChart.updateBars('methodology_content', dataByMethodologyContent);
+	    	BarChart.updateBars('additional_documentation', dataByAdditionalDocumentation);
+	    	BarChart.updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+	    	BarChart.updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+	    	BarChart.updateStackedBars('language', dataByLanguage);
+	    	BarChart.updateStackedBars('sector', dataBySector);
+	    	BarChart.updateBars('focus', dataByFocusArray);
+	    	BarChart.updateStackedBars('organisation', dataByOrganisation)
 
 	    	handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
 	    	handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + (timechartSvgHeight - margin.top) + ")"; });
-
-	    	updateTotals();
-	    	updateRadarCharts();
 	    });
 
 	    // keyboard pagination
@@ -2587,35 +2586,35 @@ var Deepviz = function(sources, callback){
 		    }
 
 		    if(e.keyCode == 67){ // C
-		    	filter('clear', 'clear');
+		    	Deepviz.filter('clear', 'clear');
 		    }
 
 		    if(e.keyCode == 8){ // BACKSPACE
-		    	filter('clear', 'clear');
+		    	Deepviz.filter('clear', 'clear');
 		    }
 
 		    if(e.keyCode == 27){ // ESC
-		    	filter('clear', 'clear');
+		    	Deepviz.filter('clear', 'clear');
 		    }
 
 		    if(e.keyCode == 49){ // 1
-		    	filter(filters.toggle, 1);
+		    	Deepviz.filter(filters.toggle, 1);
 		    }
 
 		    if(e.keyCode == 50){ // 2
-		    	filter(filters.toggle, 2);
+		    	Deepviz.filter(filters.toggle, 2);
 		    }
 
 		    if(e.keyCode == 51){ // 3
-		    	filter(filters.toggle, 3);
+		    	Deepviz.filter(filters.toggle, 3);
 		    }
 
 		    if(e.keyCode == 52){ // 4
-		    	filter(filters.toggle, 4);
+		    	Deepviz.filter(filters.toggle, 4);
 		    }
 
 		    if(e.keyCode == 53){ // 5
-		    	filter(filters.toggle, 5);
+		    	Deepviz.filter(filters.toggle, 5);
 		    }
 
 		    function dateKey(v){
@@ -2630,27 +2629,27 @@ var Deepviz = function(sources, callback){
 		    function update(){
 		    	colorBars();
 		    	updateDate();
+		    	updateTotals();
+		    	updateRadarCharts();
 		    	updateBubbles();
 		    	updateFinalScore('map', 200);
 		    	updateSeverity('map', 200);
-		    	updateStackedBars('affected_groups', dataByAffectedGroups);
-		    	updateStackedBars('assessment_type', dataByAssessmentType);
-		    	updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
-		    	updateStackedBars('sampling_approach', dataBySamplingApproach);
-		    	updateBars('methodology_content', dataByMethodologyContent);
-		    	updateBars('additional_documentation', dataByAdditionalDocumentation);
-		    	updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
-		    	updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
-		    	updateStackedBars('language', dataByLanguage);
-		    	updateStackedBars('sector', dataBySector);
-		    	updateBars('focus', dataByFocusArray);
-		    	updateStackedBars('organisation', dataByOrganisation)
+		    	BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+		    	BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
+		    	BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+		    	BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
+		    	BarChart.updateBars('methodology_content', dataByMethodologyContent);
+		    	BarChart.updateBars('additional_documentation', dataByAdditionalDocumentation);
+		    	BarChart.updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+		    	BarChart.updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+		    	BarChart.updateStackedBars('language', dataByLanguage);
+		    	BarChart.updateStackedBars('sector', dataBySector);
+		    	BarChart.updateBars('focus', dataByFocusArray);
+		    	BarChart.updateStackedBars('organisation', dataByOrganisation)
 
 		    	handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
 		    	handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + (timechartSvgHeight - margin.top) + ")"; });
 
-		    	updateTotals();
-		    	updateRadarCharts();
 		    }
 		}
 
@@ -2717,21 +2716,23 @@ var Deepviz = function(sources, callback){
 
 			colorBars();
 			updateDate();
+			updateTotals();
+			updateRadarCharts();
 			updateBubbles();
 			updateFinalScore('brush');
 			updateSeverity('brush');
-			updateStackedBars('affected_groups', dataByAffectedGroups);
-			updateStackedBars('assessment_type', dataByAssessmentType);
-			updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
-			updateStackedBars('sampling_approach', dataBySamplingApproach);
-			updateBars('methodology_content', dataByMethodologyContent);
-			updateBars('additional_documentation', dataByAdditionalDocumentation);
-			updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
-			updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
-			updateStackedBars('language', dataByLanguage);
-			updateStackedBars('sector', dataBySector);
-			updateBars('focus', dataByFocusArray);
-			updateStackedBars('organisation', dataByOrganisation)
+			BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+			BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
+			BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+			BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
+			BarChart.updateBars('methodology_content', dataByMethodologyContent);
+			BarChart.updateBars('additional_documentation', dataByAdditionalDocumentation);
+			BarChart.updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+			BarChart.updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+			BarChart.updateStackedBars('language', dataByLanguage);
+			BarChart.updateStackedBars('sector', dataBySector);
+			BarChart.updateBars('focus', dataByFocusArray);
+			BarChart.updateStackedBars('organisation', dataByOrganisation)
 
 			d3.select(this).call(d3.event.target.move, dateRange.map(scale.timechart.x));
 			handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
@@ -2739,8 +2740,6 @@ var Deepviz = function(sources, callback){
 
 			$('#location-search').select2('close');
 
-			updateTotals();
-			updateRadarCharts();
 		}
 
 		function dragged() {
@@ -2781,30 +2780,28 @@ var Deepviz = function(sources, callback){
 
 			colorBars();
 			updateDate();
+			updateTotals();
 			updateBubbles();
 			updateFinalScore('brush',500);
 			updateSeverity('brush', 500);
-			updateStackedBars('affected_groups', dataByAffectedGroups);
-			updateStackedBars('assessment_type', dataByAssessmentType);
-			updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
-			updateStackedBars('sampling_approach', dataBySamplingApproach);
-			updateBars('methodology_content', dataByMethodologyContent);
-			updateBars('additional_documentation', dataByAdditionalDocumentation);
-			updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
-			updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
-			updateStackedBars('language', dataByLanguage);
-			updateStackedBars('sector', dataBySector);
-			updateBars('focus', dataByFocusArray);
-			updateStackedBars('organisation', dataByOrganisation)
+			updateRadarCharts();
+			BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+			BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
+			BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+			BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
+			BarChart.updateBars('methodology_content', dataByMethodologyContent);
+			BarChart.updateBars('additional_documentation', dataByAdditionalDocumentation);
+			BarChart.updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+			BarChart.updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+			BarChart.updateStackedBars('language', dataByLanguage);
+			BarChart.updateStackedBars('sector', dataBySector);
+			BarChart.updateBars('focus', dataByFocusArray);
+			BarChart.updateStackedBars('organisation', dataByOrganisation)
 
 			d3.select(this).call(d3.event.target.move, dateRange.map(scale.timechart.x));
 			handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
 			handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + (timechartSvgHeight - margin.top) + ")"; });
-
 			$('#location-search').select2('close');
-
-			updateTotals();
-			updateRadarCharts();
 		}
 
 
@@ -2813,26 +2810,24 @@ var Deepviz = function(sources, callback){
 
 		colorBars();
 		updateDate();
+		updateTotals();
 		updateEntriesChart();
 		updateBubbles();
 		updateFinalScore('init', 500);
 		updateSeverity('init', 500);
-		updateTotals();
 		updateRadarCharts();
-		updateStackedBars('affected_groups', dataByAffectedGroups);
-		updateStackedBars('assessment_type', dataByAssessmentType);
-		updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
-		updateStackedBars('sampling_approach', dataBySamplingApproach);
-		updateBars('methodology_content', dataByMethodologyContent);
-		updateBars('additional_documentation', dataByAdditionalDocumentation);
-		updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
-		updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
-		updateStackedBars('language', dataByLanguage);
-		// updateStackedBars('sc', dataBySector);
-
-		updateStackedBars('sector', dataBySector);
-		updateBars('focus', dataByFocusArray);
-		updateStackedBars('organisation', dataByOrganisation)
+		BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+		BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
+		BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+		BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
+		BarChart.updateBars('methodology_content', dataByMethodologyContent);
+		BarChart.updateBars('additional_documentation', dataByAdditionalDocumentation);
+		BarChart.updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+		BarChart.updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+		BarChart.updateStackedBars('language', dataByLanguage);
+		BarChart.updateStackedBars('sector', dataBySector);
+		BarChart.updateBars('focus', dataByFocusArray);
+		BarChart.updateStackedBars('organisation', dataByOrganisation)
 
 		return bars;
 	}
@@ -2934,7 +2929,7 @@ var Deepviz = function(sources, callback){
 		.on('click', function(d,i){
 			d3.selectAll('.bar').transition("mouseoutReliability").duration(duration).style('opacity', 1);	
 			clickTimer = 1;
-			filter('finalScore',i);
+			Deepviz.filter('finalScore',i);
 			setTimeout(function(){ clickTimer = 0 }, 2000);
 		});
 
@@ -2954,7 +2949,7 @@ var Deepviz = function(sources, callback){
 			d3.selectAll('.finalScoreBar').transition().duration(200).style('fill', function(d,i){
 				return colorPrimary[i];
 			});	
-			return filter('finalScore', 'clear'); 
+			return Deepviz.filter('finalScore', 'clear'); 
 		});
 
 		updateFinalScore('init', duration);
@@ -3056,7 +3051,7 @@ var Deepviz = function(sources, callback){
 		}).on('click', function(d,i){
 			d3.selectAll('.bar').transition("mouseoutReliability").duration(500).style('opacity', 1);	
 			clickTimer = 1;
-			filter('severity',i);
+			Deepviz.filter('severity',i);
 			setTimeout(function(){ clickTimer = 0 }, 2000);
 		});
 
@@ -3076,343 +3071,11 @@ var Deepviz = function(sources, callback){
 			d3.selectAll('.severityBar').transition().duration(200).style('fill', function(d,i){
 				return colorSecondary[i];
 			});	
-			return filter('severity', 'clear'); 
+			return Deepviz.filter('severity', 'clear'); 
 		});
 
 		updateSeverity('init', 500);
 	}
-
-	//**************************
-	// bar chart
-	//**************************
-	this.createBarChart = function(a){
-
-		var padding = {left: 20, right: 25, top: 35, bar: {y: 5}};
-
-		// create svg
-		var svg = this.createSvg({
-			id: a.div+'-svg',
-			viewBoxWidth: a.width,
-			viewBoxHeight: a.height,
-			div: '#'+a.div,
-			width: '100%'
-		});
-
-		var height = a.height - padding.top;
-
-		a.rows = metadata[a.rows];
-
-		if((a.limit)&&(a.rows.length>a.limit)) {
-			var rowHeight = height/a.limit;
-			a.rows = a.rows.splice(0,10);
-		} else {
-			var rowHeight = height/a.rows.length;
-		}
-
-		// add title
-		var title = svg.append('g')
-		.attr('transform', 'translate(0,0)');
-
-		title
-		.append('text')
-		.attr('x', 0)
-		.attr('y', 20)
-		.style('font-weight', 'bold')
-		.text(a.title);
-
-		// add filter icon
-		title.append('image')
-		.attr('id', a.classname+'RemoveFilter')
-		.attr('class', 'removeFilterBtn')
-		.attr('xlink:href', 'images/filter.png')
-		.attr('title', 'Reset filter')
-		.attr('y', 1)
-		.attr('x', title.node().getBBox().width +5 )
-		.attr('height', '22px')
-		.attr('width', '22px');
-
-		var chartarea = svg.append('g');
-
-		var rows = chartarea.selectAll('.bar-row')
-		.data(a.rows)
-		.enter()
-		.append('g')
-		.attr('class', function(d,i) { return 'bar-row '+ a.classname+'-row ' + a.classname+'-bar-row'+i; })
-		.attr('transform', function(d,i){
-			return 'translate(0,' + ((i*rowHeight) + padding.top) + ')';
-		});
-
-		var label = rows.append('text')
-		.attr('y', rowHeight/2 )
-		.attr('class', function(d,i){ return a.classname + ' ' + a.classname+'-'+i })
-		.style('alignment-baseline', 'middle')
-		.text(function(d,i){
-			var name = d.name.substr(0,labelCharLimit);
-			if(name.length==labelCharLimit) name += '.';
-			return name;
-		}).style('text-anchor', 'end');
-
-		var labelWidth = chartarea.node().getBBox().width + padding.left;
-		label.attr('x', labelWidth-20);
-		labelWidth = labelWidth + 16;
-
-		// title.attr('transform', function(d,i){
-		// 	var offset = d3.select(this).node().getBBox().width +35;
-		// 	return 'translate('+(labelWidth-offset)+',0)';
-		// })
-
-		var width = a.width - labelWidth - padding.right; 
-
-		// adjust title and filter button spacing
-		d3.select('#'+a.classname+'Title').style('text-align', 'left').style('display', 'inline');
-
-		var rowBg = rows.append('rect')
-		.attr('y', 1)
-		.attr('x', 0)
-		.attr('width', labelWidth-30)
-		.attr('height', rowHeight-2)
-		.style('opacity', 0)
-		.style('cursor', 'pointer')
-		.attr('class', function(d,i){ return a.classname +'-bg ' + a.classname+'-bg-'+i })
-		.on('mouseover', function(){
-			d3.select(this).style('opacity', 0.03)
-		})
-		.on('mouseout', function(){
-			d3.select(this).style('opacity', 0)
-		})
-		.on('click', function(d,i){
-			return filter (a.filter, i+1);
-		});
-
-		// define x scale
-		scale[a.classname] = {};
-		scale[a.classname].x = d3.scaleLinear()
-		.range([labelWidth, a.width - padding.right])
-		.domain([1, 5]);// finalScore/reliability x xcale
-
-		scale[a.classname].paddingLeft = labelWidth;
-
-		for(var s=0; s >= 0; s--) {
-			var val = s;
-			var bar = rows.append('rect')
-			.attr('id', function(d,i){
-				return a.classname+d.id+'s'+(s);
-			})
-			.attr('class', a.classname+'-bar s'+(s))
-			.attr('x', function(d,i){
-				return scale[a.classname].x(s);
-			})
-			.attr('width', width/5)
-			.attr('data-width', width)
-			.attr('data-id', s)
-			.attr('data-percent', 0)
-			.style('outline', 'none')
-			.attr('y', padding.bar.y)
-			.attr('height', rowHeight-(padding.bar.y*2))
-			.style('fill', colorPrimary[s])
-		}
-
-		var dataLabel = rows.append('text')
-		.text(999)
-		.attr('id', function(d,i){
-			return a.classname+d.id+'label';
-		})
-		.attr('class', a.classname+'-label')
-		.attr('y', rowHeight/2)
-		.style('alignment-baseline', 'middle')
-		.style('text-anchor', 'middle')
-		.attr('x', labelWidth -20 )
-		.style('fill', colorPrimary[4])
-		.style('font-weight', 'bold')
-		.style('font-size', '16px');
-
-		d3.select('#'+a.classname+'RemoveFilter').on('click', function(){ filter(a.filter, 'clear'); });
-
-	}
-
-	//**************************
-	// stacked bar chart
-	//**************************
-	this.createStackedBarChart = function(a){
-
-		var padding = {left: 20, right: 25, top: 35, bar: {y: 5}};
-
-		// create svg
-		var svg = this.createSvg({
-			id: a.div+'-svg',
-			viewBoxWidth: a.width,
-			viewBoxHeight: a.height,
-			div: '#'+a.div,
-			width: '100%'
-		});
-
-		a.rows = metadata[a.rows];
-
-		if(a.classname=='organisation'){
-			a.rows = a.rows.splice(0,10);
-		}
-
-		var height = a.height - padding.top;
-		var rowHeight = height/a.rows.length;
-
-		// add title
-		var title = svg.append('g')
-		.attr('transform', 'translate(0,0)');
-
-		title
-		.append('text')
-		.attr('x', 0)
-		.attr('y', 20)
-		.style('font-weight', 'bold')
-		.text(a.title);
-
-		// add filter icon
-		title.append('image')
-		.attr('id', a.classname+'RemoveFilter')
-		.attr('class', 'removeFilterBtn')
-		.attr('xlink:href', 'images/filter.png')
-		.attr('title', 'Reset filter')
-		.attr('y', 1)
-		.attr('x', title.node().getBBox().width +5 )
-		.attr('height', '22px')
-		.attr('width', '22px');
-
-		var chartarea = svg.append('g');
-
-		var rows = chartarea.selectAll('.stacked-bar-row')
-		.data(a.rows)
-		.enter()
-		.append('g')
-		.attr('class', 'stacked-bar-row '+a.clasname+'-row')
-		.attr('transform', function(d,i){
-			return 'translate(0,' + ((i*rowHeight) + padding.top) + ')';
-		});
-
-		var label = rows.append('text')
-		.attr('y', rowHeight/2 )
-		.attr('class', function(d,i){ return a.classname + ' ' + a.classname+'-'+i })
-		.style('alignment-baseline', 'middle')
-		.text(function(d,i){
-			var name = d.name.substr(0,labelCharLimit-7);
-			if(name.length==labelCharLimit-7) name += '.';
-			return name;
-		}).style('text-anchor', 'end');
-
-		var labelWidth = chartarea.node().getBBox().width + padding.left;
-		label.attr('x', labelWidth-20);
-		labelWidth = labelWidth + 16;
-
-		if(a.classname == 'sector'){
-			var icon = rows.append('image')
-			.attr('class', function(d,i){
-				return 'sector-icon sector-icon-'+d.id;
-			})
-			.attr('xlink:href', function(d,i){
-				return 'images/sector-icons/'+(d.name.toLowerCase())+'.svg'; 
-			})
-			.attr('height', 23)
-			.attr('width', 23)
-			.attr('y', rowHeight/2 - 12)
-			.attr('x', labelWidth-30);
-
-			labelWidth = labelWidth + 30;
-		}
-
-		var width = a.width - labelWidth - padding.right; 
-
-		// adjust title and filter button spacing
-		d3.select('#'+a.classname+'Title').style('text-align', 'left').style('display', 'inline');
-
-		var rowBg = rows.append('rect')
-		.attr('y', 1)
-		.attr('x', 0)
-		.attr('width', labelWidth-30)
-		.attr('height', rowHeight-2)
-		.style('opacity', 0)
-		.style('cursor', 'pointer')
-		.attr('class', function(d,i){ return a.classname +'-bg ' + a.classname+'-bg-'+i })
-		.on('mouseover', function(){
-			d3.select(this).style('opacity', 0.03)
-		})
-		.on('mouseout', function(){
-			d3.select(this).style('opacity', 0)
-		})
-		.on('click', function(d,i){
-			if(a.classname=='sector'){
-				return filter('sector',i+1);
-			}
-		});
-
-		// define x scale
-		scale[a.classname] = {};
-		scale[a.classname].x = d3.scaleLinear()
-		.range([labelWidth, a.width - padding.right])
-		.domain([1, 5]);// finalScore/reliability x xcale
-
-		scale[a.classname].paddingLeft = labelWidth;
-
-		for(var s=5; s >= 0; s--) {
-			var val = s;
-			var bar = rows.append('rect')
-			.attr('id', function(d,i){
-				return a.classname+d.id+'s'+(s);
-			})
-			.attr('class', a.classname+'-bar s'+(s))
-			.attr('x', function(d,i){
-				return scale[a.classname].x(s);
-			})
-			.attr('width', width/5)
-			.attr('data-width', width)
-			.attr('data-id', s)
-			.attr('data-percent', 0)
-			.style('outline', 'none')
-			.attr('y', padding.bar.y)
-			.attr('height', rowHeight-(padding.bar.y*2))
-			.style('fill', colorPrimary[s])
-			.on('click', function(d,i){
-				var val = parseInt(d3.select(this).attr('data-id'));
-				if(filters.toggle=='finalScore'){
-					filter('finalScore',val);
-				} else {
-					filter('reliability',val);
-				}
-			})
-		}
-
-		var dataLabel = rows.append('text')
-		.text(999)
-		.attr('id', function(d,i){
-			return a.classname+d.id+'label';
-		})
-		.attr('class', a.classname+'-label')
-		.attr('y', rowHeight/2)
-		.style('alignment-baseline', 'middle')
-		.style('text-anchor', 'middle')
-		.attr('x', labelWidth -20 )
-		.style('fill', colorPrimary[4])
-		.style('font-weight', 'bold')
-		.style('font-size', '16px');
-
-		d3.select('#'+a.classname+'RemoveFilter').on('click', function(){ filter(a.filter, 'clear'); });
-
-	}
-
-	//**************************
-	// create type of approach chart
-	//**************************
-	// this.createTypeOfApproachChart = function(options){
-
-	// 	var typeOfApproachChart = this.createBarChart({
-	// 		title: 'ASSESSMENTS BY AFFECTED GROUPS',
-	// 		rows: metadata.affected_groups_array,
-	// 		classname: 'affected_groups',
-	// 		width: 500,
-	// 		height: 500,
-	// 		filter: 'type',
-	// 		div: 'affected-groups-svg'
-	// 	});
-	// 	d3.select('#affected_groupsRemoveFilter').on('click', function(){ filter('type', 'clear'); });
-	// }
 
 	//**************************
 	// create polar charts
@@ -3602,7 +3265,7 @@ var Deepviz = function(sources, callback){
 	//**************************
 	// filtering (push values to filter array)
 	//**************************
-	var filter = function(filterClass, value){
+	this.filter = function(filterClass, value){
 
 		if(filterClass=='clear'){
 			filters.sector = [];
@@ -3865,7 +3528,7 @@ var Deepviz = function(sources, callback){
 
 		updateTimeline(filterClass);
 
-		d3.select('#globalRemoveFilter').on('click', function(){ filter('clear', 'clear'); });
+		d3.select('#globalRemoveFilter').on('click', function(){ Deepviz.filter('clear', 'clear'); });
 	}
 
 	//**************************
@@ -3965,21 +3628,21 @@ var Deepviz = function(sources, callback){
 				// },
 			});
 
-			updateBubbles();
 			updateTotals();
+			updateBubbles();
 			updateRadarCharts();
-			updateStackedBars('affected_groups', dataByAffectedGroups);
-			updateStackedBars('assessment_type', dataByAssessmentType);r
-			updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
-			updateStackedBars('sampling_approach', dataBySamplingApproach);
-			updateBars('methodology_content', dataByMethodologyContent);
-			updateBars('additional_documentation', dataByAdditionalDocumentation);
-			updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
-			updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
-			updateStackedBars('language', dataByLanguage);
-			updateStackedBars('sector', dataBySector);
-			updateBars('focus', dataByFocusArray);
-			updateStackedBars('organisation', dataByOrganisation)
+			BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+			BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
+			BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+			BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
+			BarChart.updateBars('methodology_content', dataByMethodologyContent);
+			BarChart.updateBars('additional_documentation', dataByAdditionalDocumentation);
+			BarChart.updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+			BarChart.updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+			BarChart.updateStackedBars('language', dataByLanguage);
+			BarChart.updateStackedBars('sector', dataBySector);
+			BarChart.updateBars('focus', dataByFocusArray);
+			BarChart.updateStackedBars('organisation', dataByOrganisation)
 		});
 	}
 
@@ -5010,352 +4673,6 @@ var Deepviz = function(sources, callback){
 			d3.select('#severity_value').text('');
 			d3.selectAll('.severityBar').attr('fill', '#CDCDCD');
 		}
-	}
-
-	//**************************
-	// update stacked bars
-	//**************************
-	var updateStackedBars = function(group, dataset, duration = 0){
-
-		var sort = true;
-
-		var data_group = group;
-		if(data_group=='organisation') data_group = 'organization';
-		if(data_group=='sector') data_group = 'sector_array';
-		if(data_group=='affected_groups') data_group = 'affected_groups_array';
-		if(data_group=='unit_of_reporting') data_group = 'type_of_unit_of_analysis';
-		if(data_group=='unit_of_analysis') data_group = 'type_of_unit_of_analysis';
-
-		// affected groups
-		var dat = dataset.filter(function(d){
-			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]));
-		});
-
-		var nest = d3.nest()
-		.key(function(d) { return d[group]; })
-		.key(function(d) { return d.s }).sortKeys(d3.ascending)
-		.rollup(function(leaves) { return leaves.length; })		
-		.entries(dat);	
-
-		nest.forEach(function(d,i){
-			d.value = d3.sum(d.values, function(d){
-				return d.value;
-			})
-		});
-
-		if(sort==true){
-			nest = nest.sort(function(x,y){
-				return d3.ascending(y.value, x.value);
-			});
-		}
-
-		if(group=='organisation'){
-			nest = nest.splice(0,10);
-		}
-
-		var d = [];
-		metadata[data_group].forEach(function(mt,ii){
-			var name = mt.name.substr(0,labelCharLimit-7);
-			if(name.length==labelCharLimit-7) name += '.';
-			var key = mt.id;
-			var value = 0;
-			var values = [];
-			nest.forEach(function(dd,ii){
-				if(mt.id==dd.key){
-					value = dd.value;
-					values = dd.values;
-				}
-			});
-			d.push({'key': key, 'value': value, 'values': values, 'name': name});
-		});
-
-		if(sort==true){
-			d = d.sort(function(x,y){
-				return d3.ascending(y.value, x.value);
-			});
-		}
-
-		if(group=='organisation'){
-			d = d.splice(0,10);
-		}
-
-		var rowMax = d3.max(d, function(d,i){
-			return d.value
-		});
-
-		scale[group].x.domain([0, rowMax]);// finalScore/reliability x xcale
-
-	    // reset all bars to zero width
-	    d3.selectAll('.'+group+'-bar').attr('width', 0);
-
-		var rows = d3.selectAll('.'+group+'-row')
-		.data(d)
-		.attr('class', function(d,i){
-			return 'bar-row '+group+'-row '+group+'-bar-row'+d.key;
-		});
-
-		var labels =d3.selectAll('text.'+group)
-		.data(d)
-		.text(function(d,ii){
-			return d.name;
-		})
-		.attr('class', function(d,i){
-			return group + ' ' +group +'-'+d.key;``
-		})
-		.style('opacity', 1);
-
-		d3.selectAll('.'+group+'-bg')
-		.data(d)
-		.attr('class', function(d,i) { 
-			return group+'-bg ' + group + '-bg-'+d.key;
-		}).on('click', function(d,i){
-			return filter (group, d.key);
-		});
-
-
-		d.forEach(function(d,i){
-			var key = d.key;
-			var wcount = scale[group].paddingLeft;
-			var xcount = scale[group].paddingLeft;
-			var value = d.value; 
-			var name = d.name;
-
-			d3.select('#'+group+(i+1)+'label').text(function(d,i){
-				if(value>0){ return value; } else { return ''};
-			});
-
-			if(group=='sector'){
-				d3.select('.'+group+'-icon-'+(i+1))
-				.attr('href', function(d,i){
-					return 'images/sector-icons/'+name.toLowerCase()+'.svg'
-				})
-				.style('opacity', function(d,i){
-					if(filters['sector'].includes(key)){
-						return 1;
-					} else {
-						return 0.2;
-					}
-				})				
-			}
-
-			d.values.forEach(function(dd,ii){
-				var s = dd.key;
-				var id = group+(i+1)+'s'+(s);
-				var w = scale[group].x(dd.value)-wcount;
-				d3.select('#'+id )
-				.attr('x', xcount)
-				.attr('width', w)
-				.attr('data-value', dd.value)
-				.style('fill', function(){
-					if(filters.toggle == 'finalScore'){
-						return colorPrimary[s];
-					} else {
-						return colorSecondary[s];
-					}
-				});
-				var rect = document.querySelector('#'+id)
-				tippy(rect, { 
-					content: setBarName(s),
-					theme: 'light-border',
-					delay: [250,100],
-					inertia: false,
-					distance: 8,
-					allowHTML: true,
-					animation: 'shift-away',
-					arrow: true,
-					size: 'small',
-					onShow(instance) {
-				        // instance.popper.hidden = instance.reference.dataset.tippy ? false : true;
-				        var v = d3.select('#'+id).attr('data-value');
-				        if(s>=0)
-				        	instance.setContent(setBarName(s, v));
-				    }
-				});
-				xcount = xcount + w;
-			});
-		});
-
-		if(filters[group].length>0){
-			d3.selectAll('.'+group).style('opacity', 0.2);
-			d3.selectAll('.'+group+'-bg').style('opacity', 0);
-		}
-		filters[group].forEach(function(d,i){
-			d3.selectAll('.'+group+'-'+(d)).style('opacity', 1);
-		});
-
-	}
-
-	var setBarName = function(s,v){
-			var color = colorPrimary[s];
-			var text = metadata.scorepillar_scale[s].name;
-		return '<div style="width: 100px; height: 10px; display: inline; background-color: '+ color + '">&nbsp;&nbsp;</div>&nbsp;&nbsp; ' + text + ' <div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + v + ' assessments</div>';
-	}
-
-
-	//**************************
-	// update bar charts
-	//**************************
-	var updateBars = function(group, dataset, duration = 0){
-
-		var sort = true;
-
-		// affected groups
-		var dat = dataset.filter(function(d){
-			return (((d.date)>=dateRange[0])&&((d.date)<dateRange[1]));
-		});
-
-		var nest = d3.nest()
-		.key(function(d) {  return d[group]; })
-		.rollup(function(leaves) { return leaves.length; })		
-		.entries(dat);	
-
-		var labels = d3.nest().key(function(d) {
-			return d[group];
-		}).sortKeys(d3.ascending)
-		.rollup(function(leaves) {
-			return d3.sum(leaves, function(d) {
-				return 1;
-			});
-		}).entries(dat);
-
-		var data_group = group;
-		if(data_group=='focus') data_group = 'focus_array';
-		if(data_group=='affected_groups') data_group = 'affected_groups_array';
-		if(data_group=='additional_documentation') data_group = 'additional_documentation_array';
-		if(data_group=='unit_of_reporting') data_group = 'type_of_unit_of_analysis';
-		if(data_group=='unit_of_analysis') data_group = 'type_of_unit_of_analysis';
-		if(data_group=='organisation') data_group = 'organization';
-
-		var d = [];
-		metadata[data_group].forEach(function(mt,ii){
-			var name = mt.name;
-			var key = mt.id;
-			var value = 0;
-			nest.forEach(function(dd,ii){
-				if(mt.id==dd.key){
-					value = dd.value;
-				}
-			});
-			d.push({'key': key, 'value': value, 'name': name});
-		});
-
-		if(sort==true){
-			d = d.sort(function(x,y){
-				return d3.ascending(y.value, x.value);
-			});
-		}
-
-		if(group=='organisation'){
-			d = d.splice(0,10);
-		}
-
-		var rowMax = d3.max(labels, function(d,i){
-			return d.value
-		});
-
-		scale[group].x.domain([0, rowMax]);// finalScore/reliability x xcale
-
-	    // reset all bars to zero width
-	    d3.selectAll('.'+group+'-bar').attr('width', 0);
-
-		var rows = d3.selectAll('.'+group+'-row')
-		.data(d)
-		.attr('class', function(d,i){
-			return 'bar-row '+group+'-row '+group+'-bar-row'+d.key;
-		});
-
-		var labels =d3.selectAll('text.'+group)
-		.data(d)
-		.text(function(d,ii){
-			return d.name;
-		})
-		.attr('class', function(d,i){
-			return group + ' ' +group +'-'+d.key;``
-		})
-
-		rows.select('.'+group+'-bg')
-		.attr('class', function(d,i) { 
-			return group+'-bg ' + group + '-bg-'+d.key;
-		}).on('click', function(d,i){
-			return filter (group, d.key);
-		});
-
-		rows.select('.'+group+'-bar')
-		.attr('width', function(d,i){
-			if(d.value>0){
-				return scale[group].x(d.value)-scale[group].paddingLeft;
-			} else {
-				return 0;
-			}
-		})
-		.attr('x', function(d,i){
-			return scale[group].paddingLeft;
-		})
-		.style('fill', colorPrimary[3])
-		.attr('data-value', function(d,i){
-			return d.value;
-		});
-
-		rows.select('.'+group+'-label').text(function(d,i){
-			if(d.value>0){ return d.value; } else { return ''}
-		});
-
-		if(filters[group].length>0){
-			d3.selectAll('.'+group).style('opacity', 0.2);
-			d3.selectAll('.'+group+'-bg').style('opacity', 0);
-		}
-		filters[group].forEach(function(d,i){
-			d3.selectAll('.'+group+'-'+(d)).style('opacity', 1);
-		});
-
-		// labels.forEach(function(dd,ii){
-
-		// 	d3.select('#'+group+dd.key+'label').text(dd.value).style('opacity', 1)
-		// 	.style('fill', function(){
-		// 		if(filters.toggle == 'finalScore'){
-		// 			return colorNeutral[4];
-		// 		} else {
-		// 			return colorNeutral[4];
-		// 		}
-		// 	});
-		// 	var row = dd.key;
-		// });
-
-		// d.forEach(function(d,i){
-		// 	var key = d.key;
-		// 	var wcount = scale[group].paddingLeft;
-		// 	var xcount = scale[group].paddingLeft;
-		// 		var s = d.key;
-		// 		var id = group+(key)+'s0';
-		// 		var w = scale[group].x(d.value)-wcount;
-		// 		d3.select('#'+id )
-		// 		.attr('x', xcount)
-		// 		.attr('width', w)
-		// 		.attr('data-value', d.value)
-		// 		.style('fill', function(){
-		// 			if(filters.toggle == 'finalScore'){
-		// 				return colorPrimary[3];
-		// 			} else {
-		// 				return colorSecondary[s];
-		// 			}
-		// 		});
-		// 		var rect = document.querySelector('#'+id)
-		// 		tippy(rect, { 
-		// 			content: '1',
-		// 			theme: 'light-border',
-		// 			delay: [250,100],
-		// 			inertia: false,
-		// 			distance: 8,
-		// 			allowHTML: true,
-		// 			animation: 'shift-away',
-		// 			arrow: true,
-		// 			size: 'small',
-		// 			onShow(instance) {
-		// 		        var v = d3.select('#'+id).attr('data-value');
-		// 				return '<div style="width: 100px; height: 10px; display: inline; background-color: '+ colorPrimary[2] + '">&nbsp;&nbsp;</div>&nbsp;&nbsp;<div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + v + ' entries</div>';
-		// 			}
-		// 		});
-		// });
 	}
 
 	function colorBars(){
