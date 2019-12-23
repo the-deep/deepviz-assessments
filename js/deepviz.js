@@ -913,7 +913,7 @@ var Deepviz = function(sources, callback){
 				}
 			})
 
-			dataByAssessmentType.push({"date": d.date, 'assessment_type': parseInt(d.assessment_type)});
+			dataByAssessmentType.push({"date": d.date, 'assessment_type': parseInt(d.assessment_type), 's': d.finalScore});
 
 			d.organization_and_stakeholder_type.forEach(function(dd,ii){
 				var name;
@@ -927,7 +927,7 @@ var Deepviz = function(sources, callback){
 
 			d.data_collection_technique.forEach(function(dd,ii){
 				if(dd!==null)
-				dataByDataCollectionTechnique.push({"date": d.date,  "data_collection_technique": dd });
+				dataByDataCollectionTechnique.push({"date": d.date,  "data_collection_technique": dd, 's': d.finalScore });
 			});
 
 		});
@@ -1087,15 +1087,15 @@ var Deepviz = function(sources, callback){
 
 		updateTotals();
 		updateRadarCharts();
-		updateBars('affected_groups', dataByAffectedGroups);
-		updateBars('assessment_type', dataByAssessmentType);
-		updateBars('data_collection_technique', dataByDataCollectionTechnique);
-		updateBars('sampling_approach', dataBySamplingApproach);
+		updateStackedBars('affected_groups', dataByAffectedGroups);
+		updateStackedBars('assessment_type', dataByAssessmentType);
+		updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+		updateStackedBars('sampling_approach', dataBySamplingApproach);
 		updateBars('methodology_content', dataByMethodologyContent);
 		updateBars('additional_documentation', dataByAdditionalDocumentation);
-		updateBars('unit_of_reporting', dataByUnitOfReporting);
-		updateBars('unit_of_analysis', dataByUnitOfAnalysis);
-		updateBars('language', dataByLanguage);
+		updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+		updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+		updateStackedBars('language', dataByLanguage);
 		updateStackedBars('sector', dataBySector);
 		updateBars('focus', dataByFocusArray);
 		updateStackedBars('organisation', dataByOrganisation)
@@ -1248,7 +1248,7 @@ var Deepviz = function(sources, callback){
 			var h = $('#svg_summary1_div').height()+$('#svg_summary3_div').height()+10;
 			return h+'px';
 		});
-		
+
 		// topline filters
 
 		var topFilters = [
@@ -2517,15 +2517,15 @@ var Deepviz = function(sources, callback){
 	    	updateBubbles();
 	    	updateFinalScore('map', 500);
 	    	updateSeverity('map', 500);
-	    	updateBars('affected_groups', dataByAffectedGroups);
-	    	updateBars('assessment_type', dataByAssessmentType);
-	    	updateBars('data_collection_technique', dataByDataCollectionTechnique);
-	    	updateBars('sampling_approach', dataBySamplingApproach);
+	    	updateStackedBars('affected_groups', dataByAffectedGroups);
+	    	updateStackedBars('assessment_type', dataByAssessmentType);
+	    	updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+	    	updateStackedBars('sampling_approach', dataBySamplingApproach);
 	    	updateBars('methodology_content', dataByMethodologyContent);
 	    	updateBars('additional_documentation', dataByAdditionalDocumentation);
-	    	updateBars('unit_of_reporting', dataByUnitOfReporting);
-	    	updateBars('unit_of_analysis', dataByUnitOfAnalysis);
-	    	updateBars('language', dataByLanguage);
+	    	updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+	    	updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+	    	updateStackedBars('language', dataByLanguage);
 	    	updateStackedBars('sector', dataBySector);
 	    	updateBars('focus', dataByFocusArray);
 	    	updateStackedBars('organisation', dataByOrganisation)
@@ -2633,15 +2633,15 @@ var Deepviz = function(sources, callback){
 		    	updateBubbles();
 		    	updateFinalScore('map', 200);
 		    	updateSeverity('map', 200);
-		    	updateBars('affected_groups', dataByAffectedGroups);
-		    	updateBars('assessment_type', dataByAssessmentType);
-		    	updateBars('data_collection_technique', dataByDataCollectionTechnique);
-		    	updateBars('sampling_approach', dataBySamplingApproach);
+		    	updateStackedBars('affected_groups', dataByAffectedGroups);
+		    	updateStackedBars('assessment_type', dataByAssessmentType);
+		    	updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+		    	updateStackedBars('sampling_approach', dataBySamplingApproach);
 		    	updateBars('methodology_content', dataByMethodologyContent);
 		    	updateBars('additional_documentation', dataByAdditionalDocumentation);
-		    	updateBars('unit_of_reporting', dataByUnitOfReporting);
-		    	updateBars('unit_of_analysis', dataByUnitOfAnalysis);
-		    	updateBars('language', dataByLanguage);
+		    	updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+		    	updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+		    	updateStackedBars('language', dataByLanguage);
 		    	updateStackedBars('sector', dataBySector);
 		    	updateBars('focus', dataByFocusArray);
 		    	updateStackedBars('organisation', dataByOrganisation)
@@ -2720,15 +2720,15 @@ var Deepviz = function(sources, callback){
 			updateBubbles();
 			updateFinalScore('brush');
 			updateSeverity('brush');
-			updateBars('affected_groups', dataByAffectedGroups);
-			updateBars('assessment_type', dataByAssessmentType);
-			updateBars('data_collection_technique', dataByDataCollectionTechnique);
-			updateBars('sampling_approach', dataBySamplingApproach);
+			updateStackedBars('affected_groups', dataByAffectedGroups);
+			updateStackedBars('assessment_type', dataByAssessmentType);
+			updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+			updateStackedBars('sampling_approach', dataBySamplingApproach);
 			updateBars('methodology_content', dataByMethodologyContent);
 			updateBars('additional_documentation', dataByAdditionalDocumentation);
-			updateBars('unit_of_reporting', dataByUnitOfReporting);
-			updateBars('unit_of_analysis', dataByUnitOfAnalysis);
-			updateBars('language', dataByLanguage);
+			updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+			updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+			updateStackedBars('language', dataByLanguage);
 			updateStackedBars('sector', dataBySector);
 			updateBars('focus', dataByFocusArray);
 			updateStackedBars('organisation', dataByOrganisation)
@@ -2784,15 +2784,15 @@ var Deepviz = function(sources, callback){
 			updateBubbles();
 			updateFinalScore('brush',500);
 			updateSeverity('brush', 500);
-			updateBars('affected_groups', dataByAffectedGroups);
-			updateBars('assessment_type', dataByAssessmentType);
-			updateBars('data_collection_technique', dataByDataCollectionTechnique);
-			updateBars('sampling_approach', dataBySamplingApproach);
+			updateStackedBars('affected_groups', dataByAffectedGroups);
+			updateStackedBars('assessment_type', dataByAssessmentType);
+			updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+			updateStackedBars('sampling_approach', dataBySamplingApproach);
 			updateBars('methodology_content', dataByMethodologyContent);
 			updateBars('additional_documentation', dataByAdditionalDocumentation);
-			updateBars('unit_of_reporting', dataByUnitOfReporting);
-			updateBars('unit_of_analysis', dataByUnitOfAnalysis);
-			updateBars('language', dataByLanguage);
+			updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+			updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+			updateStackedBars('language', dataByLanguage);
 			updateStackedBars('sector', dataBySector);
 			updateBars('focus', dataByFocusArray);
 			updateStackedBars('organisation', dataByOrganisation)
@@ -2819,15 +2819,15 @@ var Deepviz = function(sources, callback){
 		updateSeverity('init', 500);
 		updateTotals();
 		updateRadarCharts();
-		updateBars('affected_groups', dataByAffectedGroups);
-		updateBars('assessment_type', dataByAssessmentType);
-		updateBars('data_collection_technique', dataByDataCollectionTechnique);
-		updateBars('sampling_approach', dataBySamplingApproach);
+		updateStackedBars('affected_groups', dataByAffectedGroups);
+		updateStackedBars('assessment_type', dataByAssessmentType);
+		updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+		updateStackedBars('sampling_approach', dataBySamplingApproach);
 		updateBars('methodology_content', dataByMethodologyContent);
 		updateBars('additional_documentation', dataByAdditionalDocumentation);
-		updateBars('unit_of_reporting', dataByUnitOfReporting);
-		updateBars('unit_of_analysis', dataByUnitOfAnalysis);
-		updateBars('language', dataByLanguage);
+		updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+		updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+		updateStackedBars('language', dataByLanguage);
 		// updateStackedBars('sc', dataBySector);
 
 		updateStackedBars('sector', dataBySector);
@@ -3206,6 +3206,7 @@ var Deepviz = function(sources, callback){
 			.attr('data-width', width)
 			.attr('data-id', s)
 			.attr('data-percent', 0)
+			.style('outline', 'none')
 			.attr('y', padding.bar.y)
 			.attr('height', rowHeight-(padding.bar.y*2))
 			.style('fill', colorPrimary[s])
@@ -3364,6 +3365,7 @@ var Deepviz = function(sources, callback){
 			.attr('data-width', width)
 			.attr('data-id', s)
 			.attr('data-percent', 0)
+			.style('outline', 'none')
 			.attr('y', padding.bar.y)
 			.attr('height', rowHeight-(padding.bar.y*2))
 			.style('fill', colorPrimary[s])
@@ -3966,15 +3968,15 @@ var Deepviz = function(sources, callback){
 			updateBubbles();
 			updateTotals();
 			updateRadarCharts();
-			updateBars('affected_groups', dataByAffectedGroups);
-			updateBars('assessment_type', dataByAssessmentType);
-			updateBars('data_collection_technique', dataByDataCollectionTechnique);
-			updateBars('sampling_approach', dataBySamplingApproach);
+			updateStackedBars('affected_groups', dataByAffectedGroups);
+			updateStackedBars('assessment_type', dataByAssessmentType);r
+			updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+			updateStackedBars('sampling_approach', dataBySamplingApproach);
 			updateBars('methodology_content', dataByMethodologyContent);
 			updateBars('additional_documentation', dataByAdditionalDocumentation);
-			updateBars('unit_of_reporting', dataByUnitOfReporting);
-			updateBars('unit_of_analysis', dataByUnitOfAnalysis);
-			updateBars('language', dataByLanguage);
+			updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+			updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+			updateStackedBars('language', dataByLanguage);
 			updateStackedBars('sector', dataBySector);
 			updateBars('focus', dataByFocusArray);
 			updateStackedBars('organisation', dataByOrganisation)
@@ -5020,6 +5022,9 @@ var Deepviz = function(sources, callback){
 		var data_group = group;
 		if(data_group=='organisation') data_group = 'organization';
 		if(data_group=='sector') data_group = 'sector_array';
+		if(data_group=='affected_groups') data_group = 'affected_groups_array';
+		if(data_group=='unit_of_reporting') data_group = 'type_of_unit_of_analysis';
+		if(data_group=='unit_of_analysis') data_group = 'type_of_unit_of_analysis';
 
 		// affected groups
 		var dat = dataset.filter(function(d){

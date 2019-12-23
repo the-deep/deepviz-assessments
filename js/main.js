@@ -37,7 +37,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	// **************************
 	// affected groups chart
 	// **************************
-	var affectedGroupsChart = Deepviz.createBarChart({
+	var affectedGroupsChart = Deepviz.createStackedBarChart({
 		title: 'ASSESSMENTS BY AFFECTED GROUPS',
 		rows: 'affected_groups_array',
 		classname: 'affected_groups',
@@ -75,7 +75,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// assessment type chart
 	//**************************
-	var typeOfApproachChart = Deepviz.createBarChart({
+	var typeOfApproachChart = Deepviz.createStackedBarChart({
 		title: 'TYPE OF APPROACH',
 		rows: 'assessment_type',
 		classname: 'assessment_type',
@@ -88,7 +88,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// data collection technique chart
 	//**************************
-	var dataCollectionTechniqueChart = Deepviz.createBarChart({
+	var dataCollectionTechniqueChart = Deepviz.createStackedBarChart({
 		title: 'DATA COLLECTION TECHNIQUE',
 		rows: 'data_collection_technique',
 		classname: 'data_collection_technique',
@@ -101,7 +101,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// unit of analysis chart
 	//**************************
-	var unitOfAnalysisChart = Deepviz.createBarChart({
+	var unitOfAnalysisChart = Deepviz.createStackedBarChart({
 		title: 'UNIT OF ANALYSIS',
 		rows: 'type_of_unit_of_analysis',
 		classname: 'unit_of_analysis',
@@ -114,7 +114,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// unit of reporting chart
 	//**************************
-	var unitOfReportingChart = Deepviz.createBarChart({
+	var unitOfReportingChart = Deepviz.createStackedBarChart({
 		title: 'UNIT OF REPORTING',
 		rows: 'type_of_unit_of_analysis',
 		classname: 'unit_of_reporting',
@@ -123,7 +123,6 @@ var Deepviz = new Deepviz(sources, function(data){
 		filter: 'unit_of_reporting',
 		div: 'unit-of-reporting-svg'
 	});
-
 
 	//**************************
 	// description of methodology chart
@@ -154,7 +153,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// language chart
 	//**************************
-	var languageChart = Deepviz.createBarChart({
+	var languageChart = Deepviz.createStackedBarChart({
 		title: 'ASSESSMENTS BY LANGUAGE',
 		rows: 'language',
 		classname: 'language',
@@ -167,7 +166,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// sampling approach chart
 	//**************************
-	var samplingApproachChart = Deepviz.createBarChart({
+	var samplingApproachChart = Deepviz.createStackedBarChart({
 		title: 'SAMPLING APPROACH',
 		rows: 'sampling_approach',
 		classname: 'sampling_approach',

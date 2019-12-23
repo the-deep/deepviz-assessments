@@ -286,7 +286,7 @@ h2 {
 	}
 
 	#finalScore_value,
-	#reliability_value {
+	#severity_value {
 		font-size: 9px !important;
 	}
 
@@ -712,7 +712,7 @@ font-size: 15px;
 	margin-top: 2px;
 }
 
-#reliability_value {
+#severity_value {
 	color: #e6550d;
 	float: right;
 	display: inline;
