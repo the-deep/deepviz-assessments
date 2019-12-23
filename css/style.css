@@ -85,11 +85,15 @@ h2 {
 }
 
 #top_row {
-	margin-top: 5px;
+	top: 0px;
+	background-color: #FFF;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
 
 }
 .container1 {
-	padding: 0px 15px 0px 15px;
+	padding: 4px 15px 0px 15px;
 	margin: 0px auto;
 	background-color: #FFF;
 	min-height: 500px;

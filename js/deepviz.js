@@ -316,7 +316,7 @@ var Deepviz = function(sources, callback){
 			d.name = d.short_name;
 		});
 
-		metadata.organisation_type.forEach(function(d,i){
+		metadata.organization_type.forEach(function(d,i){
 			d._id = d.id;
 			d.id = i+1;
 			if(d.name=='Donor') stakeholder_type_keys.donor = d.id;
@@ -503,10 +503,10 @@ var Deepviz = function(sources, callback){
 			});
 
 			// parse organisations array
-			d._organisation_and_stakeholder_type = d.organisation_and_stakeholder_type;
-			d.organisation_and_stakeholder_type = [];
+			d._organization_and_stakeholder_type = d.organization_and_stakeholder_type;
+			d.organization_and_stakeholder_type = [];
 			d.stakeholder_type = [];
-			d._organisation_and_stakeholder_type.forEach(function(dd,ii){
+			d._organization_and_stakeholder_type.forEach(function(dd,ii){
 				var orgId;
 				var orgTypeId;
 				metadata.organization.forEach(function(ddd,ii){
@@ -514,12 +514,12 @@ var Deepviz = function(sources, callback){
 						orgId = ddd.id;
 					}
 				});
-				metadata.organisation_type.forEach(function(ddd,ii){
+				metadata.organization_type.forEach(function(ddd,ii){
 					if(dd[0]==ddd._id){
 						orgTypeId = ddd.id;
 					}
 				});
-				d.organisation_and_stakeholder_type.push([orgTypeId, orgId]);
+				d.organization_and_stakeholder_type.push([orgTypeId, orgId]);
 				d.stakeholder_type.push(orgTypeId);
 			});
 
@@ -915,7 +915,7 @@ var Deepviz = function(sources, callback){
 
 			dataByAssessmentType.push({"date": d.date, 'assessment_type': parseInt(d.assessment_type)});
 
-			d.organisation_and_stakeholder_type.forEach(function(dd,ii){
+			d.organization_and_stakeholder_type.forEach(function(dd,ii){
 				var name;
 				metadata.organization.forEach(function(ddd,ii){
 					if(parseInt(ddd.id)==parseInt(dd[1])){
@@ -1203,6 +1203,14 @@ var Deepviz = function(sources, callback){
 					d3.select(this).style('opacity', 0).style('display', 'none');
 				})
 
+				d3.select('#summary_row')
+				.transition()
+				.duration(duration)
+				.style('margin-top', function(){
+					var h = $('#svg_summary1_div').height()+$('#svg_summary3_div').height()+10;
+					return h+'px';
+				});
+
 			} else {
 				collapsed = false;
 
@@ -1215,9 +1223,32 @@ var Deepviz = function(sources, callback){
 				.style('margin-top', '0px')
 				.style('display', 'block')
 				.style('opacity', 1);
+
+				d3.select('#summary_row')
+				.transition()
+				.duration(duration)
+				.style('margin-top', function(){
+					var h = $('#svg_summary1_div').height()*2+$('#svg_summary3_div').height()+10;
+					return h+'px';
+				});
 			}
 		});
 
+		// init
+		d3.select('#collapsed1').style('opacity', 1);
+		d3.select('#collapsed0').style('opacity', 0);
+		collapsed = true;
+		d3.select('#svg_summary2_div')
+		.style('margin-top', -$('#svg_summary1_div').height()+'px')
+		.style('opacity', 0)
+		.style('display', 'none');
+
+		d3.select('#summary_row')
+		.style('margin-top', function(){
+			var h = $('#svg_summary1_div').height()+$('#svg_summary3_div').height()+10;
+			return h+'px';
+		});
+		
 		// topline filters
 
 		var topFilters = [
@@ -3825,7 +3856,7 @@ var Deepviz = function(sources, callback){
 
 		if(filters['organisation'].length>0){
 			data = data.filter(function(d){
-				return d['organisation_and_stakeholder_type'].some(r=> filters['organisation'].indexOf(r[1]) >= 0);
+				return d['organization_and_stakeholder_type'].some(r=> filters['organisation'].indexOf(r[1]) >= 0);
 			});
 			d3.select('#organisationRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
@@ -5398,6 +5429,11 @@ var Deepviz = function(sources, callback){
 			} 
 		});
 		mapbox.resize();
+
+		d3.select('#summary_row').style('margin-top', function(){
+			var h = $('#top_row').height()+10;
+			return h+'px';
+		});
 	}
 
 	// rounding function
@@ -5463,5 +5499,6 @@ var Deepviz = function(sources, callback){
 		}
 		return x1 + x2;
 	}
+
 
 }
