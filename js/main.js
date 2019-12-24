@@ -276,7 +276,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		dataKey: 'key'
 	});
 
-	var map = Deepviz.createMap({ });
+	var map = Map.create();
 
 	d3.select('#toggle1').style('opacity', 0);
 	d3.select('#toggle0').style('fill', '#008974');
