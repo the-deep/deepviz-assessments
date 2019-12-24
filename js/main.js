@@ -277,7 +277,8 @@ var Deepviz = new Deepviz(sources, function(data){
 	});
 
 	var map = Map.create();
-
+	var table = DeepvizTable.create();
+	
 	d3.select('#toggle1').style('opacity', 0);
 	d3.select('#toggle0').style('fill', '#008974');
 	d3.select('#framework-toggle-text tspan').text('average severity');

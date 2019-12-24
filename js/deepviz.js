@@ -26,7 +26,7 @@ var atype_keys = {};
 var data_collection_technique_keys = {};
 
 var textLabel = 'Assessments';
-
+var timeFormat = d3.timeFormat("%Y-%m-%d");
 var mapbox;
 var mapboxToken = 'pk.eyJ1Ijoic2hpbWl6dSIsImEiOiJjam95MDBhamYxMjA1M2tyemk2aHMwenp5In0.i2kMIJulhyPLwp3jiLlpsA';
 var mapToggle = 'bubbles';
@@ -381,6 +381,7 @@ var Deepviz = function(sources, callback){
 			d.year.setHours(0,0,0,0);
 			d.year.setDate(1);
 			d.year.setMonth(0);
+			d.date_str = timeFormat(d.date);
 
 			// PARSE STRING IDS TO INTEGERS
 			// parse context array
@@ -420,17 +421,21 @@ var Deepviz = function(sources, callback){
 
 			// parse assessment type
 			d._assessment_type = d.assessment_type;
+			d.assessment_type_str = '';
 			metadata.assessment_type.forEach(function(ddd,ii){
 				if(parseInt(d._assessment_type)==parseInt(ddd._id)){
 					d.assessment_type = parseInt(ddd.id);
+					d.assessment_type_str = ddd.name;
 				}
 			});
 
 			// parse coordination 
 			d._coordination = d.coordination;
+			d.coordination_str = '';
 			metadata.coordination.forEach(function(ddd,ii){
 				if(d._coordination==ddd._id){
 					d.coordination = ddd.id;
+					d.coordination_str = ddd.name;
 				}
 			});
 
@@ -3513,6 +3518,9 @@ var Deepviz = function(sources, callback){
 	function updateTotals(){
 
 		var dc = data.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
+
+		DeepvizTable.update(dc);
+
 		var context = [];
 
 		dc.forEach(function(d,i){

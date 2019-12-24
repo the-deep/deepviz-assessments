@@ -903,6 +903,50 @@ font-size: 15px;
 	stroke-width: 0;
 }
 
+table.dataTable thead .sorting_asc {
+  background: url("http://cdn.datatables.net/1.10.0/images/sort_asc.png") no-repeat center left;
+  filter: gray; 
+  filter: grayscale(100%);
+  background-size: 20px 14px;
+}
+table.dataTable thead .sorting_desc {
+  background: url("http://cdn.datatables.net/1.10.0/images/sort_desc.png") no-repeat center left;
+  filter: gray; 
+  filter: grayscale(100%);
+  background-size: 20px 14px;
+}
+table.dataTable thead .sorting {
+  background: url("http://cdn.datatables.net/1.10.0/images/sort_both.png") no-repeat center left;
+  filter: gray; 
+  filter: grayscale(100%);
+  background-size: 20px 14px;
+}
+.dt-head-left {
+	padding-left: 19px !important;
+	text-transform: uppercase;
+	font-weight: normal;
+}
+table.dataTable td,
+table.dataTable th {
+	font-size: small;
+	font-weight: normal !important;
+	border-left: 1px solid #e5e5e5 !important;
+}
+
+table.dataTable {
+	border-right: 1px solid #e5e5e5 !important;
+	border-bottom: 1px solid #e5e5e5 !important;
+}
+
+table.dataTable th {
+	border-top: 1px solid #e5e5e5 !important;
+	border-bottom: 1px solid #e5e5e5 !important;
+}
+
+#data-table {
+    padding-top: 7px;
+}
+
 #avg-line {
 	stroke-dasharray: 3 3; 
 	stroke-width: 1;
