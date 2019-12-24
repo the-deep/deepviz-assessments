@@ -928,7 +928,7 @@ table.dataTable thead .sorting {
 }
 table.dataTable td,
 table.dataTable th {
-	font-size: small;
+	font-size: x-small;
 	font-weight: normal !important;
 	border-left: 1px solid #e5e5e5 !important;
 }
