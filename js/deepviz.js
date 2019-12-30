@@ -582,7 +582,22 @@ var Deepviz = function(sources, callback){
 				});
 			});
 
-			var finalScore = d.scores.final_scores.score_matrix_pillar['1'];
+			var analytical_densityScore = d.scores.final_scores.score_matrix_pillar['1'];
+			var scores = [];
+			scores.push(analytical_densityScore);
+
+			Object.keys(d.scores.final_scores.score_pillar).forEach(function(key,index) {
+			    scores.push(d.scores.final_scores.score_pillar[key]);
+			});
+
+			var finalScore = d3.median(scores, function(md){
+				return md;
+			});
+
+			d.final_score = finalScore;
+
+			// d.fs = median;
+
 			if(finalScore<=5){
 				d.finalScore = 1;
 			} else if(finalScore<=10){
