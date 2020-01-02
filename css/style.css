@@ -714,12 +714,10 @@ font-size: 15px;
 
 #severity_value {
 	color: #e6550d;
-	float: right;
 	display: inline;
 	font-size: 12px;
 	font-weight: bold;
 	padding-top: 3px;
-
 }
 
 .header {
@@ -798,11 +796,10 @@ font-size: 15px;
 
 #finalScore_value, #severity_value {
 	color: #008974;
-	float: right;
 	display: inline;
 	font-size: 12px;
 	font-weight: bold;
-	padding-top: 3px;
+	padding-left: 3px;
 }
 
 .finalScoreBar {
@@ -903,9 +900,30 @@ font-size: 15px;
 	stroke-width: 0;
 }
 
+.assessment_details {
+	position: relative;
+}
+
 .tabulator {
     font-size: 0.7rem;
 }
+
+.downloadReport {
+	width: 12px;
+	height: 12px;
+	background-image: url("../images/link.png");
+	background-position: center; 
+	background-repeat: no-repeat; 
+	background-size: cover;
+	display: inline-block;
+}
+
+.selectRows {
+	position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
 #avg-line {
 	stroke-dasharray: 3 3; 
 	stroke-width: 1;

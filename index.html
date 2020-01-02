@@ -18,7 +18,7 @@
 	<link href="js/vendor/select2.min.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="js/vendor/Tabulator/tabulator_bulma.min.css"/>
 	<!-- load custom CSS -->
-	<link href="css/style.css?cache=304" rel="stylesheet" type="text/css" media="all">
+	<link href="css/style.css?cache=305" rel="stylesheet" type="text/css" media="all">
 
 </head>
 
@@ -75,20 +75,18 @@
 					<div class="scores_left">
 						<div id="finalScore" class="widget">
 							<div class="title finalScoreToggle">
-								ASSESSMENTS BY FINAL ANALYTICAL SCORE&nbsp; 
+								ASSESSMENTS BY FINAL ANALYTICAL SCORE&nbsp;<div id="finalScore_value"></div> 
 							</div>
 							<img id="finalScoreRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
-							<div id="finalScore_value"></div>
 							<div id="finalScore_bars"></div>
 						</div>
 					</div>
 					<div class="scores_right">
 						<div id="severity" class="widget">
 							<div class="title severityToggle">
-								ENTRIES BY SEVERITY&nbsp; 
+								ENTRIES BY SEVERITY&nbsp;<div id="severity_value"></div>
 							</div>
 							<img id="severityRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
-							<div id="severity_value"></div>
 							<div id="severity_bars"></div>
 						</div>
 					</div>
@@ -202,8 +200,17 @@
 		</div>	
 	</div><!-- /#thirdChartRow -->
 	<hr/>
+	<div class="assessment_details">
+		<h2 style="margin-bottom: 10px; margin-top: 2px">Assessment Details</h2>
+		<div class="selectRows">Show&nbsp;
+			<select id="selectRows" onChange="DeepvizTable.setRowsToDisplay(this.value)">
+				<option value="10">10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+			</select>&nbsp;assessments
+		</div>
+	</div>
 
-	<h2 style="margin-bottom: 10px; margin-top: 2px">Assessment Details</h2>
 	<div id="data-table" width="100%"></div>
 	<br/>
 	</div>
@@ -221,11 +228,11 @@
 	<script src='js/vendor/mapbox-gl.js'></script>
 
 	<!-- load custom JavaScript -->
-	<script type="text/javascript" src="js/barchart.js?cache=304"></script>
-	<script type="text/javascript" src="js/map.js?cache=304"></script>
-	<script type="text/javascript" src="js/deepviz.js?cache=304"></script>
-	<script type="text/javascript" src="js/DeepvizTable.js?cache=304"></script>
-	<script type="text/javascript" src="js/main.js?cache=304"></script>
+	<script type="text/javascript" src="js/barchart.js?cache=305"></script>
+	<script type="text/javascript" src="js/map.js?cache=305"></script>
+	<script type="text/javascript" src="js/deepviz.js?cache=305"></script>
+	<script type="text/javascript" src="js/DeepvizTable.js?cache=305"></script>
+	<script type="text/javascript" src="js/main.js?cache=305"></script>
 
 </body>
 </html>

@@ -26,7 +26,7 @@ var atype_keys = {};
 var data_collection_technique_keys = {};
 
 var textLabel = 'Assessments';
-var timeFormat = d3.timeFormat("%Y-%m-%d");
+var timeFormat = d3.timeFormat("%d-%m-%Y");
 var mapbox;
 var mapboxToken = 'pk.eyJ1Ijoic2hpbWl6dSIsImEiOiJjam95MDBhamYxMjA1M2tyemk2aHMwenp5In0.i2kMIJulhyPLwp3jiLlpsA';
 var mapToggle = 'bubbles';
@@ -537,6 +537,7 @@ var Deepviz = function(sources, callback){
 			// parse organisations array
 			d._organization_and_stakeholder_type = d.organization_and_stakeholder_type;
 			d.organization_and_stakeholder_type = [];
+			d.organization_str = [];
 			d.stakeholder_type = [];
 			d._organization_and_stakeholder_type.forEach(function(dd,ii){
 				var orgId;
@@ -544,6 +545,8 @@ var Deepviz = function(sources, callback){
 				metadata.organization.forEach(function(ddd,ii){
 					if(dd[1]==ddd._id){
 						orgId = ddd.id;
+						d.organization_str.push(ddd.short_name)
+
 					}
 				});
 				metadata.organization_type.forEach(function(ddd,ii){
@@ -554,6 +557,7 @@ var Deepviz = function(sources, callback){
 				d.organization_and_stakeholder_type.push([orgTypeId, orgId]);
 				d.stakeholder_type.push(orgTypeId);
 			});
+			d.organization_str = (d.organization_str.join(", "));
 
 			// parse scorepillar scale id
 			d._scorepillar_scale = d.scorepillar_scale;
@@ -4069,7 +4073,7 @@ var Deepviz = function(sources, callback){
 
 			var finalScoreAverage = ( (1*finalScore[5]) + (2*finalScore[1]) + (3*finalScore[2]) + (4*finalScore[3]) + (5*finalScore[4]) ) / final_score_total;
 			d3.select('#finalScore_value').text(metadata.scorepillar_scale[(Math.round(finalScoreAverage))] + ' ('+ finalScoreAverage.toFixed(1) +')' )
-			d3.select('#finalScore_value').text(metadata.scorepillar_scale[final_score_median].name ).style('color', colorPrimary[final_score_median]);
+			d3.select('#finalScore_value').text("("+metadata.scorepillar_scale[final_score_median].name+")").style('color', colorPrimary[final_score_median]);
 			d3.select('#finalScoreAvg').attr('x',function(d){
 				return scale.finalScore.x(final_score_median);
 			});
@@ -4220,7 +4224,7 @@ var Deepviz = function(sources, callback){
 
 			var severityAverage = ( (1*severity[5]) + (2*severity[1]) + (3*severity[2]) + (4*severity[3]) + (5*severity[4]) ) / s_total;
 			d3.select('#severity_value').text(metadataEntries.severity_units[(Math.round(severityAverage))] + ' ('+ severityAverage.toFixed(1) +')' )
-			d3.select('#severity_value').text(metadataEntries.severity_units[s_median].name ).style('color', colorSecondary[s_median]);
+			d3.select('#severity_value').text("("+metadataEntries.severity_units[s_median].name+")").style('color', colorSecondary[s_median]);
 			d3.select('#severityAvg').attr('x',function(d){
 				return scale.severity.x(s_median);
 			});
