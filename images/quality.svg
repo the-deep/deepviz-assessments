@@ -95,8 +95,8 @@
             <g id="quality6" transform="translate(9.000000, 34.000000)" fill="#FFFFFF">
                 <rect id="Rectangle" x="0" y="0" width="303" height="303"></rect>
             </g>
-            <text id="FINAL-SCORE" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18" font-weight="bold" fill="#FFFFFF">
-                <tspan x="8.83486239" y="25.1101359">FINAL SCORE</tspan>
+            <text id="QUALITY-SCORE" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="18" font-weight="bold" fill="#FFFFFF">
+                <tspan x="8.83486239" y="25.1101359">QUALITY SCORE</tspan>
             </text>
             <text id="quality6val" font-family="SourceSansPro-Bold, Source Sans Pro" font-size="28" font-weight="bold" fill="#FFFFFF">
                 <tspan x="257.147311" y="28.1109766">00</tspan>

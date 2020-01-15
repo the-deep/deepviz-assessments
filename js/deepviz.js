@@ -125,6 +125,8 @@ var radarColor;
 
 // filters
 var filters = {
+	id: [],
+	str: '',
 	sector: [],
 	sector_count: [],
 	sampling_approach: [],
@@ -218,7 +220,46 @@ var Deepviz = function(sources, callback){
 		metadataEntries = values[1].meta;
 		frameworkToggleImg = values[1];
 
-		// remove unsed locations
+		// parse parent locations up to 4 levels
+		data.forEach(function(d,i){
+			d.geo.forEach(function(dd,ii){
+				var parents = [];
+
+				var parent = getParent(dd);
+				if((parent>0)&&(!parents.includes(parent))&&(!d.geo.includes(parent))){
+					parents.push(parent);
+				}
+
+				var parent = getParent(parent);
+				if((parent>0)&&(!parents.includes(parent))&&(!d.geo.includes(parent))){
+					parents.push(parent);
+				}
+
+				var parent = getParent(parent);
+				if((parent>0)&&(!parents.includes(parent))&&(!d.geo.includes(parent))){
+					parents.push(parent);
+				}
+
+				var parent = getParent(parent);
+				if((parent>0)&&(!parents.includes(parent))&&(!d.geo.includes(parent))){
+					parents.push(parent);
+				}
+
+				d.geo.push.apply(d.geo,parents);
+			});
+		})
+
+		function getParent(geo_id){
+			var parent;
+			metadata.geo_array.forEach(function(d,i){
+				if(geo_id==d.id){
+					parent = d.parent;
+				}
+			})
+			return parent;
+		}
+
+		// remove unused locations
 		var locationArray = [];
 		data.forEach(function(d,i){
 			d.geo.forEach(function(dd,ii){
@@ -390,7 +431,7 @@ var Deepviz = function(sources, callback){
 			d._focus.forEach(function(dd,ii){
 				metadata.focus_array.forEach(function(ddd,ii){
 					if(dd==ddd._id){
-						d.focus.push(ddd.id);
+						if(!d.focus.includes(ddd.id)) d.focus.push(ddd.id);
 					}
 				});
 			});
@@ -401,7 +442,7 @@ var Deepviz = function(sources, callback){
 			d._affected_groups.forEach(function(dd,ii){
 				metadata.affected_groups_array.forEach(function(ddd,ii){
 					if(dd==ddd._id){
-						d.affected_groups.push(ddd.id);
+						if(!d.affected_groups.includes(ddd.id)) d.affected_groups.push(ddd.id);
 					}
 				});
 			});
@@ -412,7 +453,7 @@ var Deepviz = function(sources, callback){
 			d._sector.forEach(function(dd,ii){
 				metadata.sector_array.forEach(function(ddd,ii){
 					if(dd==ddd._id){
-						d.sector.push(ddd.id);
+						if(!d.sector.includes(ddd.id)) d.sector.push(ddd.id);
 					}
 				});
 			});
@@ -446,7 +487,7 @@ var Deepviz = function(sources, callback){
 				d._language.forEach(function(dd,ii){
 					metadata.language.forEach(function(ddd,ii){
 						if(dd==ddd._id){
-							d.language.push(ddd.id);
+							if(!d.language.includes(ddd.id)) d.language.push(ddd.id);
 						}
 					});
 				});		
@@ -459,7 +500,7 @@ var Deepviz = function(sources, callback){
 			d._sampling_approach.forEach(function(dd,ii){
 				metadata.sampling_approach.forEach(function(ddd,ii){
 					if((dd==ddd._id)&&(!d.sampling_approach.includes(ddd.id))){
-						d.sampling_approach.push(ddd.id);
+						if(!d.sampling_approach.includes(ddd.id)) d.sampling_approach.push(ddd.id);
 					}
 				});
 			});
@@ -470,7 +511,7 @@ var Deepviz = function(sources, callback){
 			d._data_collection_technique.forEach(function(dd,ii){
 				metadata.data_collection_technique.forEach(function(ddd,ii){
 					if(dd==ddd._id){
-						d.data_collection_technique.push(ddd.id);
+						if(!d.data_collection_technique.includes(ddd.id)) d.data_collection_technique.push(ddd.id);
 					}
 				});
 			});
@@ -481,7 +522,7 @@ var Deepviz = function(sources, callback){
 			d._unit_of_analysis.forEach(function(dd,ii){
 				metadata.type_of_unit_of_analysis.forEach(function(ddd,ii){
 					if(dd==ddd._id){
-						d.unit_of_analysis.push(ddd.id);
+						if(!d.unit_of_analysis.includes(ddd.id)) d.unit_of_analysis.push(ddd.id);
 					}
 				});
 			});
@@ -492,7 +533,7 @@ var Deepviz = function(sources, callback){
 			d._unit_of_reporting.forEach(function(dd,ii){
 				metadata.type_of_unit_of_analysis.forEach(function(ddd,ii){
 					if(dd==ddd._id){
-						d.unit_of_reporting.push(ddd.id);
+						if(!d.unit_of_reporting.includes(ddd.id)) d.unit_of_reporting.push(ddd.id);
 					}
 				});
 			});
@@ -502,7 +543,7 @@ var Deepviz = function(sources, callback){
 			d.methodology_content = [];
 			d._methodology_content.forEach(function(dd,ii){
 				if(dd==1){
-					d.methodology_content.push(metadata.methodology_content[ii])
+					if(!d.methodology_content.includes(metadata.methodology_content[ii])) d.methodology_content.push(metadata.methodology_content[ii])
 				}
 			});
 
@@ -512,7 +553,7 @@ var Deepviz = function(sources, callback){
 			d._additional_documentation.forEach(function(dd,ii){
 				if(dd>=1){
 					var doc = {'id': metadata.additional_documentation_array[ii].id, name: metadata.additional_documentation_array[ii].name, value: dd };
-					d.additional_documentation.push(doc)
+					if(!d.additional_documentation.includes(doc)) d.additional_documentation.push(doc)
 				}
 			});
 
@@ -543,7 +584,7 @@ var Deepviz = function(sources, callback){
 				var orgId;
 				var orgTypeId;
 				metadata.organization.forEach(function(ddd,ii){
-					if(dd[1]==ddd._id){
+					if((dd[1]==ddd._id)&&(!d.organization_str.includes(ddd.short_name))){
 						orgId = ddd.id;
 						d.organization_str.push(ddd.short_name)
 
@@ -554,8 +595,12 @@ var Deepviz = function(sources, callback){
 						orgTypeId = ddd.id;
 					}
 				});
-				d.organization_and_stakeholder_type.push([orgTypeId, orgId]);
-				d.stakeholder_type.push(orgTypeId);
+				if(!d.organization_and_stakeholder_type.includes([orgTypeId, orgId])){
+					d.organization_and_stakeholder_type.push([orgTypeId, orgId]);
+				}
+				if(!d.stakeholder_type.includes(orgTypeId)){
+					d.stakeholder_type.push(orgTypeId);
+				}
 			});
 			d.organization_str = (d.organization_str.join(", "));
 
@@ -2937,6 +2982,8 @@ var Deepviz = function(sources, callback){
 	this.filter = function(filterClass, value){
 
 		if(filterClass=='clear'){
+			filters.id = [];
+			filters.str = '';
 			filters.sector = [];
 			filters.sector_count = [];
 			filters.finalScore = [];
@@ -2959,6 +3006,7 @@ var Deepviz = function(sources, callback){
 			filters.focus = [];
 		}
 
+		d3.select('#tableRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#frameworkRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#severityRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#focusRemoveFilter').style('display', 'none').style('cursor', 'default');
@@ -2994,15 +3042,20 @@ var Deepviz = function(sources, callback){
 
 		if(value=='clear'){
 			filters[filterClass] = [];
+			filters['str'] = '';
 			d3.selectAll('.top_filter').style('opacity', 0.01);
 		} else if(value == 'clearFramework'){
 			filters['sector'] = [];
 			filters['context'] = [];
 		} else {
-		  addOrRemove(filters[filterClass], value);		
+			if(filterClass=='str'){
+				filters['str'] = value;
+			} else {
+			  addOrRemove(filters[filterClass], value);		
+			}
 		}
 
-		if((filters['finalScore'].length>0)||(filters['focus'].length>0)||(filters['top'].length>0)||(filters['affected_groups'].length>0)||(filters['organisation'].length>0)||(filters['assessment_type'].length>0)||(filters['data_collection_technique'].length>0)||(filters['unit_of_analysis'].length>0)||(filters['unit_of_reporting'].length>0)||(filters['methodology_content'].length>0)||(filters['additional_documentation'].length>0)||(filters['language'].length>0)||(filters['sampling_approach'].length>0)||(filters['focus'].length>0)||(filters['severity'].length>0)||(filters['sector'].length>0)||(filters['geo'].length>0)||(filters['coordination'].length>0)||(filters['affected_groups'].length>0)){
+		if((filters['id'].length>0)||(filters['str'].length>0)||(filters['finalScore'].length>0)||(filters['focus'].length>0)||(filters['top'].length>0)||(filters['affected_groups'].length>0)||(filters['organisation'].length>0)||(filters['assessment_type'].length>0)||(filters['data_collection_technique'].length>0)||(filters['unit_of_analysis'].length>0)||(filters['unit_of_reporting'].length>0)||(filters['methodology_content'].length>0)||(filters['additional_documentation'].length>0)||(filters['language'].length>0)||(filters['sampling_approach'].length>0)||(filters['focus'].length>0)||(filters['severity'].length>0)||(filters['sector'].length>0)||(filters['geo'].length>0)||(filters['coordination'].length>0)||(filters['affected_groups'].length>0)){
 			d3.select('#globalRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		} else { 
 			d3.select('#globalRemoveFilter').style('display', 'none').style('cursor', 'default');
@@ -3010,6 +3063,17 @@ var Deepviz = function(sources, callback){
 		// reset data using original loaded data
 		data = originalData;
 		dataEntries = originalDataEntries;
+
+		if(filters['id'].length>0){
+			data = data.filter(function(d){return  filters['id'].includes(d['pk']);});
+			d3.select('#tableRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
+		}
+
+		if(filters['str'].length>0){
+			filters['str'] = filters['str'].toLowerCase();
+			data = data.filter(function(d){return  d.lead.title.toLowerCase().includes(filters['str']) || d.organization_str.toLowerCase().includes(filters['str'])  ;});
+			d3.select('#tableRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
+		}
 
 		d3.select('#finalScoreRemoveFilter').style('display', 'none').style('cursor', 'default');
 		d3.select('#geoRemoveFilter').style('display', 'none').style('cursor', 'default');
@@ -3197,7 +3261,10 @@ var Deepviz = function(sources, callback){
 
 		updateTimeline(filterClass);
 
-		d3.select('#globalRemoveFilter').on('click', function(){ Deepviz.filter('clear', 'clear'); });
+		d3.select('#globalRemoveFilter').on('click', function(){ 
+	        $('.searchRows').val('');
+			Deepviz.filter('clear', 'clear'); 
+		});
 	}
 
 	//**************************

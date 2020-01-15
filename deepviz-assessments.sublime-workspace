@@ -4,6 +4,138 @@
 		"selected_items":
 		[
 			[
+				"background",
+				"background-image\tproperty"
+			],
+			[
+				"organi",
+				"organization_str"
+			],
+			[
+				"affe",
+				"affected_groups"
+			],
+			[
+				"asses",
+				"assessment_type"
+			],
+			[
+				"data_c",
+				"data_collection_technique"
+			],
+			[
+				"unit",
+				"unit_of_analysis"
+			],
+			[
+				"me",
+				"methodology_content"
+			],
+			[
+				"stake",
+				"stakeholder_type"
+			],
+			[
+				"community_",
+				"community_group_discussion"
+			],
+			[
+				"key_inform",
+				"key_informant_interview"
+			],
+			[
+				"coordinated",
+				"coordinatedHarmonizedId"
+			],
+			[
+				"coordinate",
+				"coordinatedJointId"
+			],
+			[
+				"data_collection",
+				"data_collection_technique_keys"
+			],
+			[
+				"en",
+				"entriesChartHeight"
+			],
+			[
+				"backg",
+				"background-color\tproperty"
+			],
+			[
+				"affec",
+				"affected_groups_array"
+			],
+			[
+				"additioal",
+				"additional_documentation"
+			],
+			[
+				"additional",
+				"additional_documentation"
+			],
+			[
+				"coordinatedJointI",
+				"coordinatedJointId"
+			],
+			[
+				"unc",
+				"uncoordinatedId"
+			],
+			[
+				"analy",
+				"analytical_density"
+			],
+			[
+				"entr",
+				"entriesTopMargin"
+			],
+			[
+				"entries",
+				"entriesTopMargin"
+			],
+			[
+				"ent",
+				"entriesTopMargin"
+			],
+			[
+				"entrieschart",
+				"entrieschart"
+			],
+			[
+				"s",
+				"sect\tsection"
+			],
+			[
+				"dataByDa",
+				"dataByDataCollectionType"
+			],
+			[
+				"right",
+				"rightAlignTotals"
+			],
+			[
+				"unique",
+				"uniqueOrganisations"
+			],
+			[
+				"assess",
+				"assessmentTypes"
+			],
+			[
+				"asse",
+				"assessment_type"
+			],
+			[
+				"dataBy",
+				"dataByAssessmentType"
+			],
+			[
+				"score",
+				"scorepillar_scale"
+			],
+			[
 				"vi",
 				"videoAspectRatio"
 			],
@@ -90,10 +222,6 @@
 			[
 				"color",
 				"colorNeutral"
-			],
-			[
-				"dataBy",
-				"dataByAffectedGroups"
 			],
 			[
 				"dataByS",
@@ -224,10 +352,6 @@
 				"searchinput"
 			],
 			[
-				"backg",
-				"background-color"
-			],
-			[
 				"countryBub",
 				"countryBubbles"
 			],
@@ -304,6 +428,14 @@
 		"selected_items":
 		[
 			[
+				"pretty",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"json pre",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
 				"json",
 				"Pretty JSON: Format (Pretty Print) JSON"
 			],
@@ -318,10 +450,6 @@
 			[
 				"lor",
 				"Snippet: Lorem ipsum"
-			],
-			[
-				"pretty",
-				"HTMLPrettify: Set Plugin Options"
 			],
 			[
 				"i",
@@ -407,18 +535,30 @@
 	[
 		"/localhost/www/deepviz-assessments",
 		"/localhost/www/deepviz-assessments/css",
-		"/localhost/www/deepviz-assessments/js"
+		"/localhost/www/deepviz-assessments/images",
+		"/localhost/www/deepviz-assessments/js",
+		"/localhost/www/deepviz-assessments/js/vendor",
+		"/localhost/www/deepviz-assessments/js/vendor/Tabulator"
 	],
 	"file_history":
 	[
+		"/localhost/www/deepviz-assessments/js/dummy_data/assessments.json",
 		"/localhost/www/deepviz-assessments/css/style.css",
-		"/localhost/www/deepviz-assessments/index.html",
-		"/localhost/www/deepviz-assessments/js/assessments.json",
-		"/localhost/www/deepviz-assessments/js/main.js",
+		"/localhost/www/deepviz-assessments/js/barchart.js",
+		"/localhost/www/deepviz-assessments/js/DeepvizTable.js",
 		"/localhost/www/deepviz-assessments/js/deepviz.js",
-		"/localhost/www/jips-sudan-en/css/style.css",
-		"/localhost/www/jips-sudan-en/js/frames.js",
+		"/localhost/www/deepviz-assessments/js/main.js",
+		"/localhost/www/deepviz-assessments/index.html",
+		"/localhost/www/deepviz-assessments/js/vendor/daterangepicker.css",
+		"/localhost/www/deepviz-assessments/js/map.js",
+		"/localhost/www/deepviz-assessments/js/vendor/d3.v5.min.js",
+		"/localhost/www/deepviz-assessments/js/vendor/radarChart.js",
+		"/Users/matthewsmawfield/config",
 		"/localhost/www/jips-sudan-en/js/main.js",
+		"/localhost/www/jips-sudan-en/css/style.css",
+		"/localhost/www/assessments.json",
+		"/localhost/www/deepviz-assessments/js/assessments.json",
+		"/localhost/www/jips-sudan-en/js/frames.js",
 		"/localhost/www/jips-sudan-en/index.html",
 		"/Users/matthewsmawfield/Desktop/UNHCR - Written Exam Material - Database Consultant/ficcs-test.sql",
 		"/localhost/www/jips-sudan-vertical/js/old.js",
@@ -529,16 +669,7 @@
 		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Widget/FeaturedExternalDataviz/default.html.twig",
 		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Widget/WorkingGroups/pinnedAndRankedType.html.twig",
 		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Resources/views/Default/country.html.twig",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Resources/views/layout.html.twig",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Resources/views/Default/datavizDetails.html.twig",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Widget/WorkingGroupContacts/listType.html.twig",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/GeoBundle/Resources/views/Menu/working_group_menu.html.twig",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Widget/FeaturedExternalDataviz/FeaturedExternalDatavizForm.php",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Widget/Dataviz/ugandaCountryType.html.twig",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Entity/WorkingGroupContact.php",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Resources/views/Default/situation.html.twig",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Resources/views/Default/working_group.html.twig",
-		"/Users/matthewsmawfield/owp/src/OWP/Bundle/PopulationBundle/Entity/PopulationDataRepository.php"
+		"/Users/matthewsmawfield/owp/src/OWP/Bundle/CommonBundle/Resources/views/layout.html.twig"
 	],
 	"find":
 	{
@@ -556,22 +687,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"sector-icons",
-			"sector-ic",
+			"304",
+			"background-im",
+			"_value",
+			"#severity_value",
+			"_value",
+			"date_str",
+			"timeformat",
+			"analyitical",
+			"analytical",
+			"303",
+			"median",
+			"D.FINALSCORE = ",
+			"analyti",
+			"vendor/abulator",
+			"table",
+			"vendor/tabulator",
+			"or/tabu",
+			"datatables",
+			"DataTables",
+			"setbar",
+			"p = Math.round(p)/1",
+			"p = ",
+			"total",
+			"updatebar",
+			"onshow",
+			"-bg",
+			"scale[group].x(d.value)-scale[group].paddingLeft;",
+			"return p+'%'",
+			"p = Math.round(p)/1",
+			"/100",
+			"/10",
+			"100",
+			"round",
+			"%",
+			"301",
+			" center left;",
+			"center left;",
+			"/js/vendor/DataTables/images",
+			"DataTables-1.10.20/",
+			"http://cdn.datatables.net/1.10.0/",
+			"e5e5e5",
+			"date",
+			"datatable",
+			"DeepvizDataTable",
+			"datatable",
+			"dataSet",
+			"'#table'",
+			"table",
+			"updatetotal",
+			".filter",
+			"updatetimeline",
+			"data",
+			"he=300",
+			"admin_level\": 2",
+			"admin_level\": 3",
+			"country",
+			"adm",
+			"admin",
+			"admin_le",
+			"severity",
+			"assessments",
+			"tippy",
+			"map.up",
+			"timechart",
+			"if(mapToggle=='bubbles') {\n\t\t\tMap.updateBubbles();\t\t\t\n\t\t} else {\n\t\t\tMap.updateChoropleth();\n\t\t}",
+			"Map.updateBubbles();\t\t\t\n\t\t} else {\n\t\t\tMap.updateChoropleth();\n\t\t}",
+			"Map.update();",
+			"updateBubbles()",
+			"267",
+			"updatetot",
+			"Deepviz.createBarCha",
+			"updateBars(",
+			"filter (",
+			"filter(",
+			"updatebars",
+			"filter(",
+			"Deepviz.createStackedBar",
+			"Deepviz",
+			"updateStackedBars",
+			"a.clasname",
+			"updatestack",
+			"labelcharl",
+			"updatestacked",
+			"sessmentType);r",
+			"updatebar",
+			"266",
 			"consol",
-			"xaxis",
-			"sector",
-			"conso",
-			"cons",
-			"consG",
-			"pathname",
-			"TIMECHART",
-			"daterange",
-			"main-con",
-			"framework",
-			"contentSvg",
-			"svg_summ",
-			"create"
+			"-bar",
+			"unit_of_re",
+			"databyasses",
+			"assessment_Type",
+			"affected_groups",
+			"updatestack",
+			"updateBars('language'",
+			"updateBars('unit_of_analysis'",
+			"updateBars('unit_of_reporting'",
+			"updateBars('sampling_approach'",
+			"updateBars('assessment_type",
+			"updatebar",
+			"reliability_value",
+			"datacollectionte",
+			"updatestackedbar",
+			"updateBars('data_collection_tec",
+			"datacoll",
+			"updatestackedbar",
+			"updateBars('affected_groups'",
+			"affected_grou",
+			"resize",
+			"summary",
+			"summary2",
+			"summary_row",
+			"resize",
+			"organisation_and_stakeholder_type",
+			"organisation_type",
+			"global",
+			"264",
+			"263",
+			"collapse",
+			"global",
+			"consol",
+			"samplingapp",
+			"timedata",
+			"updatetimelin",
+			"donors",
+			"rightal",
+			"un_agencies",
+			"un",
+			"unagency"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -600,7 +843,7 @@
 	},
 	"input":
 	{
-		"height": 42.0
+		"height": 43.0
 	},
 	"layout":
 	{
@@ -1187,7 +1430,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 252.0,
+	"side_bar_width": 350.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

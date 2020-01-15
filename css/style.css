@@ -296,6 +296,7 @@ h2 {
 
 	.subtitle,
 	#severityRemoveFilter,
+	#tableRemoveFilter,
 	#finalScoreRemoveFilter {
 		height: 12px !important;
 	}
@@ -423,6 +424,7 @@ h2 {
 	}
 
 	#severityRemoveFilter,
+	#tableRemoveFilter,
 	#finalScoreRemoveFilter {
 		height: 12px !important;
 		width: 12px !important;
@@ -498,6 +500,7 @@ h2 {
 	}
 
 	#severityRemoveFilter,
+	#tableRemoveFilter,
 	#finalScoreRemoveFilter {
 		height: 10px !important;
 		width: 10px !important;
@@ -679,11 +682,16 @@ font-size: 15px;
 
 #finalScoreRemoveFilter,
 #severityRemoveFilter,
+#tableRemoveFilter,
 #geoRemoveFilter {
 	height: 13px;
 	padding-left: 3px;
 	display: none;
 	position: absolute;
+}
+
+#tableRemoveFilter {
+	top: 5px;
 }
 
 .top-bar {
@@ -906,6 +914,10 @@ font-size: 15px;
 
 .tabulator {
     font-size: 0.7rem;
+}
+
+.tabulator-tableHolder {
+	overflow: hidden !important;
 }
 
 .downloadReport {

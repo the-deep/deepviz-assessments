@@ -18,7 +18,7 @@
 	<link href="js/vendor/select2.min.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="js/vendor/Tabulator/tabulator_bulma.min.css"/>
 	<!-- load custom CSS -->
-	<link href="css/style.css?cache=305" rel="stylesheet" type="text/css" media="all">
+	<link href="css/style.css?cache=306" rel="stylesheet" type="text/css" media="all">
 
 </head>
 
@@ -201,12 +201,17 @@
 	</div><!-- /#thirdChartRow -->
 	<hr/>
 	<div class="assessment_details">
-		<h2 style="margin-bottom: 10px; margin-top: 2px">Assessment Details</h2>
-		<div class="selectRows">Show&nbsp;
+		<h2 style="margin-bottom: 10px; margin-top: 2px">Assessment Details&nbsp;<img id="tableRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
+		
+		<div class="selectRows">
+			<div class="searchBox" style="display: inline; margin-right: 30px">Search&nbsp;
+				<input type="text" onkeyup="DeepvizTable.search(this.value)" name="first name" placeholder="Search" required="required" class="searchRows" />
+			</div>
+			Show&nbsp;
 			<select id="selectRows" onChange="DeepvizTable.setRowsToDisplay(this.value)">
-				<option value="10">10</option>
 				<option value="25">25</option>
 				<option value="50">50</option>
+				<option value="100">100</option>
 			</select>&nbsp;assessments
 		</div>
 	</div>
@@ -228,11 +233,11 @@
 	<script src='js/vendor/mapbox-gl.js'></script>
 
 	<!-- load custom JavaScript -->
-	<script type="text/javascript" src="js/barchart.js?cache=305"></script>
-	<script type="text/javascript" src="js/map.js?cache=305"></script>
-	<script type="text/javascript" src="js/deepviz.js?cache=305"></script>
-	<script type="text/javascript" src="js/DeepvizTable.js?cache=305"></script>
-	<script type="text/javascript" src="js/main.js?cache=305"></script>
+	<script type="text/javascript" src="js/barchart.js?cache=306"></script>
+	<script type="text/javascript" src="js/map.js?cache=306"></script>
+	<script type="text/javascript" src="js/deepviz.js?cache=306"></script>
+	<script type="text/javascript" src="js/DeepvizTable.js?cache=306"></script>
+	<script type="text/javascript" src="js/main.js?cache=306"></script>
 
 </body>
 </html>

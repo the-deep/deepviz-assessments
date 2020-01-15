@@ -1,13 +1,17 @@
 var DeepvizTable = {};
 var DeepvizDataTable;
 var DeepvizTableDataset = [];
-var DeepvizRowsToDisplay = 10;
+var DeepvizRowsToDisplay = 25;
+
+DeepvizTable.search = function(d){
+    Deepviz.filter('str', d)
+}
 
 DeepvizTable.update = function(d){
 
     DeepvizTableDataset = [];
     d.forEach(function(d,i){
-        DeepvizTableDataset.push({'lead': d.lead.title, 'url': d.lead.url, 'type': d.assessment_type_str, 'author': d.organization_str, 'coordination': d.coordination_str, 'date': d.date_str, 'analyticalDensity': d.scores.final_scores.score_matrix_pillar['1'], 'finalScore': d.final_score })
+        DeepvizTableDataset.push({'id': d.pk, 'lead': d.lead.title, 'url': d.lead.url, 'type': d.assessment_type_str, 'author': d.organization_str, 'coordination': d.coordination_str, 'date': d.date_str, 'analyticalDensity': d.scores.final_scores.score_matrix_pillar['1'], 'finalScore': d.final_score })
     });
 
     if(DeepvizDataTable)
@@ -76,7 +80,7 @@ DeepvizTable.create = function(){
    DeepvizDataTable = new Tabulator("#data-table", {
         data:DeepvizTableDataset,           //load row data from array
         layout:"fitColumns",      //fit columns to width of table
-        responsiveLayout:"hide",  //hide columns that dont fit on the table
+        responsiveLayout:true,  //hide columns that dont fit on the table
         tooltips:false,            //show tool tips on cells
         history:true,             //allow undo and redo actions on the table
         pagination:"local",       //paginate the data
@@ -87,15 +91,25 @@ DeepvizTable.create = function(){
             {column:"date", dir:"desc"},
         ],
         columns:[                 //define the table columns
-            {title:"TITLE", field:"lead", width:'40%', formatter:"bold"},
-            {title:"TYPE", field:"type", align:"left" },
-            {title:"COORDINATION", field:"coordination", align:"left" },
-            {title:"ANALYTICAL DENSITY", field:"analyticalDensity", align:"right" },
-            {title:"FINAL SCORE", field:"finalScore", align:"right" },
-            {title:"AUTHOR", field:"author", align:"left" },
-            {title:"PUBLICATION DATE", field:"date", align:"left", sorter:"date", sorterParams:{format:"DD-MM-YYYY"}},
-            {title:"URL", field:"url", align: "right", formatter:"linkFormatter" }
+            {title:"ID", field:"id", visible:false},
+            {title:"TITLE", field:"lead", formatter:"bold", minWidth:300},
+            {title:"TYPE", field:"type", align:"left", minWidth: 70 },
+            {title:"COORDINATION", field:"coordination", align:"left", minWidth: 120},
+            {title:"ANALYTICAL DENSITY", field:"analyticalDensity", align:"right", minWidth: 150},
+            {title:"QUALITY SCORE", field:"finalScore", align:"right", minWidth: 120},
+            {title:"AUTHOR", field:"author", align:"left", minWidth: 90 },
+            {title:"PUBLICATION DATE", field:"date", align:"left", sorter:"date", sorterParams:{format:"DD-MM-YYYY"}, minWidth: 140, resizable: false},
+            {title:"", field:"url", align: "center", formatter:"linkFormatter", headerSort:false, width: 1, resizable:false}
         ],
+        rowClick:function(e, row){
+           var id = row.getIndex();
+           Deepviz.filter('id', id);
+        },
     });
+
+    d3.select('#tableRemoveFilter').on('click', function(){ 
+        $('.searchRows').val('');
+        Deepviz.filter('id', 'clear'); });
+
 
  }

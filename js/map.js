@@ -86,6 +86,7 @@ Map.create = function(){
     mapbox = map;
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.scrollZoom.disable();
+    map.keyboard.disable()
     map.fitBounds(bounds, {
     	padding: 20
     });
@@ -488,8 +489,7 @@ Map.createChoropleth = function(){
 		onShow(instance) {
 			var ref = (instance.reference).__data__;
 			var text = ref.properties.name;
-
-			if(ref.properties.value>0){
+			if(instance.reference.dataset.value>0){
 				text = text + '<div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + ref.properties.value + ' '+textLabel+'</div>';
 			}
 			instance.setContent(text);
@@ -693,7 +693,8 @@ Map.updateChoropleth = function(){
 	d3.select('#map-polygons').style('display', 'block');
 
 	d3.selectAll('.polygon')
-	.style('fill', colorLightgrey[1]);
+	.style('fill', colorLightgrey[1])
+	.attr('data-value', 0);
 
 	var gd = dataByDate.filter(function(d){
 		return ((new Date(d.key)>=dateRange[0])&&(new Date(d.key)<dateRange[1]));
