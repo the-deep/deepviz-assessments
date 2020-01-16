@@ -223,6 +223,9 @@ var Deepviz = function(sources, callback){
 		// parse parent locations up to 4 levels
 		data.forEach(function(d,i){
 			d.geo.forEach(function(dd,ii){
+
+				dd = parseInt(dd);
+
 				var parents = [];
 
 				var parent = getParent(dd);
@@ -247,7 +250,8 @@ var Deepviz = function(sources, callback){
 
 				d.geo.push.apply(d.geo,parents);
 			});
-		})
+
+		});
 
 		function getParent(geo_id){
 			var parent;
@@ -256,7 +260,7 @@ var Deepviz = function(sources, callback){
 					parent = d.parent;
 				}
 			})
-			return parent;
+			return parseInt(parent);
 		}
 
 		// remove unused locations
@@ -4439,18 +4443,16 @@ var Deepviz = function(sources, callback){
 		return dateTo.getMonth() - dateFrom.getMonth() + 
 		(12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
 	}
+}
 
-	function addCommas(nStr){
-		nStr += '';
-		x = nStr.split('.');
-		x1 = x[0];
-		x2 = x.length > 1 ? '.' + x[1] : '';
-		var rgx = /(\d+)(\d{3})/;
-		while (rgx.test(x1)) {
-			x1 = x1.replace(rgx, '$1' + ',' + '$2');
-		}
-		return x1 + x2;
+function addCommas(nStr){
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
 	}
-
-
+	return x1 + x2;
 }

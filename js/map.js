@@ -37,36 +37,38 @@ Map.create = function(){
 		}
 	});
 	$(document).ready(function(){
-		var obj = $('#adm-toggle object');
-		var svg = obj[0].contentDocument.getElementsByTagName('svg')[0];
-		$("#adm-toggle").html(svg);
-		d3.select('#adm'+filters.admin_level+'_bg').style('fill', '#343434');
-		d3.select('#adm'+filters.admin_level+'_label').style('fill', '#FFF');
-
-		d3.selectAll('#adm0, #adm1, #adm2').on('mouseover', function(d,i){
-			var thisAdminLevel = this.id.substr(-1);
-			if(thisAdminLevel==filters.admin_level){
-				return false;
-			} else {
-				d3.select('#adm'+thisAdminLevel+'_bg').style('fill', '#F2F2F2');
-			}
-		}).on('mouseout', function(d,i){
-			var thisAdminLevel = this.id.substr(-1);
-			if(thisAdminLevel==filters.admin_level){
-				return false;
-			} else {
-				d3.select('#adm'+thisAdminLevel+'_bg').style('fill', '#FFF');
-				d3.select('#adm'+thisAdminLevel+'_label').style('fill', '#343434');
-			}
-		}).on('click', function(d,i){
-			var thisAdminLevel = this.id.substr(-1);
-			filters.admin_level = thisAdminLevel;
-			Map.update();
-			d3.selectAll('#adm0_bg, #adm1_bg, #adm2_bg').style('fill', '#FFF');
-			d3.selectAll('#adm0_label, #adm1_label, #adm2_label').style('fill', '#343434');
+		setTimeout(function(){
+			var obj = $('#adm-toggle object');
+			var svg = obj[0].contentDocument.getElementsByTagName('svg')[0];
+			$("#adm-toggle").html(svg);
 			d3.select('#adm'+filters.admin_level+'_bg').style('fill', '#343434');
 			d3.select('#adm'+filters.admin_level+'_label').style('fill', '#FFF');
-		})		
+
+			d3.selectAll('#adm0, #adm1, #adm2').on('mouseover', function(d,i){
+				var thisAdminLevel = this.id.substr(-1);
+				if(thisAdminLevel==filters.admin_level){
+					return false;
+				} else {
+					d3.select('#adm'+thisAdminLevel+'_bg').style('fill', '#F2F2F2');
+				}
+			}).on('mouseout', function(d,i){
+				var thisAdminLevel = this.id.substr(-1);
+				if(thisAdminLevel==filters.admin_level){
+					return false;
+				} else {
+					d3.select('#adm'+thisAdminLevel+'_bg').style('fill', '#FFF');
+					d3.select('#adm'+thisAdminLevel+'_label').style('fill', '#343434');
+				}
+			}).on('click', function(d,i){
+				var thisAdminLevel = this.id.substr(-1);
+				filters.admin_level = thisAdminLevel;
+				Map.update();
+				d3.selectAll('#adm0_bg, #adm1_bg, #adm2_bg').style('fill', '#FFF');
+				d3.selectAll('#adm0_label, #adm1_label, #adm2_label').style('fill', '#343434');
+				d3.select('#adm'+filters.admin_level+'_bg').style('fill', '#343434');
+				d3.select('#adm'+filters.admin_level+'_label').style('fill', '#FFF');
+			})		
+		},200);
 	});
 
 	var bounds = new mapboxgl.LngLatBounds([d3.min(geoBounds.lat),d3.min(geoBounds.lon)], [d3.max(geoBounds.lat),d3.max(geoBounds.lon)] );
@@ -490,7 +492,7 @@ Map.createChoropleth = function(){
 			var ref = (instance.reference).__data__;
 			var text = ref.properties.name;
 			if(instance.reference.dataset.value>0){
-				text = text + '<div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + ref.properties.value + ' '+textLabel+'</div>';
+				text = text + '<div style="padding-left: 3px; padding-bottom: 2px; display: inline; font-weight: bold; color: '+ colorNeutral[4] + '; font-size: 9px">' + addCommas(ref.properties.value) + ' '+textLabel+'</div>';
 			}
 			instance.setContent(text);
 		}
@@ -620,7 +622,7 @@ Map.updateBubbles = function(){
 
 	bubbles.select('.map-bubble-value')
 	.text(function(d,i){
-		return dataByLocationSum[i];
+		return addCommas(dataByLocationSum[i]);
 	});
 
 	bubbles.selectAll('.innerCircle').style('fill', colorNeutral[2]);
