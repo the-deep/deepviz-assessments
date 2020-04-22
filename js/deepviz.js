@@ -82,7 +82,7 @@ var entriesAxis;
 var entriesMax;
 var width = 1300;
 var margin = {top: 18, right: 17, bottom: 0, left: 45};
-var timechartViewBoxHeight = 1100;
+var timechartViewBoxHeight = 1050;
 var timechartViewBoxWidth = width;
 var timechartSvgHeight = 1050;
 var timechartHeight = 346;
@@ -114,7 +114,7 @@ var labelCharLimit = 30;
 // map
 var maxMapBubbleValue;
 var maxMapPolygonValue;
-var mapAspectRatio = 1.5;
+var mapAspectRatio = 1.4;
 var geoBounds = {'lat': [], 'lon': []};
 // radar
 var radarChartOptions;
@@ -150,7 +150,8 @@ var filters = {
 	toggle: 'finalScore',
 	admin_level: 1,
 	frameworkToggle: 'entries',
-	time: 'd'
+	time: 'd',
+	panelLayout: 'default'
 };
 
 var svg_summary1;
@@ -1423,13 +1424,14 @@ var Deepviz = function(sources, callback){
 		.style('opacity', options.opacity)
 		.attr('x',0+options.offsetX)
 		.attr('y',0+options.offsetY)
-		.attr('width',width)
+		.attr('width',options.width)
 		.attr('height', timechartSvgHeight)
 		.append('g')
 		.attr("transform", "translate(0,0)");
 
+		console.log(options.width);
 
-		var width_new = width - (margin.right + margin.left);
+		var width_new = options.width - (margin.right + margin.left);
 		timechartHeight2 = timechartHeight - (margin.top + margin.bottom);
 
 		maxValue = d3.max(dataByDate, function(d) {
@@ -1555,7 +1557,7 @@ var Deepviz = function(sources, callback){
 
 		scale.timechart.x = d3.scaleTime()
 	    .domain([minDate, maxDate])
-	    .range([0, (width - (margin.right + margin.left))])
+	    .range([0, (options.width - (margin.right + margin.left))])
 
 		var svgChartBg2 = svg.append('g').attr('id', 'svgchartbg2').attr('class', 'chartarea2').attr('transform', 'translate('+(margin.left+0)+','+margin.top+')');
 
@@ -1675,7 +1677,7 @@ var Deepviz = function(sources, callback){
 		// add the Y gridline
 		timechartyGrid = d3.axisLeft(scale.timechart.y1)
 		.ticks(4)
-		.tickSize(-width+52)
+		.tickSize(-options.width+52)
 		.tickFormat("")
 
 		gridlines.append("g")			
@@ -1898,7 +1900,7 @@ var Deepviz = function(sources, callback){
 		// add the Y gridline
 		var entriesChartyGrid = d3.axisLeft(scale.entrieschart.y)
 		.ticks(2)
-		.tickSize(-width+52)
+		.tickSize(-options.width+52)
 		.tickFormat("")
 
 		entriesGroup
@@ -2025,7 +2027,7 @@ var Deepviz = function(sources, callback){
 
 		contextualRows.append('rect')
 		.attr('height', contextualRowsHeight)
-		.attr('width', 1240)
+		.attr('width', options.width-60)
 		.attr('x', 0)
 		.attr('y',0)
 		.style('fill', '#FFF')
@@ -2042,7 +2044,7 @@ var Deepviz = function(sources, callback){
 		svg.append('rect')
 		.attr('height', contextualRowsHeight+38)
 		.attr('width', 35)
-		.attr('x', 1284)
+		.attr('x', options.width-16)
 		.attr('y',timechartHeightOriginal+6)
 		.style('fill', '#FFF')
 		.style('fill-opacity',1);
@@ -2117,7 +2119,7 @@ var Deepviz = function(sources, callback){
 			var id = d3.select(this).attr('id');
 			var v = id.substr(-1);
 			if(v!=filters.time){
-				redrawTimeline();
+				Deepviz.redrawTimeline();
 			}
 			filters.time = v;
 			d3.selectAll('.time-select rect').style('fill', colorGrey[2]);
@@ -2343,7 +2345,7 @@ var Deepviz = function(sources, callback){
 		    function dateKey(v){
 				if(v!=filters.time){
 					filters.time = v;
-					redrawTimeline();
+					Deepviz.redrawTimeline();
 				}
 				d3.selectAll('.time-select rect').style('fill', colorGrey[2]);
 				d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[4]);
@@ -3278,7 +3280,12 @@ var Deepviz = function(sources, callback){
 	//**************************
 	// redraw timeline
 	//**************************
-	var redrawTimeline = function(){
+	this.redrawTimeline = function(){
+
+		var w = timechartViewBoxWidth;
+		if(expandActive==true){
+			w = 2000;
+		}
 
 		d3.select('#avg-line').transition().duration(200).style('opacity', 0)
 		d3.select('#chartarea').transition().duration(200).style('opacity', 0)
@@ -3289,7 +3296,7 @@ var Deepviz = function(sources, callback){
 			// create svg
 			var timelineSvg = Deepviz.createSvg({
 				id: 'timeline_viz',
-				viewBoxWidth: timechartViewBoxWidth,
+				viewBoxWidth: w,
 				viewBoxHeight: timechartViewBoxHeight,
 				div: '#timeline'
 			});
@@ -3299,7 +3306,7 @@ var Deepviz = function(sources, callback){
 				id: 'timeChart',
 				opacity: 1,
 				gutter: 0.5,
-				width: 1300,
+				width: w,
 				color: ['#0033A0'],
 				maxValue: 'round', // integerValue (force define the maximum), 'auto' (find the maximum value in the data), 'round' (pretty rounding based on maximum value in the data)
 				paddingLeft: 0,
@@ -4354,12 +4361,17 @@ var Deepviz = function(sources, callback){
 	//**************************
 	var scrollable = false;
 	window.onresize = function(){
-		setTimeout(resizeDevice, 50);
+		setTimeout(Deepviz.resizeDevice, 50);
 	}
-	var resizeDevice = function() {
+	this.resizeDevice = function() {
 		// set map height
 		var map = document.getElementById("map");
-		map.setAttribute("style","height:"+(map.offsetWidth*mapAspectRatio)+"px");
+		if(expandActive==true){
+
+		} else {
+			map.setAttribute("style","height:"+(map.offsetWidth*mapAspectRatio)+"px");
+		}
+
 		$('.vizlibResponsiveDiv').each(function(){
 			var rDiv = this;
 			if($(rDiv).hasClass('vizlibResponsiveDiv')){

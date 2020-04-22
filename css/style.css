@@ -125,7 +125,6 @@ h2 {
 
 .leftcol {
 	width: 36%;
-	margin-top: 2px;
 	position: relative;
 }
 
@@ -209,15 +208,30 @@ h2 {
 #mapcontainer {
 	padding-right: 15px;
 	padding-top: 2px;
+	margin-bottom: 6px;
 }
 
-#timechart-container {
-	width: 64%;
+#mapcol {
+ margin-bottom: 12px;
+}
+
+
+#scores-container {
+	width: 63%;
 	float: right;
-    position: absolute;
     top: 0px;
     right: 0px;
 }
+
+.rightcol {
+	width: 63%;
+	float: right;
+    position: absolute;
+    top: 50px;
+    right: 0px;
+}
+
+
 
 @media only screen and (max-width: 1140px) {
 
@@ -751,12 +765,8 @@ font-size: 15px;
 	font-weight: bold;
 	display: inline-block;
 	line-height: 1.4;
-	margin-bottom: 0px;
     float: right;
-    position: absolute;
-    /*left: 180px;*/
-    right: 30px;
-    top: 1px;
+    padding-right: 19px;
 }
 
 #dateRangeText {
@@ -1052,6 +1062,27 @@ font-size: 15px;
 	display: none;
 }
 
+#expand {
+	position: absolute;
+    top: 4px;
+    display: inline;
+    right: 4px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+#expand-default {
+	
+}
+
+#expand-hover {
+	display: none;
+}
+
+#expand-selected {
+	display: none;
+}
+
 .polygon {
 	cursor: pointer;
 	outline: none;
@@ -1061,7 +1092,7 @@ font-size: 15px;
 	position: absolute;
     top: 7px;
     display: inline;
-    right: 5px;
+    right: 52px;
     z-index: 200;
     zoom: 0.6;
 }
