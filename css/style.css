@@ -48,6 +48,7 @@ h2 {
 #summary_row {
 	position: relative;
     margin-top: 16px;
+    z-index: 200;
 }
 
 #svg_summary1_div {
