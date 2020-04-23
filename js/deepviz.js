@@ -1004,7 +1004,13 @@ var Deepviz = function(sources, callback){
 			});
 
 			d.geo.forEach(function(dd,ii){
-				dataByLocationArray.push({"date": d.date, "month": d.month, "year": d.year, "geo": dd, 's': d.finalScore, 'r': d.reliability });
+				var adm = null;
+				metadata.geo_array.forEach(function(d,i){
+					if(dd==d.id){
+						adm = d.admin_level;
+					}
+				})
+				dataByLocationArray.push({"date": d.date, "month": d.month, "year": d.year, "geo": dd, "admin_level": adm, 's': d.severity, 'r': d.reliability });
 			});
 
 			d.focus.forEach(function(dd,ii){

@@ -198,8 +198,7 @@ h2 {
 	padding-right: 2px;
 }
 #map-bubble-svg {
-	-webkit-filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.3));      
-	filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.3)); 
+
 }
 
 .mapboxgl-control-container {
