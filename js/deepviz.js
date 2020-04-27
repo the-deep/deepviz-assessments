@@ -30,6 +30,7 @@ var mapbox;
 var mapboxToken = 'pk.eyJ1Ijoic2hpbWl6dSIsImEiOiJjam95MDBhamYxMjA1M2tyemk2aHMwenp5In0.i2kMIJulhyPLwp3jiLlpsA';
 var mapToggle = 'bubbles';
 var lassoActive = false;
+var expandActive = false;
 var collapsed = false;
 // data related
 var metadata;
@@ -3849,7 +3850,7 @@ var Deepviz = function(sources, callback){
 
 		// BOTTOM ROW
 		var key_informants = d3.sum(dc,function(d){
-			if(d.top.includes('key_informant_interview')) return 1;
+			if(d.top.includes('key_informant_interview')) return d.individuals;
 		})
 		d3.select('#key_informants tspan').text(addCommas(key_informants));
 

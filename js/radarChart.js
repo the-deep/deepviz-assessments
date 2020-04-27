@@ -1,9 +1,3 @@
-/////////////////////////////////////////////////////////
-/////////////// The Radar Chart Function ////////////////
-/////////////// Written by Nadieh Bremer ////////////////
-////////////////// VisualCinnamon.com ///////////////////
-/////////// Inspired by the code of alangrafu ///////////
-/////////////////////////////////////////////////////////
 var cfg = {
  w: 600,				//Width of the circle
  h: 600,				//Height of the circle
@@ -61,17 +55,6 @@ function RadarChart(id, data, options) {
 	var g = svg.append("g")
 			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")")
 			.attr('class', 'radarG');
-	
-	/////////////////////////////////////////////////////////
-	////////// Glow filter for some extra pizzazz ///////////
-	/////////////////////////////////////////////////////////
-	
-	//Filter for the outside glow
-	var filter = g.append('defs').append('filter').attr('id','glow'),
-		feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation','2.5').attr('result','coloredBlur'),
-		feMerge = filter.append('feMerge'),
-		feMergeNode_1 = feMerge.append('feMergeNode').attr('in','coloredBlur'),
-		feMergeNode_2 = feMerge.append('feMergeNode').attr('in','SourceGraphic');
 
 	/////////////////////////////////////////////////////////
 	/////////////// Draw the Circular grid //////////////////
@@ -90,8 +73,7 @@ function RadarChart(id, data, options) {
 		.style("fill", "#CDCDCD")
 		.style("stroke", "#CDCDCD")
 		.style("fill-opacity", cfg.opacityCircles)
-		.style('stroke-opacity', cfg.opacityCirclesStroke)
-		.style("filter" , "url(#glow)");
+		.style('stroke-opacity', cfg.opacityCirclesStroke);
 
 	// //Text indicating at what % each level is
 	// axisGrid.selectAll(".axisLabel")
@@ -187,8 +169,7 @@ function RadarChart(id, data, options) {
 		.attr("d", function(d,i) { return radarLine(d); })
 		.style("stroke-width", cfg.strokeWidth + "px")
 		.style("stroke", function(d,i) { return cfg.color(i); })
-		.style("fill", "none")
-		.style("filter" , "url(#glow)");		
+		.style("fill", "none");
 	
 	//Append the circles
 	blobWrapper.selectAll(".radarCircle")
@@ -340,8 +321,7 @@ function RadarChartUpdate(id, data, options) {
 		.attr("d", function(d,i) { return radarLine(d); })
 		.style("stroke-width", cfg.strokeWidth + "px")
 		.style("stroke", function(d,i) { return cfg.color(i); })
-		.style("fill", "none")
-		.style("filter" , "url(#glow)");		
+		.style("fill", "none");
 	
 	//Append the circles
 	blobWrapper.selectAll(".radarCircle")
@@ -352,3 +332,5 @@ function RadarChartUpdate(id, data, options) {
 		.style("fill", function(d,i,j) { return cfg.color(j); })
 		.style("fill-opacity", 0.8);
 }
+
+/////////////// adapted by code by Nadieh Bremer ////////////////
