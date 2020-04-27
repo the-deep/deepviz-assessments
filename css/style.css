@@ -930,6 +930,33 @@ font-size: 15px;
 	overflow: hidden !important;
 }
 
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+    padding-right: 22px;
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content {
+    box-sizing: border-box;
+    position: relative;
+    padding: 6px 0px 0px 7px;
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-arrow {
+    display: inline-block;
+    position: absolute;
+    top: 11px;
+    right: 6px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #bbb;
+}
+
+.tabulator-col:nth-child(5) .tabulator-col-title,
+.tabulator-col:nth-child(6) .tabulator-col-title {
+	text-align: right !important;
+}
+
 .downloadReport {
 	width: 12px;
 	height: 12px;
