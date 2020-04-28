@@ -30,6 +30,9 @@ DeepvizTable.create = function(){
         bold:function(cell, formatterParams){
             return "<strong>" + cell.getValue() + "</strong>"; //make the contents of the cell bold
         },
+        bolder:function(cell, formatterParams){
+            return "<strong style='color: #1AA791'>" + cell.getValue() + "</strong>"; //make the contents of the cell bold
+        },
         uppercase:function(cell, formatterParams){
             return cell.getValue().toUpperCase(); //make the contents of the cell uppercase
         },
@@ -95,8 +98,8 @@ DeepvizTable.create = function(){
             {title:"TITLE", field:"lead", formatter:"bold", minWidth:300},
             {title:"TYPE", field:"type", align:"left", minWidth: 70 },
             {title:"COORDINATION", field:"coordination", align:"left", minWidth: 120},
-            {title:"ANALYTICAL DENSITY", field:"analyticalDensity", align:"right", minWidth: 150},
-            {title:"QUALITY SCORE", field:"finalScore", align:"right", minWidth: 120},
+            {title:"ANALYTICAL DENSITY", field:"analyticalDensity", align:"right", minWidth: 150, formatter:"bolder"},
+            {title:"QUALITY SCORE", field:"finalScore", align:"right", minWidth: 120, formatter:"bolder"},
             {title:"AUTHOR", field:"author", align:"left", minWidth: 90 },
             {title:"PUBLICATION DATE", field:"date", align:"left", sorter:"date", sorterParams:{format:"DD-MM-YYYY"}, minWidth: 140, resizable: false},
             {title:"", field:"url", align: "center", formatter:"linkFormatter", headerSort:false, width: 1, resizable:false}
