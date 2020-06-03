@@ -69,6 +69,9 @@ var coordinatedHarmonizedId;
 var uncoordinatedId;
 var stakeholder_type_keys = {};
 var total = 0;
+var disableSync = false;
+var disableSync_location_threshold = 1000;
+var disableSync_entries_threshold = 5000;
 var maxValue; // max value on a given date
 var maxFocusValue;
 var tp_finalScore = [];
@@ -78,6 +81,7 @@ var duration = 700;
 var timechartInit = 0;
 var timechartyAxis;
 var timechartyGrids;
+var displayCalendar = false;
 var entriesAxis;
 var entriesMax;
 var width = 1300;
@@ -419,6 +423,12 @@ var Deepviz = function(sources, callback){
 		     })  
 		   }
 		 });
+
+		// disableSync threshold
+
+		if(metadata.geo_array.length>disableSync_location_threshold) disableSync = true;
+		if(data.length>disableSync_entries_threshold) disableSync = true;
+		if(urlQueryParams.get('disableSync')) disableSync = true;
 
 		// PARSE ASSESSMENT DATA IDS
 		data.forEach(function(d,i){
@@ -1582,7 +1592,7 @@ var Deepviz = function(sources, callback){
 				if(maxDate<=max){
 					max = moment(maxDate).subtract(1,'days');
 				}
-				ranges['Last Year'] = [new Date(today.getFullYear()-1, 0, 0), max];
+				ranges['Last Year'] = [new Date(today.getFullYear()-1, 0, 1), max];
 			}
 
 			var now = moment(); 
@@ -1608,6 +1618,7 @@ var Deepviz = function(sources, callback){
 				showCustomRangeLabel: false,
 				alwaysShowCalendars: true,
 				ranges: ranges,
+				autoApply: true,
 				maxYear: maxDate.getFullYear(),
 				minYear: minDate.getFullYear(),
 				minDate: minDate,
@@ -1617,9 +1628,23 @@ var Deepviz = function(sources, callback){
 			d3.select('#dateRange').style('cursor', 'pointer');
 
 			d3.select('#timeChart').on('click', function(){
-				// $('#dateRange').trigger('cancel.daterangepicker');
 				$('#dateRange').data('daterangepicker').hide();
-			})	
+			});
+
+			$('#dateRange').on('click.daterangepicker', function(){
+					if(displayCalendar==true) { 
+						displayCalendar = false;
+						$('#dateRange').data('daterangepicker').hide();
+					} else {
+						displayCalendar = true;
+						$('#dateRange').data('daterangepicker').show();		
+					}
+			});
+
+			$('#dateRange').on('hide.daterangepicker', function(){
+				displayCalendar = false;
+			});	
+
 		} 
 
 		if(filters.time=='m'){
@@ -1944,39 +1969,48 @@ var Deepviz = function(sources, callback){
 
 		var updatingTopAxis = false;
 		var updateTopAxisInterval = 100;
-		var axisRange = 'every month';
+		var axisRange = 'not set';
 		updateTopAxis = function(){
 
 			var count = (Math.abs(moment(dateRange[1]).diff(moment(dateRange[0]), 'months', true)));
 			var tickFormat = d3.timeFormat("%d %b %Y");
 			var tLength = '6%';
+			if(filters.time=='d'){
+				if((count<=0.4)){
+					if(axisRange=='single day') return; // if already 'single month' then break out of fn
+					var ticks = d3.timeDay.every(1);
+					axisRange = 'single day';
+				}
 
-			if((count<=0.4)){
-				if(axisRange=='single day') return; // if already 'single month' then break out of fn
-				// console.log('updateTopAxis to single day');
-				var ticks = d3.timeDay.every(1);
-				axisRange = 'single day';
-			}
+				else if((count>0.4)&&(count<=2)){
+					if(axisRange=='single month') return; // if already 'single month' then break out of fn
+					var ticks = d3.timeWeek.every(1);
+					axisRange = 'single month';
+				}
 
-			else if((count>0.4)&&(count<=2)){
-				if(axisRange=='single month') return; // if already 'single month' then break out of fn
-				// console.log('updateTopAxis to single month');
-				var ticks = d3.timeWeek.every(1);
-				axisRange = 'single month';
-			}
+				else if((count>2)&&(count<=10)){
+					if(axisRange=='every month') return; // if already 'every month' then break out of fn
+					var ticks = d3.timeMonth.every(1);
+					axisRange = 'every month';
+				}
 
-			else if((count>2)&&(count<=10)){
-				if(axisRange=='every month') return; // if already 'every month' then break out of fn
-				// console.log('updateTopAxis to every month');
-				var ticks = d3.timeMonth.every(1);
-				axisRange = 'every month';
-			}
+				else if((count>10)&&(count<=36)){
+					if(axisRange=='every 3 months') return; // if already 'every month' then break out of fn
+					var ticks = d3.timeMonth.every(3);
+					axisRange = 'every 3 months';
+				}
 
-			else if((count>10)){
-				if(axisRange=='every 3 months') return; // if already 'every month' then break out of fn
-				// console.log('updateTopAxis to every 3 months');
-				var ticks = d3.timeMonth.every(3);
-				axisRange = 'every 3 months';
+				else if((count>36)&&(count<=64)){
+					if(axisRange=='every 6 months') return; // if already 'every month' then break out of fn
+					var ticks = d3.timeMonth.every(6);
+					axisRange = 'every 6 months';
+				}
+
+				else if((count>64)){
+					if(axisRange=='every 12 months') return; // if already 'every month' then break out of fn
+					var ticks = d3.timeMonth.every(12);
+					axisRange = 'every 12 months';
+				}
 			}
 
 			if(filters.time=='m'){
@@ -1985,13 +2019,27 @@ var Deepviz = function(sources, callback){
 				var tLength = '5%';
 
 				if((count<=10)){
+					if(axisRange=='single month') return; 
 					var ticks = d3.timeMonth.every(1);
 					axisRange = 'single month';
 				}
 
-				if((count>10)){
+				else if((count>10)&&(count<=36)){
+					if(axisRange=='every 3 months') return; // if already 'every month' then break out of fn
 					var ticks = d3.timeMonth.every(3);
 					axisRange = 'every 3 months';
+				}
+
+				else if((count>36)&&(count<=64)){
+					if(axisRange=='every 6 months') return; // if already 'every month' then break out of fn
+					var ticks = d3.timeMonth.every(6);
+					axisRange = 'every 6 months';
+				}
+
+				else if((count>64)){
+					if(axisRange=='every 12 months') return; // if already 'every month' then break out of fn
+					var ticks = d3.timeMonth.every(12);
+					axisRange = 'every 12 months';
 				}
 			}
 
@@ -2191,10 +2239,6 @@ var Deepviz = function(sources, callback){
 		.attr("class", "grid")
 		.attr('id', 'entriesChartYGrid')
 		.call(entriesChartyGrid);
-
-
-
-
 
 		var entriesBars = entriesGroup.selectAll(".entriesGroup")
 		.data(dataEntriesByDate)
@@ -2725,13 +2769,15 @@ var Deepviz = function(sources, callback){
 
 			// colorBars();
 			updateDate();
-			if(!urlQueryParams.get('disableSync')){
+
+			if(disableSync==false){
 				updateTotals(false);
 				// updateRadarCharts();
 				Map.update();
 				updateFinalScore('brush');
-				// updateSeverity('brush');
-			}
+				updateSeverity('brush');
+			} 
+			
 			// BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
 			// BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
 			// BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
@@ -2748,7 +2794,7 @@ var Deepviz = function(sources, callback){
 			handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
 			handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + ((timechartSvgHeight-timechartHeight2-20) - margin.top) + ")"; });
 			
-			if(d3.event.sourceEvent)  { 
+			if(d3.event.sourceEvent){ 
 				d3.select(this).call(d3.event.target.move, dateRange.map(scale.timechart.x));
 				$('#location-search').select2('close');
 			}

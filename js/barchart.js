@@ -1,6 +1,6 @@
 var BarChart = {};
 var updating = false;
-var updateInterval = 1;
+var updateInterval = 0;
 
 BarChart.createBarChart = function(a){
 
