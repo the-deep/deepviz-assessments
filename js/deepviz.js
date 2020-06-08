@@ -2191,7 +2191,6 @@ var Deepviz = function(sources, callback){
 		tippy('.bar', { 
 			// content: setBarName(s),
 			theme: 'light-border',
-			delay: [250,100],
 			inertia: false,
 			distance: 8,
 			allowHTML: true,
@@ -2206,16 +2205,17 @@ var Deepviz = function(sources, callback){
 		        // get severity/reliability id
 		        var parentId = d3.select(instance.reference.parentNode).attr('id');
 		        var date = new Date(parseInt(parentId.slice(4)));
+		        var dateFormatter;
         		if(filters.time=='d'){
-        			var dateformatter = d3.timeFormat("%d %b %Y");
+        			dateformatter = d3.timeFormat("%d %b %Y");
 				}
 
 				if(filters.time=='m'){
-					var dateformatter = d3.timeFormat("%b %Y");
+					dateformatter = d3.timeFormat("%b %Y");
 				}
 
 				if(filters.time=='y'){
-					var dateformatter = d3.timeFormat("%Y");
+					dateformatter = d3.timeFormat("%Y");
 				}
 				date = dateformatter(date);
 		        var s = parseInt(instance.reference.classList[1][instance.reference.classList[1].length-1])-1;
