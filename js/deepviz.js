@@ -2608,7 +2608,7 @@ var Deepviz = function(sources, callback){
 		.attr('id', 'eventDropDateHoverRect')
 		.attr('x', 500)
 		.attr('y', timechartHeight2)
-		.attr('height', contextualRowsHeight)
+		.attr('height', (entriesChartHeight+contextualRowsHeight+12))
 		.attr('width', bw)
 		.attr('fill', hoverColor)
 		.attr('opacity', 0);
