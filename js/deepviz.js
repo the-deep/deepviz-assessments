@@ -2205,10 +2205,7 @@ var Deepviz = function(sources, callback){
 		        // get severity/reliability id
 		        var parentId = d3.select(instance.reference.parentNode).attr('id');
 		        var date = new Date(parseInt(parentId.slice(4)));
-		        var dateFormatter;
-        		if(filters.time=='d'){
-        			dateformatter = d3.timeFormat("%d %b %Y");
-				}
+		        var dateFormatter = d3.timeFormat("%d %b %Y");
 
 				if(filters.time=='m'){
 					dateformatter = d3.timeFormat("%b %Y");
