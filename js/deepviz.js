@@ -82,6 +82,7 @@ var timechartInit = 0;
 var timechartyAxis;
 var timechartyGrids;
 var displayCalendar = false;
+var hoverColor = 'rgba(0,0,0,0.03)';
 var entriesAxis;
 var entriesMax;
 var width = 1300;
@@ -1667,7 +1668,7 @@ var Deepviz = function(sources, callback){
 		}
 
 		if(filters.time=='y'){
-			maxDate = new Date(maxDate.getFullYear(),12, -1);
+			maxDate = new Date(maxDate.getFullYear()+1, 0, 1);
 			minDate = new Date(minDate.getFullYear(), 0, 1);
 			var d1 = dateRange.map(d3.timeDay.round);
 			// dateRange[0] = d1[0];
@@ -2085,7 +2086,9 @@ var Deepviz = function(sources, callback){
 		// Bar/event drop groups (by date)
 		//**************************
 		// bar groups
+		var dateHover = svgChart.append('g');
 		var barGroup = svgChart.append('g').attr('id', 'chart-bar-group');
+		var bw; 
 
 		var bars = barGroup.selectAll(".barGroup")
 		.data(chartdata)
@@ -2101,19 +2104,22 @@ var Deepviz = function(sources, callback){
 			if(filters.time=='y'){
 				var date = new Date(d[options.dataKey]);
 				var endYear = new Date(date.getFullYear(), 11, 31);
-				return scale.timechart.x(endYear) - scale.timechart.x(d.key);   
+				bw = scale.timechart.x(endYear) - scale.timechart.x(d.key);   
+				return bw;
 			}
 
 			if(filters.time=='m'){
 				var date = new Date(d[options.dataKey]);
 				var endMonth = new Date(date.getFullYear(), date.getMonth()+1, 1);
-				return scale.timechart.x(endMonth) - scale.timechart.x(d.key);
+				bw = scale.timechart.x(endMonth) - scale.timechart.x(d.key);
+				return bw;
 			}
 
 			if(filters.time=='d'){
 				var date = new Date(d[options.dataKey]);
 				var endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate()+1);
-				return scale.timechart.x(endDate) - scale.timechart.x(d.key);
+				bw = scale.timechart.x(endDate) - scale.timechart.x(d.key);
+				return bw;
 			}	
 
 		})
@@ -2177,6 +2183,48 @@ var Deepviz = function(sources, callback){
 			clickTimer = 1;
 			Deepviz.filter(filters.toggle,i);
 			setTimeout(function(){ clickTimer = 0 }, 2000);
+		});
+
+		var placement = 'top';
+		if(filters.time=='d') placement = 'top-start';
+
+		tippy('.bar', { 
+			// content: setBarName(s),
+			theme: 'light-border',
+			inertia: false,
+			distance: 8,
+			allowHTML: true,
+			animation: 'shift-away',
+			placement: placement,
+			delay: [600, 100],
+			arrow: true,
+			size: 'small',
+			onShow(instance) {
+		        var v = d3.select(instance.reference).attr('data-value');
+		        d3.select(instance.reference).style('stroke', 'grey').style('stroke-opacity', 0.2).attr('vector-effect', 'non-scaling-stroke');
+		        // get severity/reliability id
+		        var parentId = d3.select(instance.reference.parentNode).attr('id');
+		        var date = new Date(parseInt(parentId.slice(4)));
+		        var dateFormatter = d3.timeFormat("%d %b %Y");
+
+				if(filters.time=='m'){
+					dateFormatter = d3.timeFormat("%b %Y");
+				}
+
+				if(filters.time=='y'){
+					dateFormatter = d3.timeFormat("%Y");
+				}
+				date = dateFormatter(date);
+		        var s = parseInt(instance.reference.classList[1][instance.reference.classList[1].length-1])-1;
+					var color = colorPrimary[s];
+					var text = metadata.scorepillar_scale[s].name;
+				var html = '<div style="text-align: left; font-weight: bold;">'+date+'</div>';
+				html += '<div style="width: 100px; height: 10px; display: inline; background-color: '+ color + '">&nbsp;&nbsp;</div>&nbsp; ' + text + ' <div style="padding-left: 3px; padding-bottom: 2px; display: inline; color: '+ colorNeutral[4] + '; font-size: 9px"><b>' + v + ' '+textLabel+'</b></div>';
+	        	instance.setContent(html);
+			},
+			onHide(instance) {
+		        d3.select(instance.reference).style('stroke', 'cyan').style('stroke-opacity', 0);
+			}
 		});
 
 		//**************************
@@ -2464,6 +2512,7 @@ var Deepviz = function(sources, callback){
 		.range([0,12])
 		.domain([0,maxFocusValue]);
 
+		var eventDropGroupBg = svgEventDrop.append('g');
 		var eventDropGroup = svgEventDrop.append('g').attr('id', 'event-drop-group');
 
 		var eventDrops = eventDropGroup.selectAll(".eventDropGroup")
@@ -2535,7 +2584,119 @@ var Deepviz = function(sources, callback){
 			}
 		});
 
+		//**************************
+		// hover 
+		//**************************
+		
+		dateHover.append('rect')
+		.attr('height', timechartHeight2)
+		.attr('x', 0)
+		.attr('y', 0)
+		.attr('width', (options.width - (margin.right + margin.left)))
+		.attr('fill', '#FFF');
 
+		var dateHoverRect = dateHover.append('rect')
+		.attr('id', 'dateHoverRect')
+		.attr('x', 1500)
+		.attr('y', 0)
+		.attr('height', timechartHeight2)
+		.attr('width', bw)
+		.attr('fill', hoverColor)
+		.attr('opacity', 0);
+
+		var eventDropDateHoverRect = eventDropGroupBg.append('rect')
+		.attr('id', 'eventDropDateHoverRect')
+		.attr('x', 500)
+		.attr('y', timechartHeight2)
+		.attr('height', (entriesChartHeight+contextualRowsHeight+12))
+		.attr('width', bw)
+		.attr('fill', hoverColor)
+		.attr('opacity', 0);
+
+		svgChart.on('mouseover', function(d,i){
+			dateHoverRect.attr('opacity', 1);
+			eventDropDateHoverRect.attr('opacity', 1);
+		}).on('mouseout', function(d,i){
+			dateHoverRect.attr('opacity', 0);
+			eventDropDateHoverRect.attr('opacity', 0);
+		})
+		.on('mousemove', function(d,i){
+			var x = d3.mouse(this)[0];
+			var w;
+			if(filters.time=='d'){ 
+				var x1 = d3.timeDay.floor(scale.timechart.x.invert(x));
+				// w = d3.timeDay.ceil(scale.timechart.x.invert(x));
+				w = bw;
+			}
+			if(filters.time=='m'){ 
+				var x1 = d3.timeMonth.floor(scale.timechart.x.invert(x));
+				w = d3.timeMonth.ceil(scale.timechart.x.invert(x));
+				w = scale.timechart.x(w) - scale.timechart.x(x1);
+			}
+			if(filters.time=='y'){ 
+				var x1 = d3.timeYear.floor(scale.timechart.x.invert(x));
+				w = d3.timeYear.ceil(scale.timechart.x.invert(x));
+				w = scale.timechart.x(w) - scale.timechart.x(x1);				
+			}
+			dateHoverRect.attr('x', scale.timechart.x(x1))
+			.attr('width', w);
+			eventDropDateHoverRect.attr('x', scale.timechart.x(x1))
+			.attr('width', w);
+		});
+
+		topLayer.on('mouseover', function(d,i){
+			var x = d3.mouse(this)[0];
+			var w;
+			if(filters.time=='d'){ 
+				var x1 = d3.timeDay.floor(scale.timechart.x.invert(x));
+				// w = d3.timeDay.ceil(scale.timechart.x.invert(x));
+				w = bw;
+			}
+			if(filters.time=='m'){ 
+				var x1 = d3.timeMonth.floor(scale.timechart.x.invert(x));
+				w = d3.timeMonth.ceil(scale.timechart.x.invert(x));
+				w = scale.timechart.x(w) - scale.timechart.x(x1);
+			}
+			if(filters.time=='y'){ 
+				var x1 = d3.timeYear.floor(scale.timechart.x.invert(x));
+				w = d3.timeYear.ceil(scale.timechart.x.invert(x));
+				w = scale.timechart.x(w) - scale.timechart.x(x1);				
+			}
+			dateHoverRect.attr('x', scale.timechart.x(x1))
+			.attr('width', w);
+			eventDropDateHoverRect.attr('x', scale.timechart.x(x1))
+			.attr('width', w);
+
+			dateHoverRect.attr('opacity', 1);
+			eventDropDateHoverRect.attr('opacity', 1);
+
+		}).on('mouseout', function(d,i){
+			dateHoverRect.attr('opacity', 0);
+			eventDropDateHoverRect.attr('opacity', 0);
+		}).on('mousemove', function(d,i){
+			var x = d3.mouse(this)[0];
+			var w;
+			if(filters.time=='d'){ 
+				var x1 = d3.timeDay.floor(scale.timechart.x.invert(x));
+				// w = d3.timeDay.ceil(scale.timechart.x.invert(x));
+				w = bw;
+			}
+			if(filters.time=='m'){ 
+				var x1 = d3.timeMonth.floor(scale.timechart.x.invert(x));
+				w = d3.timeMonth.ceil(scale.timechart.x.invert(x));
+				w = scale.timechart.x(w) - scale.timechart.x(x1);
+			}
+			if(filters.time=='y'){ 
+				var x1 = d3.timeYear.floor(scale.timechart.x.invert(x));
+				w = d3.timeYear.ceil(scale.timechart.x.invert(x));
+				w = scale.timechart.x(w) - scale.timechart.x(x1);				
+			}
+			dateHoverRect.attr('x', scale.timechart.x(x1))
+			.attr('width', w);
+			eventDropDateHoverRect.attr('x', scale.timechart.x(x1))
+			.attr('width', w);
+
+		});
 
 		//**************************
 		// date slider brushes
@@ -2603,17 +2764,25 @@ var Deepviz = function(sources, callback){
 	    })
 	    .on('mouseout', function(){
 	    	d3.selectAll('.handle--custom-top, .handle--custom-bottom').style('fill', '#000');
-	    })
+	    });
 
-	     $('#dateRange').on('apply.daterangepicker', function(ev, picker) {
-	    	dateRange[0] = new Date(picker.startDate._d);
-	    	dateRange[0].setHours(0,0,0,0);
+	    topLayer.selectAll('.handle').on('mouseover', function(){
+			dateHoverRect.attr('opacity', 0);
+			eventDropDateHoverRect.attr('opacity', 0);
+		}).on('mousemove', function(){
+			dateHoverRect.attr('opacity', 0);
+			eventDropDateHoverRect.attr('opacity', 0);
+		});
 
-	    	dateRange[1] = new Date(picker.endDate._d);
-	    	dateRange[1].setHours(0,0,0,0);
-	    	dateRange[1] = moment(dateRange[1].setDate(dateRange[1].getDate())).add(1, 'day');
-	    	gBrush.call(brush.move, dateRange.map(scale.timechart.x));
 
+		$('#dateRange').on('apply.daterangepicker', function(ev, picker) {
+			dateRange[0] = new Date(picker.startDate._d);
+			dateRange[0].setHours(0,0,0,0);
+
+			dateRange[1] = new Date(picker.endDate._d);
+			dateRange[1].setHours(0,0,0,0);
+			dateRange[1] = moment(dateRange[1].setDate(dateRange[1].getDate())).add(1, 'day');
+			gBrush.call(brush.move, dateRange.map(scale.timechart.x));
 		});
 
 	    // keyboard pagination
@@ -2764,6 +2933,9 @@ var Deepviz = function(sources, callback){
 				var d1 = d0.map(d3.timeYear.round);
 				d1[1] = moment(d1[0]).add(count,'years');
 			}
+
+			dateHoverRect.attr('opacity', 0);
+			eventDropDateHoverRect.attr('opacity', 0);
 
 			dateRange = d1;
 
@@ -3409,7 +3581,7 @@ var Deepviz = function(sources, callback){
 		} else {
 			if(filterClass=='str'){
 				filters['str'] = value;
-			} else {
+			} else if(value != 'reset'){
 			  addOrRemove(filters[filterClass], value);		
 			}
 		}
@@ -3618,7 +3790,11 @@ var Deepviz = function(sources, callback){
 			d3.select('#organisationRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 		}
 
-		updateTimeline(filterClass);
+		var duration = 500;
+		if(filterClass=='reset') {
+			duration = 0;
+		}
+		Deepviz.updateTimeline(filterClass, duration);
 
 		d3.select('#globalRemoveFilter').on('click', function(){ 
 	        $('.searchRows').val('');
@@ -3630,6 +3806,8 @@ var Deepviz = function(sources, callback){
 	// redraw timeline
 	//**************************
 	this.redrawTimeline = function(){
+
+		data = originalData;
 
 		var w = timechartViewBoxWidth;
 		if(expandActive==true){
@@ -3728,6 +3906,11 @@ var Deepviz = function(sources, callback){
 				// },
 			});
 
+			d3.selectAll('.bar').style('opacity', 0);
+			d3.selectAll('#timechartyAxis').style('opacity', 0);
+
+			Deepviz.filter('reset', 'reset');
+
 			updateTotals(true);
 			Map.update();
 			updateRadarCharts();
@@ -3749,7 +3932,7 @@ var Deepviz = function(sources, callback){
 	//**************************
 	// get the data
 	//**************************
-	var updateTimeline = function(target = null){
+	this.updateTimeline = function(target = null, duration){
 
 		var chartdata = refreshData();
 		scale.timechart.y1 = d3.scaleLinear()
@@ -3893,7 +4076,7 @@ var Deepviz = function(sources, callback){
 						return colorSecondary[i];
 					}
 				})
-				.transition().duration(duration)
+				.transition().delay(2).duration(duration)
 				.attr("height", function(d,i) {
 					return timechartHeight2-scale.timechart.y1(dD[filters.toggle][i]); 
 				})
@@ -3917,6 +4100,14 @@ var Deepviz = function(sources, callback){
 				.attr('r', 0)
 			}
 		});
+
+		if(duration==0){
+			setTimeout(function(){
+				d3.selectAll('.bar').style('opacity', 1);
+				d3.selectAll('#timechartyAxis').style('opacity', 1);
+			}, 50);
+		}
+
 		updateFinalScore(target, duration);
 		updateSeverity(target, duration);
 		updateEntriesChart();
@@ -4348,6 +4539,12 @@ var Deepviz = function(sources, callback){
 			}
 		});
 
+		if(duration==0){
+			setTimeout(function(){
+				d3.selectAll('.bar').style('opacity', 1);
+				d3.selectAll('#timechartyAxis').style('opacity', 1);
+			}, 50);
+		}
 
 	}
 
