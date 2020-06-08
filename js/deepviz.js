@@ -2208,13 +2208,13 @@ var Deepviz = function(sources, callback){
 		        var dateFormatter = d3.timeFormat("%d %b %Y");
 
 				if(filters.time=='m'){
-					dateformatter = d3.timeFormat("%b %Y");
+					dateFormatter = d3.timeFormat("%b %Y");
 				}
 
 				if(filters.time=='y'){
-					dateformatter = d3.timeFormat("%Y");
+					dateFormatter = d3.timeFormat("%Y");
 				}
-				date = dateformatter(date);
+				date = dateFormatter(date);
 		        var s = parseInt(instance.reference.classList[1][instance.reference.classList[1].length-1])-1;
 					var color = colorPrimary[s];
 					var text = metadata.scorepillar_scale[s].name;
