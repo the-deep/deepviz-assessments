@@ -133,6 +133,10 @@ h2 {
 
 }
 
+.tippy-tooltip {
+  text-align: left;
+}
+
 #svg_quality_div .axis text {
  fill: grey;
 }
