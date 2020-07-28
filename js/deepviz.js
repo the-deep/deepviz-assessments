@@ -47,6 +47,8 @@ var dataByDate;
 var dataByMonth;
 var dataByYear;
 var dataByLocation;
+var dataByLead;
+var dataByPublisher;
 var dataByAssessmentType;
 var dataByOrganisation;
 var dataByOrganisationType;
@@ -221,547 +223,33 @@ var Deepviz = function(sources, callback){
 		//**************************
 
 		// return the data
-		data = values[0].data;
-		dataEntries = values[1].data;
-		svg_summary1 = values[2];
-		svg_summary2 = values[3];
-		svg_summary3 = values[4];
-		svg_quality = values[5];
+		dataEntries = values[0].entry_data.data;
+		dataAssessments = values[0].ary_data.data;
 
-		metadata = values[0].meta;
-		metadataEntries = values[1].meta;
+		svg_summary1 = values[1];
+		svg_summary2 = values[2];
+		svg_summary3 = values[3];
+		svg_quality = values[4];
+
+		metadata = values[0].ary_data.meta;
+		metadata.geo_array = values[0].geo_data;
+		metadataEntries = values[0].entry_data.meta;
+		metadataEntries.geo_array = metadata.geo_array;
+
 		frameworkToggleImg = values[1];
 
-		// parse parent locations up to 4 levels
-		data.forEach(function(d,i){
-			d.geo.forEach(function(dd,ii){
+		parseGeoData();
 
-				dd = parseInt(dd);
+		metadata = parseAssessmentsMetadata(metadata);
+		data = parseAssessmentsData(dataAssessments, metadata);
 
-				var parents = [];
-
-				var parent = getParent(dd);
-				if((parent>0)&&(!parents.includes(parent))&&(!d.geo.includes(parent))){
-					parents.push(parent);
-				}
-
-				var parent = getParent(parent);
-				if((parent>0)&&(!parents.includes(parent))&&(!d.geo.includes(parent))){
-					parents.push(parent);
-				}
-
-				var parent = getParent(parent);
-				if((parent>0)&&(!parents.includes(parent))&&(!d.geo.includes(parent))){
-					parents.push(parent);
-				}
-
-				var parent = getParent(parent);
-				if((parent>0)&&(!parents.includes(parent))&&(!d.geo.includes(parent))){
-					parents.push(parent);
-				}
-
-				d.geo.push.apply(d.geo,parents);
-			});
-
-		});
-
-		function getParent(geo_id){
-			var parent;
-			metadata.geo_array.forEach(function(d,i){
-				if(geo_id==d.id){
-					parent = d.parent;
-				}
-			})
-			return parseInt(parent);
-		}
-
-		// remove unused locations
-		var locationArray = [];
-		data.forEach(function(d,i){
-			d.geo.forEach(function(dd,ii){
-				if(!locationArray.includes(parseInt(dd))){
-					locationArray.push(parseInt(dd));
-				}
-			})
-		});
-
-		dataEntries.forEach(function(d,i){
-			d.geo.forEach(function(dd,ii){
-				if(!locationArray.includes(parseInt(dd))){
-					locationArray.push(parseInt(dd));
-				}
-			})
-		});
-
-		var newGeoArray = [];
-		metadata.geo_array.forEach(function(d,i,obj){
-			if(locationArray.includes(parseInt(d.id))){
-				newGeoArray.push(d);
-			}	
-		})
-
-		metadata.geo_array = newGeoArray;
-
-		// parse meta data, create integer id column from string ids and programattically attempt to shorten label names
-		metadata.focus_array.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.focus_array.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.data_collection_technique.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-			if(d.name=='Focus Group Discussion') data_collection_technique_keys.focus_group_discussion = d.id;
-			if(d.name=='Key Informant Interview') data_collection_technique_keys.key_informant_interview = d.id;
-			if(d.name=='Community Group Discussion') data_collection_technique_keys.community_group_discussion = d.id;
-		});
-
-		metadata.type_of_unit_of_analysis.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.methodology_content.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.additional_documentation_array.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.language.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.assessment_type.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-			if(d.name=='Initial') atype_keys.initial = d.id;
-			if(d.name=='Rapid') atype_keys.rapid = d.id;
-			if(d.name=='In-depth') atype_keys.in_depth = d.id;
-			if(d.name=='Monitoring') atype_keys.monitoring = d.id;
-		});
-
-		metadata.sampling_approach.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.coordination.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-			if(d.name=='Coordinated - Joint') coordinatedJointId = d.id;
-			if(d.name=='Coordinated - Harmonized') coordinatedHarmonizedId = d.id;
-			if(d.name=='Uncoordinated') uncoordinatedId = d.id;
-		});
-
-		metadata.affected_groups_array.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.sector_array.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.organization.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-			d.name = d.short_name;
-		});
-
-		metadata.organization_type.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-			if(d.name=='Donor') stakeholder_type_keys.donor = d.id;
-			if(d.name=='International Organization') stakeholder_type_keys.ingo = d.id;
-			if(d.name=='Non-governmental Organization') stakeholder_type_keys.lngo = d.id;
-			if(d.name=='Government') stakeholder_type_keys.government = d.id;
-			if(d.name=='UN Agency') stakeholder_type_keys.un_agency = d.id;
-			if(d.name=='UN Agencies') stakeholder_type_keys.un_agency = d.id;
-			if(d.name=='Red Cross/Red Crescent Movement') stakeholder_type_keys.rcrc = d.id;
-			if(d.name=='Cluster') stakeholder_type_keys.cluster = d.id;
-		});
-
-		metadata.scorepillar_scale.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadata.geo_array.sort(function(x, y){
-		   return d3.ascending(x.name, y.name);
-		});
-
-		metadata.geo_json = {"type": "FeatureCollection", "features": []};
-		metadata.geo_json_point = {"type": "FeatureCollection", "features": []};
-		
-		metadata.geo_array.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-			var polygons = d.polygons;
-			polygons.coordinates = polygons.coordinates;
-			var feature = {'type':'Feature', 'properties':{'name': d.name, 'id': d.id, 'admin_level': d.admin_level}, 'geometry': polygons }
-			metadata.geo_json.features[i] = feature;
-			var point = { "type": "Point", "coordinates": [ d.centroid[0],d.centroid[1],0.0 ] }
-			var featurePoint = {'type':'Feature', 'properties':{'name': d.name, 'id': d.id, 'admin_level': d.admin_level}, 'geometry': point }
-			metadata.geo_json_point.features[i] = featurePoint;
-		});
-
-		metadata.geo_json.features.forEach(function(feature) {
-		   if(feature.geometry.type == "MultiPolygon") {
-		     feature.geometry.coordinates.forEach(function(polygon) {
-		       polygon.forEach(function(ring) {
-		         ring.reverse();
-		       })
-		     })
-		   }
-		   else if (feature.geometry.type == "Polygon") {
-		     feature.geometry.coordinates.forEach(function(ring) {
-		       ring.reverse();
-		     })  
-		   }
-		 });
+		metadataEntries = parseEntriesMetadata(metadataEntries);
+		dataEntries = parseEntriesData(dataEntries, metadataEntries);
 
 		// disableSync threshold
-
 		if(metadata.geo_array.length>disableSync_location_threshold) disableSync = true;
 		if(data.length>disableSync_entries_threshold) disableSync = true;
 		if(urlQueryParams.get('disableSync')) disableSync = true;
-
-		// PARSE ASSESSMENT DATA IDS
-		data.forEach(function(d,i){
-			d.date = new Date(d.date);
-			d.date.setHours(0,0,0,0);
-			d.month = new Date(d.date);
-			d.month.setHours(0,0,0,0);
-			d.month.setDate(1);
-			d.year = new Date(d.date);
-			d.year.setHours(0,0,0,0);
-			d.year.setDate(1);
-			d.year.setMonth(0);
-			d.date_str = timeFormat(d.date);
-
-			// PARSE STRING IDS TO INTEGERS
-			// parse context array
-			d._focus = d.focus;
-			d.focus = [];
-			d._focus.forEach(function(dd,ii){
-				metadata.focus_array.forEach(function(ddd,ii){
-					if(dd==ddd._id){
-						if(!d.focus.includes(ddd.id)) d.focus.push(ddd.id);
-					}
-				});
-			});
-
-			// parse affected groups array
-			d._affected_groups = d.affected_groups;
-			d.affected_groups = [];
-			d._affected_groups.forEach(function(dd,ii){
-				metadata.affected_groups_array.forEach(function(ddd,ii){
-					if(dd==ddd._id){
-						if(!d.affected_groups.includes(ddd.id)) d.affected_groups.push(ddd.id);
-					}
-				});
-			});
-
-			// parse sector array
-			d._sector = d.sector;
-			d.sector = [];
-			d._sector.forEach(function(dd,ii){
-				metadata.sector_array.forEach(function(ddd,ii){
-					if(dd==ddd._id){
-						if(!d.sector.includes(ddd.id)) d.sector.push(ddd.id);
-					}
-				});
-			});
-
-			d.sector_count = d.sector.length;
-
-			// parse assessment type
-			d._assessment_type = d.assessment_type;
-			d.assessment_type_str = '';
-			metadata.assessment_type.forEach(function(ddd,ii){
-				if(parseInt(d._assessment_type)==parseInt(ddd._id)){
-					d.assessment_type = parseInt(ddd.id);
-					d.assessment_type_str = ddd.name;
-				}
-			});
-
-			// parse coordination 
-			d._coordination = d.coordination;
-			d.coordination_str = '';
-			metadata.coordination.forEach(function(ddd,ii){
-				if(d._coordination==ddd._id){
-					d.coordination = ddd.id;
-					d.coordination_str = ddd.name;
-				}
-			});
-
-			// parse language array
-			d._language = d.language;
-			d.language = [];
-			if(d._language){
-				d._language.forEach(function(dd,ii){
-					metadata.language.forEach(function(ddd,ii){
-						if(dd==ddd._id){
-							if(!d.language.includes(ddd.id)) d.language.push(ddd.id);
-						}
-					});
-				});		
-			}
-
-			// parse sampling_approach array
-			d._sampling_approach = d.sampling_approach;
-			d.sampling_approach = [];
-			var sa = [];
-			d._sampling_approach.forEach(function(dd,ii){
-				metadata.sampling_approach.forEach(function(ddd,ii){
-					if((dd==ddd._id)&&(!d.sampling_approach.includes(ddd.id))){
-						if(!d.sampling_approach.includes(ddd.id)) d.sampling_approach.push(ddd.id);
-					}
-				});
-			});
-
-			// parse data collection technique 
-			d._data_collection_technique = d.data_collection_technique;
-			d.data_collection_technique = [];
-			d._data_collection_technique.forEach(function(dd,ii){
-				metadata.data_collection_technique.forEach(function(ddd,ii){
-					if(dd==ddd._id){
-						if(!d.data_collection_technique.includes(ddd.id)) d.data_collection_technique.push(ddd.id);
-					}
-				});
-			});
-
-			// parse unit of analysis
-			d._unit_of_analysis = d.unit_of_analysis;
-			d.unit_of_analysis = [];
-			d._unit_of_analysis.forEach(function(dd,ii){
-				metadata.type_of_unit_of_analysis.forEach(function(ddd,ii){
-					if(dd==ddd._id){
-						if(!d.unit_of_analysis.includes(ddd.id)) d.unit_of_analysis.push(ddd.id);
-					}
-				});
-			});
-
-			// parse unit of reporting
-			d._unit_of_reporting = d.unit_of_reporting;
-			d.unit_of_reporting = [];
-			d._unit_of_reporting.forEach(function(dd,ii){
-				metadata.type_of_unit_of_analysis.forEach(function(ddd,ii){
-					if(dd==ddd._id){
-						if(!d.unit_of_reporting.includes(ddd.id)) d.unit_of_reporting.push(ddd.id);
-					}
-				});
-			});
-
-			// parse methodology content
-			d._methodology_content = d.methodology_content;
-			d.methodology_content = [];
-			d._methodology_content.forEach(function(dd,ii){
-				if(dd==1){
-					if(!d.methodology_content.includes(metadata.methodology_content[ii])) d.methodology_content.push(metadata.methodology_content[ii])
-				}
-			});
-
-			// parse additional documentation available 
-			d._additional_documentation = d.additional_documentation;
-			d.additional_documentation = [];
-			d._additional_documentation.forEach(function(dd,ii){
-				if(dd>=1){
-					var doc = {'id': metadata.additional_documentation_array[ii].id, name: metadata.additional_documentation_array[ii].name, value: dd };
-					if(!d.additional_documentation.includes(doc)) d.additional_documentation.push(doc)
-				}
-			});
-
-			// parse analytical density sector keys
-			d.scores._analytical_density = d.scores.analytical_density;
-			d.scores.analytical_density = [];
-
-			Object.entries(d.scores._analytical_density).forEach(function(dd,ii){
-				var sector = dd[0];
-				var value = dd[1];
-				metadata.sector_array.forEach(function(ddd,ii){
-					if(sector==ddd._id){
-						var obj = {};
-						obj.sector = ddd.id;
-						obj.name = ddd.name;
-						obj.value = value;
-						d.scores.analytical_density.push(obj);
-					}
-				});
-			});
-
-			// parse organisations array
-			d._organization_and_stakeholder_type = d.organization_and_stakeholder_type;
-			d.organization_and_stakeholder_type = [];
-			d.organization_str = [];
-			d.stakeholder_type = [];
-			d._organization_and_stakeholder_type.forEach(function(dd,ii){
-				var orgId;
-				var orgTypeId;
-				metadata.organization.forEach(function(ddd,ii){
-					if((dd[1]==ddd._id)&&(!d.organization_str.includes(ddd.short_name))){
-						orgId = ddd.id;
-						d.organization_str.push(ddd.short_name)
-
-					}
-				});
-				metadata.organization_type.forEach(function(ddd,ii){
-					if(dd[0]==ddd._id){
-						orgTypeId = ddd.id;
-					}
-				});
-				if(!d.organization_and_stakeholder_type.includes([orgTypeId, orgId])){
-					d.organization_and_stakeholder_type.push([orgTypeId, orgId]);
-				}
-				if(!d.stakeholder_type.includes(orgTypeId)){
-					d.stakeholder_type.push(orgTypeId);
-				}
-			});
-			d.organization_str = (d.organization_str.join(", "));
-
-			// parse scorepillar scale id
-			d._scorepillar_scale = d.scorepillar_scale;
-			metadata.scorepillar_scale.forEach(function(ddd,ii){
-				if(d._scorepillar_scale==ddd._id){
-					d.scorepillar_scale = ddd.id;
-				}
-				// parse null values
-				if(d._scorepillar_scale===null){
-					d.scorepillar_scale = 0;
-				}
-			});
-
-			// parse geo id
-			d._geo = d.geo;
-			d.geo = [];
-			d._geo.forEach(function(dd,ii){
-				metadata.geo_array.forEach(function(ddd,ii){
-					if(dd==ddd._id){
-						if(!d.geo.includes(ddd.id)){d.geo.push(ddd.id);};
-						geoBounds.lat.push(ddd.bounds[0][0]);
-						geoBounds.lat.push(ddd.bounds[1][0]);
-						geoBounds.lon.push(ddd.bounds[0][1]);
-						geoBounds.lon.push(ddd.bounds[1][1]);
-					}
-				});
-			});
-
-			var analytical_densityScore = d.scores.final_scores.score_matrix_pillar['1'];
-			var scores = [];
-			scores.push(analytical_densityScore);
-
-			Object.keys(d.scores.final_scores.score_pillar).forEach(function(key,index) {
-			    scores.push(d.scores.final_scores.score_pillar[key]);
-			});
-
-			var finalScore = d3.median(scores, function(md){
-				return md;
-			});
-
-			d.final_score = finalScore;
-
-			// d.fs = median;
-
-			if(finalScore<=5){
-				d.finalScore = 1;
-			} else if(finalScore<=10){
-				d.finalScore = 2;
-			} else if(finalScore<=15){
-				d.finalScore = 3;
-			} else if(finalScore<=20){
-				d.finalScore = 4;
-			} else if (finalScore<=25){
-				d.finalScore = 5;
-			};
-
-			d.top = [];
-
-			if((d.sector_count==1)&&((d.coordination == coordinatedJointId)||(d.coordination == coordinatedHarmonizedId))){
-				d.top.push('coordination_1');
-			}
-			if((d.sector_count>=2)&&((d.coordination == coordinatedJointId)||(d.coordination == coordinatedHarmonizedId))){
-				d.top.push('coordination_2');
-			}
-			if((d.sector_count>=5)&&((d.coordination == coordinatedJointId)||(d.coordination == coordinatedHarmonizedId))){
-				d.top.push('coordination_5');
-			}
-			if(d.coordination==coordinatedHarmonizedId){
-				d.top.push('harmonized');
-			}
-			if(d.coordination==uncoordinatedId){
-				d.top.push('uncoordinated');
-			}
-			if(d.sector_count>=5){
-				d.top.push('sector_5');
-			}
-			if(d.sector_count>=2){
-				d.top.push('sector_2');
-			}
-			if(d.sector_count==1){
-				d.top.push('sector_1');
-			}
-			if((d.sector_count>=5)&&(d.assessment_type==atype_keys.monitoring)){
-				d.top.push('monitoring_5');
-			}
-			if((d.sector_count>=2)&&(d.assessment_type==atype_keys.monitoring)){
-				d.top.push('monitoring_2');
-			}
-			if((d.sector_count==1)&&(d.assessment_type==atype_keys.monitoring)){
-				d.top.push('monitoring_1');
-			}
-			if(d.assessment_type==atype_keys.initial){
-				d.top.push('initial');
-			}
-			if(d.assessment_type==atype_keys.rapid){
-				d.top.push('rapid');
-			}
-			if(d.assessment_type==atype_keys.in_depth){
-				d.top.push('in_depth');
-			}
-			if(d.data_collection_technique.includes(data_collection_technique_keys.focus_group_discussion)){
-				d.top.push('focus_group_discussion');
-			}
-			if(d.data_collection_technique.includes(data_collection_technique_keys.key_informant_interview)){
-				d.top.push('key_informant_interview');
-			}
-			if(d.data_collection_technique.includes(data_collection_technique_keys.community_group_discussion)){
-				d.top.push('community_group_discussion');
-			}
-			// STAKEHOLDER TYPE
-			if(d.stakeholder_type.includes(stakeholder_type_keys.donor)){
-				d.top.push('donor');
-			}
-			if(d.stakeholder_type.includes(stakeholder_type_keys.ingo)){
-				d.top.push('ingo');
-			}
-			if(d.stakeholder_type.includes(stakeholder_type_keys.lngo)){
-				d.top.push('lngo');
-			}
-			if(d.stakeholder_type.includes(stakeholder_type_keys.government)){
-				d.top.push('government');
-			}
-			if(d.stakeholder_type.includes(stakeholder_type_keys.un_agency)){
-				d.top.push('un_agency');
-			}
-			if(d.stakeholder_type.includes(stakeholder_type_keys.rcrc)){
-				d.top.push('rcrc');
-			}
-			if(d.stakeholder_type.includes(stakeholder_type_keys.cluster)){
-				d.top.push('cluster');
-			}
-
-		});
 
 		// parse url variable options
 		if(urlQueryParams.get('minDate')){
@@ -770,10 +258,11 @@ var Deepviz = function(sources, callback){
 			minDate.setMinutes(0);
 			data = data.filter(function(d){
 				return d.date >= minDate;
-			})
+			});
+			dataEntries = dataEntries.filter(function(d){
+				return d.date >= minDate;
+			});
 		}
-
-		// parse url variable options
 		if(urlQueryParams.get('maxDate')){
 			maxDate = new Date(urlQueryParams.get('maxDate'));
 			maxDate.setHours(0);
@@ -781,13 +270,13 @@ var Deepviz = function(sources, callback){
 			data = data.filter(function(d){
 				return d.date <= maxDate;
 			})
+			dataEntries = dataEntries.filter(function(d){
+				return d.date <= maxDate;
+			})
 		}
-
-
 		if(urlQueryParams.get('time')){
 			filters.time=urlQueryParams.get('time');
 		}
-
 		if(urlQueryParams.get('admin_level')){
 			filters.admin_level=parseInt(urlQueryParams.get('admin_level'));
 		}
@@ -795,122 +284,6 @@ var Deepviz = function(sources, callback){
 		// set the data again for reset purposes
 		originalData = data;
 		dataNotScore = data;
-
-		// ENTIRES DATA convert date strings into js date objects
-
-		metadataEntries.affected_groups_array.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadataEntries.severity_units.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-			// shorten label by cutting text after the first full-stop
-			d.name = d.name.split('.')[0];
-		});
-
-		metadataEntries.sector_array.forEach(function(d,i){
-			d._id = d.id;
-			d.id = i+1;
-		});
-
-		metadataEntries.severity_units.unshift({
-			"id": 6,
-			"color": "grey",
-			"name": "Null",
-			"_id": null,
-		});
-		metadataEntries.reliability_units.unshift({
-			"id": 6,
-			"color": "grey",
-			"name": "Null",
-			"_id": null,
-		});
-
-		dataEntries.forEach(function(d,i){
-			d.date = new Date(d.date);
-			d.date.setHours(0,0,0,0);
-			d.month = new Date(d.date);
-			d.month.setHours(0,0,0,0);
-			d.month.setDate(1);
-			d.year = new Date(d.date);
-			d.year.setHours(0,0,0,0);
-			d.year.setDate(1);
-			d.year.setMonth(0);
-
-			// PARSE STRING IDS TO INTEGERS
-
-			// parse affected groups array
-			d._affected_groups = d.affected_groups;
-			d.affected_groups = [];
-			d._affected_groups.forEach(function(dd,ii){
-				metadataEntries.affected_groups_array.forEach(function(ddd,ii){
-					if(dd==ddd._id){
-						d.affected_groups.push(ddd.id);
-					}
-				});
-			});
-
-			// parse geo id
-			d._geo = d.geo;
-			d.geo = [];
-
-			d._geo.forEach(function(dd,ii){
-				metadata.geo_array.forEach(function(ddd,ii){
-					if(dd==ddd._id){
-						d.geo.push(ddd.id);
-						geoBounds.lat.push(ddd.bounds[0][0]);
-						geoBounds.lat.push(ddd.bounds[1][0]);
-						geoBounds.lon.push(ddd.bounds[0][1]);
-						geoBounds.lon.push(ddd.bounds[1][1]);
-					}
-				});
-			});
-
-			// parse affected groups array
-			d._sector = d.sector;
-			d.sector = [];
-			d._sector.forEach(function(dd,ii){
-				var sector_id = 0;
-				metadata.sector_array.forEach(function(ddd,ii){
-					if(dd[2]==ddd._id){
-						sector_id = ddd.id;
-					}
-				});
-				d.sector.push(sector_id);
-			});
-
-			// parse severity id
-			d._severity = d.severity;
-			metadataEntries.severity_units.forEach(function(ddd,ii){
-				if(d._severity==ddd._id){
-					d.severity = ddd.id;
-				}
-				// parse null values
-				if(d._severity===null){
-					d.severity = 0;
-				}
-			});
-
-		});
-
-		// parse url variable options
-		if(urlQueryParams.get('minDate')){
-			minDate = new Date(urlQueryParams.get('minDate'))
-			dataEntries = dataEntries.filter(function(d){
-				return d.date >= minDate;
-			})
-		}
-
-		if(urlQueryParams.get('time')){
-			filters.time=urlQueryParams.get('time');
-		}
-
-		if(urlQueryParams.get('admin_level')){
-			filters.admin_level=parseInt(urlQueryParams.get('admin_level'));
-		}
-
 		originalDataEntries = dataEntries;
 		dataEntriesNotSeverity = dataEntries;
 
@@ -1026,10 +399,12 @@ var Deepviz = function(sources, callback){
 		dataByUnitOfReporting = [];
 		dataByLanguage= [];
 		dataBySamplingApproach = [];
+		dataByPublisher = [];
+		var publisherArray = [];
 
 		dataByMethodologyContent = [];
 		dataByAdditionalDocumentation = [];
-
+		// assessment data
 		data.forEach(function(d,i){
 			var frameworks = [];
 			var contexts = [];
@@ -1105,7 +480,30 @@ var Deepviz = function(sources, callback){
 				dataByDataCollectionTechnique.push({"date": d.date, "month": d.month, "year": d.year, "data_collection_technique": dd, 's': d.finalScore, 'r': null });
 			});
 
+			// publishers (unique based on source_raw strinng)
+			var publisherArrayStr = d.date.getTime()+'-'+d.lead.source_raw;
+			if(!publisherArray.includes(publisherArrayStr)){
+				publisherArray.push(publisherArrayStr);
+				var publisherRow = {"date": d.date, "month": d.month, "year": d.year, publisher_str: d.lead.source_raw};
+				dataByPublisher.push(publisherRow);
+			};	
+
 		});
+
+		// entries data
+		dataByLead = [];
+		var leadArray = [];
+		dataEntries.forEach(function(d,i){
+			// leads
+			var leadArrayStr = d.date.getTime()+'-'+d.lead.id;
+			if(!leadArray.includes(leadArrayStr)){
+				leadArray.push(leadArrayStr);
+				var leadRow = {"date": d.date, "month": d.month, "year": d.year, lead_id: d.lead.id};
+				dataByLead.push(leadRow);
+			};
+					
+
+		})
 
 		dataByLocation = d3.nest()
 		.key(function(d) { return d.date;})
@@ -1260,7 +658,7 @@ var Deepviz = function(sources, callback){
 			return d.total_entries;
 		});
 
-		updateTotals(true);
+		Summary.update(true);
 		updateRadarCharts();
 		BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
 		BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
@@ -1329,154 +727,7 @@ var Deepviz = function(sources, callback){
 	// create summary
 	//**************************
 	this.createSummary = function(){
-
-		var summary1 = document.getElementById('svg_summary1_div');
-		// remove title tag from map svg
-		var title = svg_summary1.getElementsByTagName('title')[0];
-		svg_summary1.documentElement.removeChild(title);
-		svg_summary1.documentElement.removeAttribute('height');
-		svg_summary1.documentElement.setAttribute('width', '100%');
-		// add svg to map div 
-		summary1.innerHTML = new XMLSerializer().serializeToString(svg_summary1.documentElement);
-
-		var summary2 = document.getElementById('svg_summary2_div');
-		// remove title tag from map svg
-		var title = svg_summary2.getElementsByTagName('title')[0];
-		svg_summary2.documentElement.removeChild(title);
-		svg_summary2.documentElement.removeAttribute('height');
-		svg_summary2.documentElement.setAttribute('width', '100%');
-		// add svg to map div 
-		summary2.innerHTML = new XMLSerializer().serializeToString(svg_summary2.documentElement);		
-
-		var summary3 = document.getElementById('svg_summary3_div');
-		// remove title tag from map svg
-		var title = svg_summary3.getElementsByTagName('title')[0];
-		svg_summary3.documentElement.removeChild(title);
-		svg_summary3.documentElement.removeAttribute('height');
-		svg_summary3.documentElement.setAttribute('width', '100%');
-		// add svg to map div 
-		summary3.innerHTML = new XMLSerializer().serializeToString(svg_summary3.documentElement);
-
-		d3.select('#svg_summary3_div').on('mouseover', function(){
-			d3.select('#collapse_bg').transition().duration(200).style('fill', '#D4D4D4');
-		}).on('mouseout', function(){
-			d3.select('#collapse_bg').transition().duration(200).style('fill', '#E9E9E9');
-		});
-		var origHeight = 
-		d3.select('#svg_summary3_div').on('click', function(){
-			if(collapsed==false){
-				collapsed = true;
-
-				d3.select('#collapsed1').transition().duration(duration).style('opacity', 1);
-				d3.select('#collapsed0').transition().duration(duration).style('opacity', 0);
-
-				d3.select('#svg_summary2_div')
-				.transition()
-				.duration(duration)
-				.style('margin-top', -$('#svg_summary1_div').height()+'px')
-				.on('end', function(d){
-					d3.select(this).style('opacity', 0).style('display', 'none');
-				})
-
-				d3.select('#summary_row')
-				.transition()
-				.duration(duration)
-				.style('margin-top', function(){
-					var h = $('#svg_summary1_div').height()+$('#svg_summary3_div').height()+10;
-					return h+'px';
-				});
-
-			} else {
-				collapsed = false;
-
-				d3.select('#collapsed1').transition().duration(duration).style('opacity', 0);
-				d3.select('#collapsed0').transition().duration(duration).style('opacity', 1);
-
-				d3.select('#svg_summary2_div')
-				.transition()
-				.duration(duration)
-				.style('margin-top', '0px')
-				.style('display', 'block')
-				.style('opacity', 1);
-
-				d3.select('#summary_row')
-				.transition()
-				.duration(duration)
-				.style('margin-top', function(){
-					var h = $('#svg_summary1_div').height()*2+$('#svg_summary3_div').height()+10;
-					return h+'px';
-				});
-			}
-		});
-
-		// init
-		d3.select('#collapsed1').style('opacity', 1);
-		d3.select('#collapsed0').style('opacity', 0);
-		collapsed = true;
-		d3.select('#svg_summary2_div')
-		.style('margin-top', -$('#svg_summary1_div').height()+'px')
-		.style('opacity', 0)
-		.style('display', 'none');
-
-		d3.select('#summary_row')
-		.style('margin-top', function(){
-			var h = $('#svg_summary1_div').height()+$('#svg_summary3_div').height()+10;
-			return h+'px';
-		});
-
-		// topline filters
-
-		var topFilters = [
-			{'name': 'coordination_5_box', 'filterFn': function(){ Deepviz.filter('top', 'coordination_5' ); }}, 
-			{'name': 'coordination_2_box', 'filterFn': function(){ Deepviz.filter('top', 'coordination_2' ); }}, 
-			{'name': 'coordination_1_box', 'filterFn': function(){ Deepviz.filter('top', 'coordination_1' ); }}, 
-			{'name': 'harmonized_box', 'filterFn': function(){ Deepviz.filter('top', 'harmonized') }}, 
-			{'name': 'uncoordinated_box', 'filterFn': function(){ Deepviz.filter('top', 'uncoordinated') }}, 
-			{'name': 'lngo_box', 'filterFn': function(){ Deepviz.filter('top', 'lngo') }}, 
-			{'name': 'ingo_box', 'filterFn': function(){ Deepviz.filter('top', 'ingo') }}, 
-			{'name': 'un_agency_box', 'filterFn': function(){ Deepviz.filter('top', 'un_agency') }}, 
-			{'name': 'cluster_box', 'filterFn': function(){ Deepviz.filter('top', 'cluster') }}, 
-			{'name': 'donor_box', 'filterFn': function(){ Deepviz.filter('top', 'donor') }}, 
-			{'name': 'rcrc_box', 'filterFn': function(){ Deepviz.filter('top', 'rcrc') }}, 
-			{'name': 'government_box', 'filterFn': function(){ Deepviz.filter('top', 'government') }},
-			{'name': 'community_group_discussion_box', 'filterFn': function(){ Deepviz.filter('top', 'community_group_discussion' ) }},
-			{'name': 'focus_group_discussion_box', 'filterFn': function(){ Deepviz.filter('top', 'focus_group_discussion' ) }},
-			{'name': 'key_informant_interview_box', 'filterFn': function(){ Deepviz.filter('top', 'key_informant_interview' )}},
-			{'name': 'monitoring_5_box', 'filterFn': function(){ Deepviz.filter('top', 'monitoring_5' ) }},
-			{'name': 'monitoring_2_box', 'filterFn': function(){ Deepviz.filter('top', 'monitoring_2' ) }},
-			{'name': 'monitoring_1_box', 'filterFn': function(){ Deepviz.filter('top', 'monitoring_1' ) }},
-			{'name': 'in_depth_box', 'filterFn': function(){ Deepviz.filter('top', 'in_depth') }},
-			{'name': 'initial_box', 'filterFn': function(){ Deepviz.filter('top', 'initial') }},
-			{'name': 'rapid_box', 'filterFn': function(){ Deepviz.filter('top', 'rapid')}},
-			{'name': 'sector_1_box', 'filterFn': function(){ Deepviz.filter('top', 'sector_1' ) }},
-			{'name': 'sector_2_box', 'filterFn': function(){ Deepviz.filter('top', 'sector_2' ) }},
-			{'name': 'sector_5_box', 'filterFn': function(){ Deepviz.filter('top', 'sector_5' ) }}
-		];
-
-		topFilters.forEach(function(d,i){
-			var name = d.name.slice(0,-4);
-			var f = 'filter_'+ name;
-			d3.select('#'+f).style('opacity', 0.01).attr('class', 'top_filter');
-			d3.select('#top_row #'+d.name).style('cursor', 'pointer')
-			.on('mouseover', function(d,i){
-				if(!filters['top'].includes(name)) {
-					d3.select('#'+f).transition().duration(5).style('opacity', 0.3);
-				}
-			})
-			.on('mouseout', function(d,i){
-				if(!filters['top'].includes(name)) {
-					d3.select('#'+f).transition().duration(250).style('opacity', 0.01);
-				}
-			})
-			.on('click', function(dd,ii){
-				d.filterFn();
-				if(filters['top'].includes(name)) {
-					d3.select('#'+f).transition().duration(5).style('opacity', 1);
-				} else {
-					d3.select('#'+f).transition().duration(500).style('opacity', 0.3);
-				}
-			})
-		});
+		Summary.create(svg_summary1,svg_summary2,svg_summary3);
 	}
 
 	//**************************
@@ -1859,8 +1110,8 @@ var Deepviz = function(sources, callback){
 		.scale(scale.timechart.x)
 		.tickSize(0)
 
-		var textLength = '5%';
-		if(expandActive==true) textLength = '3.3%';
+		var textLength = '6%';
+		if(expandActive==true) textLength = '2%';
 
 		if(filters.time=='y'){
 			xAxis.ticks(d3.timeYear.every(1))
@@ -1984,6 +1235,7 @@ var Deepviz = function(sources, callback){
 			var count = (Math.abs(moment(dateRange[1]).diff(moment(dateRange[0]), 'months', true)));
 			var tickFormat = d3.timeFormat("%d %b %Y");
 			var tLength = '6%';
+			if(expandActive==true) tLength = '4%';
 			if(filters.time=='d'){
 				if((count<=0.4)){
 					if(axisRange=='single day') return; // if already 'single month' then break out of fn
@@ -2026,6 +1278,7 @@ var Deepviz = function(sources, callback){
 
 				var tickFormat = d3.timeFormat("%b %Y");
 				var tLength = '5%';
+				if(expandActive==true) tLength = '3%';
 
 				if((count<=10)){
 					if(axisRange=='single month') return; 
@@ -2055,6 +1308,7 @@ var Deepviz = function(sources, callback){
 			if(filters.time=='y'){
 				var tickFormat = d3.timeFormat("%Y");
 				var tLength = '3%';
+				if(expandActive==true) tLength = '2%';
 				var ticks = d3.timeYear.every(1);
 				axisRange = 'single year';
 			}
@@ -2553,7 +1807,7 @@ var Deepviz = function(sources, callback){
 			}	
 
 		})
-		.attr("transform", function(d,i) { if(i==1){barWidth+=scale.timechart.x(d.key);} return "translate(" + scale.timechart.x(d.key) + ",-38)"; });
+		.attr("transform", function(d,i) { if(i==1){barWidth+=scale.timechart.x(d.key);} return "translate(" + scale.timechart.x(d.key) + ","+ (-25+entriesChartHeight) +")"; });
 
 		var eventDropGroup = eventDrops.append('g');
 
@@ -2886,7 +2140,7 @@ var Deepviz = function(sources, callback){
 		    function update(){
 		    	// colorBars();
 		    	updateDate();
-		    	updateTotals(true);
+		    	Summary.update(true);
 		    	updateRadarCharts();
 		    	Map.update();
 		    	updateFinalScore('map', 200);
@@ -2951,7 +2205,7 @@ var Deepviz = function(sources, callback){
 			updateDate();
 
 			if(disableSync==false){
-				updateTotals(false);
+				Summary.update(false);
 				// updateRadarCharts();
 				Map.update();
 				updateFinalScore('brush');
@@ -3034,7 +2288,7 @@ var Deepviz = function(sources, callback){
 
 			// colorBars();
 			updateDate();
-			updateTotals(true);
+			Summary.update(true);
 			Map.update();
 			updateFinalScore('brush',500);
 			updateSeverity('brush', 500);
@@ -3064,7 +2318,7 @@ var Deepviz = function(sources, callback){
 
 		// colorBars();
 		updateDate();
-		updateTotals(true);
+		Summary.update(true);
 		updateEntriesChart();
 		updateFinalScore('init', 500);
 		updateSeverity('init', 500);
@@ -3928,7 +3182,7 @@ var Deepviz = function(sources, callback){
 
 			Deepviz.filter('reset', 'reset');
 
-			updateTotals(true);
+			Summary.update(true);
 			Map.update();
 			updateRadarCharts();
 			BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
@@ -4166,224 +3420,6 @@ var Deepviz = function(sources, callback){
 		}
 
 		d3.select('#dateRangeText').text(string);
-
-	}
-
-	function updateTotals(includeTable){
-
-		var dc = data.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
-
-		if(includeTable) DeepvizTable.update(dc);
-
-		var context = [];
-
-		dc.forEach(function(d,i){
-			d.focus.forEach(function(dd,ii){
-				context.push(dd);
-			});
-		});
-
-		var individuals = d3.sum(dc, d => d.individuals);
-		var households = d3.sum(dc, d => d.households);
-
-		// define maximum context value
-		var contextualRowTotals = d3.nest()
-		.key(function(d) { return d;})
-		.rollup(function(leaves) { return leaves.length; })
-		.entries(context);
-
-		d3.selectAll('.total-label').text(0);
-		
-		contextualRowTotals.forEach(function(d,i){
-			d3.select('#total-label'+(d.key-1)).text(d.value);
-		})
-
-		total = dc.length;
-
-		var mutli_sector_5 = d3.sum(dc, function(d){
-			if(d.sector_count>=5)
-				return 1;
-		});
-
-		var mutli_sector_2 = d3.sum(dc, function(d){
-			if(d.sector_count>=2)
-				return 1;
-		});
-
-		var single_sector = d3.sum(dc, function(d){
-			if(d.sector_count==1)
-				return 1;
-		});
-
-		// coordinated totals
-		var coordinated_5 = d3.sum(dc, function(d){
-			if((d.sector_count>=5)&&((d.coordination==coordinatedJointId)||(d.coordination==coordinatedHarmonizedId)))
-				return 1;
-		});
-
-		var coordinated_2 = d3.sum(dc, function(d){
-			if((d.sector_count>=2)&&((d.coordination==coordinatedJointId)||(d.coordination==coordinatedHarmonizedId)))
-				return 1;
-		});
-
-		var coordinated_1 = d3.sum(dc, function(d){
-			if((d.sector_count==1)&&((d.coordination==coordinatedJointId)||(d.coordination==coordinatedHarmonizedId)))
-				return 1;
-		});
-
-		// harmonized total
-		var harmonized = d3.sum(dc, function(d){
-			if(d.coordination==coordinatedHarmonizedId)
-				return 1;
-		});
-
-		// uncoordianted total
-		var uncoordinated = d3.sum(dc, function(d){
-			if(d.coordination==uncoordinatedId)
-				return 1;
-		});
-
-		// sector monitoring totals
-		var sector_monitoring_5 = d3.sum(dc, function(d){
-			if((d.sector_count>=5)&&(d.assessment_type==atype_keys.monitoring))
-				return 1;
-		});
-
-		var sector_monitoring_2 = d3.sum(dc, function(d){
-			if((d.sector_count>=2)&&(d.assessment_type==atype_keys.monitoring))
-				return 1;
-		});
-
-		var sector_monitoring_1 = d3.sum(dc, function(d){
-			if((d.sector_count==1)&&(d.assessment_type==atype_keys.monitoring))
-				return 1;
-		});
-
-		d3.select('#total_assessments tspan').text(addCommas(total));
-		d3.select('#coordinated_5_sector tspan').text(addCommas(coordinated_5));
-		d3.select('#coordinated_2_sector tspan').text(addCommas(coordinated_2));
-		d3.select('#coordinated_1_sector tspan').text(addCommas(coordinated_1));
-		d3.select('#harmonized tspan').text(addCommas(harmonized));
-		d3.select('#uncoordinated tspan').text(addCommas(uncoordinated));
-		
-		d3.select('#total_stakeholders tspan').text(0);
-		d3.select('#lngo tspan').text(0);
-		d3.select('#ingo tspan').text(0);
-		d3.select('#un_agency tspan').text(0);
-		d3.select('#cluster tspan').text(0);
-		d3.select('#donor tspan').text(0);
-		d3.select('#rcrc tspan').text(0);
-		d3.select('#government tspan').text(0);
-
-		d3.select('#mutli_sector_5 tspan').text(addCommas(mutli_sector_5));
-		d3.select('#multi_sector_2 tspan').text(addCommas(mutli_sector_2));
-		d3.select('#single_sector tspan').text(addCommas(single_sector));
-		d3.select('#sector_monitoring_5 tspan').text(addCommas(sector_monitoring_5));
-		d3.select('#sector_monitoring_2 tspan').text(addCommas(sector_monitoring_2));
-		d3.select('#sector_monitoring_1 tspan').text(addCommas(sector_monitoring_1));
-		d3.select('#total_initial tspan').text(0);
-		d3.select('#total_rapid tspan').text(0);
-		d3.select('#total_in_depth tspan').text(0);
-
-		d3.select('#individuals tspan').text(addCommas(individuals));
-		d3.select('#households tspan').text(addCommas(households));
-		d3.select('#key_informants tspan').text(0);
-		d3.select('#focus_group_discussions tspan').text(0);
-		d3.select('#community_group_discussions tspan').text(0);
-
-		// assessment types row
-		var assessmentTypes = dataByAssessmentType.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
-		assessmentTypes = d3.nest()
-		.key(function(d){ return d.assessment_type; })
-		.rollup(function(leaves){ 
-			return leaves.length;
-		})
-		.entries(assessmentTypes);
-
-		assessmentTypes.forEach(function(d,i){
-			d.key = parseInt(d.key);
-
-			// initial assessments
-			if(d.key==atype_keys.initial){
-				d3.select('#total_initial tspan').text(addCommas(d.value));
-			} 
-
-			// rapid assessments
-			if(d.key==atype_keys.rapid){
-				d3.select('#total_rapid tspan').text(addCommas(d.value));
-			} 
-
-			// in-depth assessments
-			if(d.key==atype_keys.in_depth){
-				d3.select('#total_in_depth tspan').text(addCommas(d.value));
-			} 
-		});
-
-		// stakeholder row
-		var organisations = dataByOrganisation.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
-		var uniqueOrganisations = [];
-		var stakeholderTypes = [];
-
-		organisations.forEach(function(d,i){
-			if(!uniqueOrganisations.includes(d.organisation)){
-				uniqueOrganisations.push(d.organisation);
-				if(d.stakeholder_type!=null) stakeholderTypes.push(d.stakeholder_type);
-			}
-		});
-
-		d3.select('#total_stakeholders tspan').text(addCommas(uniqueOrganisations.length));
-
-		// STAKEHOLDERS ROW
-		var lngo = d3.sum(dc, function(d){
-			if(d.top.includes('lngo')) return 1;
-		})
-		d3.select('#lngo tspan').text(addCommas(lngo));
-
-		var ingo = d3.sum(dc, function(d){
-			if(d.top.includes('ingo')) return 1;
-		})
-		d3.select('#ingo tspan').text(addCommas(ingo));
-
-		var un_agency = d3.sum(dc, function(d){
-			if(d.top.includes('un_agency')) return 1;
-		})
-		d3.select('#un_agency tspan').text(addCommas(un_agency));
-
-		var cluster = d3.sum(dc, function(d){
-			if(d.top.includes('cluster')) return 1;
-		})
-		d3.select('#cluster tspan').text(addCommas(cluster));
-
-		var donor = d3.sum(dc, function(d){
-			if(d.top.includes('donor')) return 1;
-		})
-		d3.select('#donor tspan').text(addCommas(donor));
-
-		var rcrc = d3.sum(dc, function(d){
-			if(d.top.includes('rcrc')) return 1;
-		})
-		d3.select('#rcrc tspan').text(addCommas(rcrc));
-
-		var government = d3.sum(dc, function(d){
-			if(d.top.includes('government')) return 1;
-		})
-		d3.select('#government tspan').text(addCommas(government));
-
-		// BOTTOM ROW
-		var key_informants = d3.sum(dc,function(d){
-			if(d.top.includes('key_informant_interview')) return d.individuals;
-		})
-		d3.select('#key_informants tspan').text(addCommas(key_informants));
-
-		var focus_group_discussion = d3.sum(dc,function(d){
-			if(d.top.includes('focus_group_discussion')) return 1;
-		})
-		d3.select('#focus_group_discussions tspan').text(addCommas(focus_group_discussion));
-
-		var community_group_discussion = d3.sum(dc,function(d){
-			if(d.top.includes('community_group_discussion')) return 1;
-		})
-		d3.select('#community_group_discussions tspan').text(addCommas(community_group_discussion));
 
 	}
 
@@ -5046,3 +4082,9 @@ function addCommas(nStr){
 	}
 	return x1 + x2;
 }
+
+$('#print').click(function(){
+	d3.select('#collapsed1').style('opacity', 0);
+	d3.select('#collapsed0').style('opacity', 1);
+	window.print();
+});
