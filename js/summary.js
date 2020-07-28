@@ -189,10 +189,16 @@ Summary.update = function(includeTable){
 	d3.select('#total_documents tspan').text(addCommas(totalLeads));
 
 	// publishers
-	var totalPublishers = d3.sum(dataByPublisher, function(d){
-		if((d.date>=dateRange[0])&&(d.date<dateRange[1]))
-			return 1;
+	var uniquePublishers = [];
+	dataByPublisher.forEach(function(d,i){
+		if((d.date>=dateRange[0])&&(d.date<dateRange[1])){
+			if(!uniquePublishers.includes(d.publisher_str)){
+				uniquePublishers.push(d.publisher_str)
+			}
+		}
 	});
+
+	var totalPublishers = uniquePublishers.length;
 	d3.select('#total_publishers tspan').text(addCommas(totalPublishers));
 
 	// other documents
