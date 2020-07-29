@@ -508,8 +508,6 @@ var Deepviz = function(sources, callback){
 				var leadRow = {"date": d.date, "month": d.month, "year": d.year, lead_id: d.lead.id};
 				dataByLead.push(leadRow);
 			};
-					
-
 		})
 
 		dataByLocation = d3.nest()

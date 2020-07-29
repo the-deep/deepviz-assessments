@@ -181,11 +181,16 @@ Summary.update = function(includeTable){
 	d3.select('#total_entries tspan').text(addCommas(total));
 
 	// leads
-	var totalLeads = d3.sum(dataByLead, function(d){
-		if((d.date>=dateRange[0])&&(d.date<dateRange[1]))
-			return 1;
+	var uniqueLeads = [];
+	dataByLead.forEach(function(d,i){
+		if((d.date>=dateRange[0])&&(d.date<dateRange[1])){
+			if(!uniqueLeads.includes(d.lead_id)){
+				uniqueLeads.push(d.lead_id)
+			}
+		}
 	});
-	if(totalLeads<0)totalLeads = 0; // no negative values
+
+	var totalLeads = uniqueLeads.length;
 	d3.select('#total_documents tspan').text(addCommas(totalLeads));
 
 	// publishers
