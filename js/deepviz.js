@@ -4147,7 +4147,7 @@ $('#print').click(function(){
 	    var pdfWidth = pdf.internal.pageSize.getWidth();
 	    var pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-	    pdf.addImage(img, 'JPEG', 10, 10, pdfWidth-20, pdfHeight-30);
+	    pdf.addImage(img, 'JPEG', 10, 5, pdfWidth-20, pdfHeight-30);
 	    pdf.save('deep-pdf-export.pdf');
 		d3.select('#print-icon').style('display', 'block');
 		d3.select('#print-loading').style('display', 'none');
