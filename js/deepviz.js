@@ -93,13 +93,13 @@ var entriesAxis;
 var entriesMax;
 var width = 1300;
 var margin = {top: 18, right: 17, bottom: 0, left: 45};
-var timechartViewBoxHeight = 1050;
+var timechartViewBoxHeight = 1000;
 var timechartViewBoxWidth = width;
-var timechartSvgHeight = 1050;
-var timechartHeight = 346;
+var timechartSvgHeight = 1000;
+var timechartHeight = 336;
 var timechartHeight2 = timechartHeight;
 var timechartHeightOriginal = timechartHeight;
-var entriesChartHeight = 100;
+var entriesChartHeight = 80;
 var entriesTopMargin = 34;
 var brush;
 var gBrush; 
@@ -127,7 +127,7 @@ var labelCharLimit = 30;
 // map
 var maxMapBubbleValue;
 var maxMapPolygonValue;
-var mapAspectRatio = 1.4;
+var mapAspectRatio = 1.32;
 var geoBounds = {'lat': [], 'lon': []};
 // radar
 var radarChartOptions;
@@ -171,6 +171,8 @@ var svg_summary1;
 var svg_summary2;
 var svg_summary3;
 var svg_quality;
+
+var printing = false;
 
 // colors
 var colorPrimary = ['#A1E6DB','#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']; // finalScore (multi-hue)
@@ -4089,7 +4091,130 @@ function addCommas(nStr){
 }
 
 $('#print').click(function(){
-	d3.select('#collapsed1').style('opacity', 0);
-	d3.select('#collapsed0').style('opacity', 1);
-	window.print();
+
+	if(printing) return false;
+	printing = true;
+
+	d3.select('#print-icon').style('display', 'none');
+	d3.select('#print-loading').style('display', 'block');
+	// $('#top_row').css('position', 'inherit');
+	$('#print-date').html('<b>PDF Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
+
+	setTimeout(function(){
+		// page 1
+		html2canvas(document.querySelector("#page1"),{
+	        allowTaint: true,
+	        onclone: function(doc){
+				$(doc).find('#top_row').css('position', 'unset');
+				$(doc).find('.container2').css('position', 'unset');
+				$(doc).find('#summary_row').css('margin-top', '6px');
+				$(doc).find('.main-content').css('padding-bottom', '4px');
+				$(doc).find('.main-content').css('margin', 'unset');
+				$(doc).find('#print-header').css('display', 'block')
+				$(doc).find('br-header').css('line-height', 0.7);
+				$(doc).find('#svg_summary3_div').css('display', 'none');
+				$(doc).find('#page2').css('display', 'none');
+				$(doc).find('.removeFilterBtn').html('FILTERED');
+	        },
+	        useCORS: false,
+	        foreignObjectRendering: true,
+	        ignoreElements: function(element){
+	        	if(element.id=='print') return true;
+	        	if(element.id=='printImage') return true;
+	        	if(element.id=='lasso') return true;
+	        	if(element.id=='expand') return true;
+	        	if(element.id=='map-toggle') return true;
+	        	if(element.id=='map-bg-toggle') return true;
+	        	if(element.id=='heatmap-radius-slider-div') return true;
+	        	if(element.id=='adm-toggle') return true;
+	        	if(element.id=='dateRangeContainer_img') return true;
+	        	if($(element).hasClass('select2')) return true;
+	        	if(element.id=='page2') return true;
+	        	if($(element).hasClass('removeFilterBtn')) return true;
+	        	if($(element).hasClass('selectRows')) return true;
+	    		return false;
+	        },
+	        scale: 1.2,
+	        height: $('#page1').height()+10,
+	        windowWidth: 1300,
+	        windowHeight: 2800,
+	        logging: false
+	    }).then(canvas => {
+
+	    var img = canvas.toDataURL("image/png");
+	    var pdf = new jsPDF("p", "mm", "a4");
+	    var imgProps= pdf.getImageProperties(img);
+	    var pdfWidth = pdf.internal.pageSize.getWidth();
+	    var pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+	    pdf.addImage(img, 'JPEG', 10, 10, pdfWidth-20, pdfHeight-30);
+	    pdf.save('deep-pdf-export.pdf');
+		d3.select('#print-icon').style('display', 'block');
+		d3.select('#print-loading').style('display', 'none');
+		printing = false;
+		});
+	},200);
+});
+
+$('#printImage').click(function(){
+
+	if(printing) return false;
+	printing = true;
+
+	d3.select('#printImage-icon').style('display', 'none');
+	d3.select('#printImage-loading').style('display', 'block');
+	// $('#top_row').css('position', 'inherit');
+	$('#print-date').html('<b>Image Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
+
+	setTimeout(function(){
+		html2canvas(document.querySelector("#page1"),{
+	        allowTaint: true,
+	        onclone: function(doc){
+				$(doc).find('#top_row').css('position', 'unset');
+				$(doc).find('.container2').css('position', 'unset');
+				$(doc).find('#summary_row').css('margin-top', '6px');
+				$(doc).find('.main-content').css('padding-bottom', '4px');
+				$(doc).find('.main-content').css('margin', 'unset');
+				$(doc).find('#print-header').css('display', 'block')
+				$(doc).find('br-header').css('line-height', 0.7);
+				$(doc).find('#svg_summary3_div').css('display', 'none');
+				$(doc).find('#page2').css('display', 'none');
+				$(doc).find('.removeFilterBtn').html('FILTERED');
+	        },
+	        useCORS: false,
+	        foreignObjectRendering: true,
+	        ignoreElements: function(element){
+	        	if(element.id=='print') return true;
+	        	if(element.id=='printImage') return true;
+	        	if(element.id=='lasso') return true;
+	        	if(element.id=='expand') return true;
+	        	if(element.id=='map-toggle') return true;
+	        	if(element.id=='map-bg-toggle') return true;
+	        	if(element.id=='heatmap-radius-slider-div') return true;
+	        	if(element.id=='adm-toggle') return true;
+	        	if(element.id=='dateRangeContainer_img') return true;
+	        	if(element.id=='page2') return true;
+	        	if($(element).hasClass('select2')) return true;
+	        	if($(element).hasClass('removeFilterBtn')) return true;
+	        	if($(element).hasClass('selectRows')) return true;
+	    		return false;
+	        },
+	        scale: 1.2,
+	        height: $('#page1').height()+30,
+	        windowWidth: 1300,
+	        windowHeight: 2800,
+	        logging: false
+	    }).then(canvas => {
+
+		var img = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+		var link = document.createElement('a');
+		link.download = 'deep-export.png';
+		link.href = img;
+		link.click();
+		link.delete;
+		d3.select('#printImage-icon').style('display', 'block');
+		d3.select('#printImage-loading').style('display', 'none');
+		printing = false;
+		});
+	},200);
 });

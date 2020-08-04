@@ -40,7 +40,7 @@ h2 {
 }
 
 .main-content {
-	padding-bottom: 0px;
+	padding-bottom: 13px;
 	opacity: 0;
 	position: relative;
 }
@@ -684,7 +684,7 @@ font-size: 15px;
 	height: 15px;
 	display: none;
 	position: absolute;
-	top: 4px;
+	top: 6px;
 	left: 83px;
 }
 
@@ -967,7 +967,7 @@ font-size: 15px;
 .selectRows {
 	position: absolute;
     top: 0px;
-    right: 0px;
+    right: 20px;
 }
 
 #avg-line {
@@ -1236,42 +1236,61 @@ font-size: 15px;
 
 #print {
 	height: 20px;
-    position: absolute;
-    top: 1px;
-    left: 23%;
+    display: inline-block;
     cursor: pointer;
+    position: relative;
+    top: 3px;
+    left: 60px;
 }
 
 #print img {
 	height: 20px;
 }
 
+#print-loading {
+	height: 20px;
+	display: none;
+}
+
 #print img:hover {
 	opacity: 0.9;
 }
 
+#printImage {
+	height: 20px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    top: 3px;
+    left: 60px;
+}
+
+#printImage img {
+	height: 20px;
+}
+
+#printImage-loading {
+	height: 20px;
+	display: none;
+}
+
+#printImage img:hover {
+	opacity: 0.9;
+}
+
+@page {
+	size: A4;
+	margin: 1em;
+	width: 100%;
+	zoom: 100%;
+	scale: 1;
+	padding: 0;
+}
+
 @media print {
 
-  #print {
-    visibility: hidden;
-  }
-
-  #top_row {
-  	position: inherit;
-  }
-
-  #summary_row {
-  	margin-top: 10px !important;
-  }
-
-  #svg_summary2_div {
-  	display: block !important;
-  	opacity: 1 !important;
-  	margin-top: 0px !important;
-  }
-
-  #svg_summary3_div {
-  	display: none;
+  #main {
+    display: none;
   }
 
 }
