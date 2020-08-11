@@ -1,14 +1,11 @@
 const urlQueryParams = new URLSearchParams(window.location.search);
-var sources = [urlQueryParams.get('assessmentsDataUrl'), urlQueryParams.get('entriesDataUrl'), 'images/summary_1.svg', 'images/summary_2.svg', 'images/summary_3.svg', 'images/quality.svg'];
+var sources = [urlQueryParams.get('dataUrl'), 'images/summary_1.svg', 'images/summary_2.svg', 'images/summary_3.svg', 'images/quality.svg'];
 
 var Deepviz = new Deepviz(sources, function(data){
 
 	var table = DeepvizTable.create();
 
-	//**************************
-	// summary section
-	//**************************
-	var summary = Deepviz.createSummary();
+
 
 	//**************************
 	// sector chart
@@ -192,7 +189,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	var timelineSvg = Deepviz.createSvg({
 		id: 'timeline_viz',
 		viewBoxWidth: 1300,
-		viewBoxHeight: 1050,
+		viewBoxHeight: 1000,
 		div: '#timeline'
 	});
 
@@ -284,4 +281,9 @@ var Deepviz = new Deepviz(sources, function(data){
 	d3.select('#toggle0').style('fill', '#008974');
 	d3.select('#framework-toggle-text tspan').text('average severity');
 
+	//**************************
+	// summary section
+	//**************************
+	var summary = Deepviz.createSummary();
+	
 });

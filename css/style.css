@@ -40,7 +40,7 @@ h2 {
 }
 
 .main-content {
-	padding-bottom: 0px;
+	padding-bottom: 13px;
 	opacity: 0;
 	position: relative;
 }
@@ -54,6 +54,7 @@ h2 {
 #svg_summary1_div {
 	position: relative;
 	z-index: 5;
+	margin-bottom: 1px;
 }
 
 #svg_summary2_div {
@@ -123,14 +124,21 @@ h2 {
     margin: 1em 0; padding: 0; 
 }
 
-
 .leftcol {
 	width: 36%;
 	position: relative;
 }
 
 .rightcol {
+	width: 63%;
+	float: right;
+    position: absolute;
+    top: 50px;
+    right: 0px;
+}
 
+.tippy-tooltip {
+  text-align: left;
 }
 
 #svg_quality_div .axis text {
@@ -222,16 +230,6 @@ h2 {
     top: 0px;
     right: 0px;
 }
-
-.rightcol {
-	width: 63%;
-	float: right;
-    position: absolute;
-    top: 50px;
-    right: 0px;
-}
-
-
 
 @media only screen and (max-width: 1140px) {
 
@@ -683,11 +681,11 @@ font-size: 15px;
 }
 
 #globalRemoveFilter {
-	height: 16px;
+	height: 15px;
 	display: none;
 	position: absolute;
-	top: 4px;
-	left: 84px;
+	top: 6px;
+	left: 83px;
 }
 
 .removeFilterBtn {
@@ -699,9 +697,10 @@ font-size: 15px;
 #tableRemoveFilter,
 #geoRemoveFilter {
 	height: 13px;
-	padding-left: 3px;
-	display: none;
-	position: absolute;
+    padding-left: 5px;
+    display: none;
+    padding-top: 2px;
+    position: absolute;
 }
 
 #tableRemoveFilter {
@@ -853,7 +852,6 @@ font-size: 15px;
 	cursor: pointer;
 }
 
-
 #timeline {
 	width: 100%;
 }
@@ -873,7 +871,6 @@ font-size: 15px;
     top: 3px;
     position: relative;
     left: 2px;
-
 }
 
 .handle {
@@ -970,7 +967,7 @@ font-size: 15px;
 .selectRows {
 	position: absolute;
     top: 0px;
-    right: 0px;
+    right: 20px;
 }
 
 #avg-line {
@@ -1235,4 +1232,65 @@ font-size: 15px;
 	height: 23px;
 	width: 24px;
 	z-index: 5;
+}
+
+#print {
+	height: 20px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    top: 3px;
+    left: 60px;
+}
+
+#print img {
+	height: 20px;
+}
+
+#print-loading {
+	height: 20px;
+	display: none;
+}
+
+#print img:hover {
+	opacity: 0.9;
+}
+
+#printImage {
+	height: 20px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    top: 3px;
+    left: 60px;
+}
+
+#printImage img {
+	height: 20px;
+}
+
+#printImage-loading {
+	height: 20px;
+	display: none;
+}
+
+#printImage img:hover {
+	opacity: 0.9;
+}
+
+@page {
+	size: A4;
+	margin: 1em;
+	width: 100%;
+	zoom: 100%;
+	scale: 1;
+	padding: 0;
+}
+
+@media print {
+
+  #main {
+    display: none;
+  }
+
 }

@@ -18,11 +18,21 @@
 	<link href="js/vendor/select2.min.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="js/vendor/Tabulator/tabulator_bulma.min.css"/>
 	<!-- load custom CSS -->
-	<link href="css/style.css?cache=702" rel="stylesheet" type="text/css" media="all">
+	<link href="css/style.css?cache=8090" rel="stylesheet" type="text/css" media="all">
 
 </head>
 
 <body>
+
+<div id="main">
+<div id="page1">
+
+	<div id="print-header" style="display: none; margin-bottom: 10px">
+		<div style='display: inline; vertical-align: middle'></div>
+		<div style="display:inline; font-size: 36px; vertical-align: middle; padding-left: 2px">DEEP</div>
+		<div style="display: inline; vertical-align: middle; padding-left: 3px;">ASSESSMENT REGISTRY DASHBOARD </div>
+		<div id="print-date" style="display: inline; vertical-align: middle; padding-left: 10px; text-align: right; color: grey">Print Export</div>
+	</div>
 
 	<div id="top_row">
 		<div id="svg_summary1_div"></div>
@@ -36,14 +46,18 @@
 
 		<div id="summary_row">
 
-			<div class="leftcol" style="float: left">
+			<div class="leftcol" style="float: left; position: relative">
 
 				<h2 style="margin-bottom: 3px; margin-top: 0px; display: inline-block">Summary<img id="globalRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
 
+				<div id="print"><img id="print-icon" src="images/print.png"/><img id="print-loading" src="images/loading.gif"/></div>
+				<div id="printImage"><img id="printImage-icon" src="images/printImage.png"/><img id="printImage-loading" src="images/loading.gif"/></div>
+
 				<div class="selectedDate">
 					<div class="title">
-						<div id="dateRangeContainer"><img src="images/calendar.jpg" height="11px"/> DATE RANGE</div>
-					<div><div id="dateRangeText"></div><input id="dateRange" value=""/></div></div><br/>
+						<div id="dateRangeContainer"><img id="dateRangeContainer_img" src="images/calendar.jpg" height="11px"/> DATE RANGE</div>
+						<div><div id="dateRangeText"></div><input id="dateRange" value=""/></div>
+					</div><br/>
 				</div>
 
 				<div class="title"><br/>
@@ -74,13 +88,11 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div><!-- .rightcol -->
 
-		</div>
+		</div><!-- #summary_row -->
 
 		<div>
-
-
 
 			<div id="mapcontainer" class="leftcol">
 				<select id="location-search" class="js-example-responsive" style="width: 100%; height: 26px" name="states[]" multiple="multiple"></select>
@@ -123,12 +135,7 @@
 				</div>
 			</div>
 
-
-
-
 			<div id="timechart-container" class="rightcol">
-
-
 
 				<div class="secondRow row">
 					
@@ -170,8 +177,6 @@
 			</div><!-- / .rightcol -->
 		</div><!-- /# summary_row -->
 
-
-
 		<div id="firstChartRow"><br/>
 			<div class="chartCol">
 				<div id="focus-svg" class="col-content"></div>
@@ -187,55 +192,50 @@
 			</div>	
 		</div><!-- /#firstChartRow -->
 
-			<br/>
-
 	<h2>Quality</h2>
 	
 	<div id="svg_quality_div"></div>
 
-	</div><!-- /.main-content -->
+		<div id="methodology">
+			<h2 style="margin-bottom: 8px">Methodology</h2>
+			<div id="secondChartRow">
+				<div class="chartCol">
+					<div id="assessment-type-svg" class="col-content"></div>
+				</div>
+				<div class="chartCol">
+					<div id="data-collection-technique-svg" class="col-content"></div>
+				</div>
+				<div class="chartCol">
+					<div id="unit-of-analysis-svg" class="col-content"></div>
+				</div>
+				<div class="chartCol">
+					<div id="unit-of-reporting-svg" class="col-content"></div>
+				</div>	<br/>
+			</div><!-- /#secondChartRow -->
+			<hr/>
+			<div id="thirdChartRow" style="margin-top: 8px;">
+				<div class="chartCol">
+					<div id="methodology-content-svg" class="col-content"></div>
+				</div>
+				<div class="chartCol">
+					<div id="additional-documentation-svg" class="col-content"></div>
+				</div>
+				<div class="chartCol">
+					<div id="language-svg" class="col-content"></div>
+				</div>
+				<div class="chartCol">
+					<div id="sampling-approach-svg" class="col-content"></div>
+				</div>	
+			</div><!-- /#thirdChartRow -->
+		</div><!-- /#methodology -->
+	</div><!-- /.container2 -->
+	<br/>
+</div><!-- /#page1 -->
 </div>
+<div id="page2">
 
-<div class="container2 main-content">
-
-
-	<div id="methodology">
-	<h2>Methodology</h2>
-
-	<div id="secondChartRow">
-		<hr/>
-		<div class="chartCol">
-			<div id="assessment-type-svg" class="col-content"></div>
-		</div>
-		<div class="chartCol">
-			<div id="data-collection-technique-svg" class="col-content"></div>
-		</div>
-		<div class="chartCol">
-			<div id="unit-of-analysis-svg" class="col-content"></div>
-		</div>
-		<div class="chartCol">
-			<div id="unit-of-reporting-svg" class="col-content"></div>
-		</div>	<br/>
-	</div><!-- /#secondChartRow -->
-<hr/>
-	<div id="thirdChartRow">
-		<div class="chartCol">
-			<div id="methodology-content-svg" class="col-content"></div>
-		</div>
-		<div class="chartCol">
-			<div id="additional-documentation-svg" class="col-content"></div>
-		</div>
-		<div class="chartCol">
-			<div id="language-svg" class="col-content"></div>
-		</div>
-		<div class="chartCol">
-			<div id="sampling-approach-svg" class="col-content"></div>
-		</div>	
-	</div><!-- /#thirdChartRow -->
-	<hr/>
-	<div class="assessment_details">
+	<div id="ary-details" class="assessment_details container2 main-content">
 		<h2 style="margin-bottom: 10px; margin-top: 2px">Assessment Details&nbsp;<img id="tableRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
-		
 		<div class="selectRows">
 			<div class="searchBox" style="display: inline; margin-right: 30px">Search&nbsp;
 				<input type="text" onkeyup="DeepvizTable.search(this.value)" name="first name" placeholder="Search" required="required" class="searchRows" />
@@ -247,30 +247,34 @@
 				<option value="100">100</option>
 			</select>&nbsp;assessments
 		</div>
-	</div>
+		<div id="data-table" width="100%"></div>
+	</div><!-- /#ary-details -->
 
-	<div id="data-table" width="100%"></div>
-	<br/>
-	</div>
+</div><!-- /#page2 -->
+</div><!-- /#main -->
 
-	<!-- load vendor JavaScript -->
-	<script type="text/javascript" src="js/vendor/jquery-3.4.1.min.js"></script>
-	<script type="text/javascript" src="js/vendor/d3.v5.min.js"></script>
-	<script type="text/javascript" src="js/vendor/Tabulator/tabulator.min.js"></script>
-	<script type="text/javascript" src="js/vendor/moment.min.js"></script>
-	<script type="text/javascript" src="js/vendor/popper.min.js"></script>
-	<script type="text/javascript" src="js/vendor/tippy.min.js"></script>
-	<script type="text/javascript" src="js/vendor/daterangepicker.min.js"></script>
-    <script type="text/javascript" src="js/vendor/select2.min.js"></script>
-	<script src='js/vendor/mapbox-gl.js'></script>
+<!-- load vendor JavaScript -->
+<script type="text/javascript" src="js/vendor/jspdf.min.js"></script>
+<script type="text/javascript" src="js/vendor/html2canvas.min.js"></script>
+<script type="text/javascript" src="js/vendor/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="js/vendor/d3.v5.min.js"></script>
+<script type="text/javascript" src="js/vendor/Tabulator/tabulator.min.js"></script>
+<script type="text/javascript" src="js/vendor/moment.min.js"></script>
+<script type="text/javascript" src="js/vendor/popper.min.js"></script>
+<script type="text/javascript" src="js/vendor/tippy.min.js"></script>
+<script type="text/javascript" src="js/vendor/daterangepicker.min.js"></script>
+<script type="text/javascript" src="js/vendor/select2.min.js"></script>
+<script src='js/vendor/mapbox-gl.js'></script>
 
-	<!-- load custom JavaScript -->
-	<script type="text/javascript" src="js/radarChart.js"></script>
-	<script type="text/javascript" src="js/barchart.js?cache=702"></script>
-	<script type="text/javascript" src="js/map.js?cache=702"></script>
-	<script type="text/javascript" src="js/deepviz.js?cache=702"></script>
-	<script type="text/javascript" src="js/DeepvizTable.js?cache=702"></script>
-	<script type="text/javascript" src="js/main.js?cache=702"></script>
+<!-- load custom JavaScript -->
+<script type="text/javascript" src="js/radarChart.js"></script>
+<script type="text/javascript" src="js/map.js?cache=8090"></script>
+<script type="text/javascript" src="js/summary.js?cache=8090"></script>
+<script type="text/javascript" src="js/deepviz.js?cache=8090"></script>
+<script type="text/javascript" src="js/parse-data.js?cache=8090"></script>
+<script type="text/javascript" src="js/barchart.js?cache=8090"></script>
+<script type="text/javascript" src="js/DeepvizTable.js?cache=8090"></script>
+<script type="text/javascript" src="js/main.js?cache=8090"></script>
 
 </body>
 </html>
