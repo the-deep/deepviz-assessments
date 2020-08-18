@@ -93,9 +93,9 @@ var entriesAxis;
 var entriesMax;
 var width = 1300;
 var margin = {top: 18, right: 17, bottom: 0, left: 45};
-var timechartViewBoxHeight = 1000;
+var timechartViewBoxHeight = 970;
 var timechartViewBoxWidth = width;
-var timechartSvgHeight = 1000;
+var timechartSvgHeight = 970;
 var timechartHeight = 336;
 var timechartHeight2 = timechartHeight;
 var timechartHeightOriginal = timechartHeight;
@@ -127,7 +127,7 @@ var labelCharLimit = 30;
 // map
 var maxMapBubbleValue;
 var maxMapPolygonValue;
-var mapAspectRatio = 1.32;
+var mapAspectRatio = 1.3;
 var geoBounds = {'lat': [], 'lon': []};
 // radar
 var radarChartOptions;
@@ -725,7 +725,10 @@ var Deepviz = function(sources, callback){
 		.style('-webkit-user-select','none')
 		.style('-ms-user-select','none')
 		.style('user-select','none')
-		.style('cursor','default');
+
+		// this.svg.append('style')
+		// .attr('type', 'text/css')
+		// .text('@font-face { font-family: "Source Sans Pro"; src: url("fonts/SourceSansPro-regular.ttf"); } @font-face { font-family: "Source Sans Pro"; font-weight: bold; src: url("fonts/SourceSansPro-bold.ttf"); }');
 
 		return this.svg;
 	};
@@ -1241,7 +1244,7 @@ var Deepviz = function(sources, callback){
 
 			var count = (Math.abs(moment(dateRange[1]).diff(moment(dateRange[0]), 'months', true)));
 			var tickFormat = d3.timeFormat("%d %b %Y");
-			var tLength = '6%';
+			var tLength = '5.5%';
 			if(expandActive==true) tLength = '4%';
 			if(filters.time=='d'){
 				if((count<=0.4)){
@@ -1414,7 +1417,9 @@ var Deepviz = function(sources, callback){
 		})
 		.attr("x", function(d,i) { 
 			var w = d3.select(this.parentNode).attr('data-width');
-			barWidth = w;
+			if(filters.time=='d'){
+				return w*0.1;
+			}
 			if(filters.time=='m'){
 				return w*0.2
 			}
@@ -1424,6 +1429,7 @@ var Deepviz = function(sources, callback){
 		})
 		.attr("width", function(d,i) { 
 			var w = d3.select(this.parentNode).attr('data-width');
+			w=w*0.8;
 			if(filters.time=='m'){
 				w=w*0.6;
 			}
@@ -1606,7 +1612,9 @@ var Deepviz = function(sources, callback){
 		})
 		.attr("x", function(d,i) { 
 			var w = d3.select(this.parentNode).attr('data-width');
-			barWidth = w;
+			if(filters.time=='d'){
+				return w*0.1;
+			}
 			if(filters.time=='m'){
 				return w*0.2
 			}
@@ -1616,6 +1624,9 @@ var Deepviz = function(sources, callback){
 		})
 		.attr("width", function(d,i) { 
 			var w = d3.select(this.parentNode).attr('data-width');
+			if(filters.time=='d'){
+				w=w*0.8;
+			}
 			if(filters.time=='m'){
 				w=w*0.6;
 			}
@@ -2193,7 +2204,7 @@ var Deepviz = function(sources, callback){
 			if(filters.time=='m'){
 				var count = Math.round(Math.abs(moment(d0[1]).diff(moment(d0[0]), 'months', true)));
 				if(count<1)count = 1;
-				var d1 = d0.map(d3.timeMonth.round);
+				var d1 = d0.map(d3.timeMonth.floor);
 				d1[1] = moment(d1[0]).add(count,'month');
 			}
 			if(filters.time=='y'){
@@ -3271,7 +3282,9 @@ var Deepviz = function(sources, callback){
 		.style('stroke-opacity',0)
 		.attr("x", function(d,i) { 
 			var w = d3.select(this.parentNode).attr('data-width');
-			barWidth = w;
+			if(filters.time=='d'){
+				return w*0.1;
+			}
 			if(filters.time=='m'){
 				return w*0.2
 			}
@@ -3281,6 +3294,9 @@ var Deepviz = function(sources, callback){
 		})
 		.attr("width", function(d,i) { 
 			var w = d3.select(this.parentNode).attr('data-width');
+			if(filters.time=='d'){
+				w=w*0.8;
+			}
 			if(filters.time=='m'){
 				w=w*0.6;
 			}
@@ -4019,6 +4035,29 @@ var Deepviz = function(sources, callback){
 		});
 		mapbox.resize();
 
+		if(collapsed==true){
+
+			d3.select('#svg_summary2_div')
+			.style('margin-top', -$('#svg_summary1_div').height()+'px')
+
+			d3.select('#summary_row')
+			.style('margin-top', function(){
+				var h = $('#svg_summary1_div').height()+$('#svg_summary3_div').height()+10;
+				return h+'px';
+			});
+
+		} else {
+
+			d3.select('#svg_summary2_div')
+			.style('margin-top', '0px')
+
+			d3.select('#summary_row')
+			.style('margin-top', function(){
+				var h = $('#svg_summary1_div').height()*2+$('#svg_summary3_div').height()+10;
+				return h+'px';
+			});
+		}
+
 		d3.select('#summary_row').style('margin-top', function(){
 			var h = $('#top_row').height()+10;
 			return h+'px';
@@ -4090,24 +4129,28 @@ function addCommas(nStr){
 	return x1 + x2;
 }
 
+$(document).ready(function(){
+
 $('#print').click(function(){
 
 	if(printing) return false;
 	printing = true;
-
+	map.resize();
 	d3.select('#print-icon').style('display', 'none');
 	d3.select('#print-loading').style('display', 'block');
 	// $('#top_row').css('position', 'inherit');
 	$('#print-date').html('<b>PDF Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
+	$('#svg_summary2_div').css('display', 'block');
 
 	setTimeout(function(){
 		// page 1
 		html2canvas(document.querySelector("#page1"),{
 	        allowTaint: true,
 	        onclone: function(doc){
-				$(doc).find('#top_row').css('position', 'unset');
+				$(doc).find('#summary_row').attr('style', 'margin-top: 10px');
+				$(doc).find('#svg_summary2_div').attr('style', '');
+				$(doc).find('#top_row').attr('style', 'position: relative');
 				$(doc).find('.container2').css('position', 'unset');
-				$(doc).find('#summary_row').css('margin-top', '6px');
 				$(doc).find('.main-content').css('padding-bottom', '4px');
 				$(doc).find('.main-content').css('margin', 'unset');
 				$(doc).find('#print-header').css('display', 'block')
@@ -4121,6 +4164,7 @@ $('#print').click(function(){
 	        ignoreElements: function(element){
 	        	if(element.id=='print') return true;
 	        	if(element.id=='printImage') return true;
+	        	if(element.id=='copyImage') return true;
 	        	if(element.id=='lasso') return true;
 	        	if(element.id=='expand') return true;
 	        	if(element.id=='map-toggle') return true;
@@ -4135,7 +4179,7 @@ $('#print').click(function(){
 	    		return false;
 	        },
 	        scale: 1.2,
-	        height: $('#page1').height()+10,
+	        height: $('#page1').height()+100,
 	        windowWidth: 1300,
 	        windowHeight: 2800,
 	        logging: false
@@ -4160,19 +4204,21 @@ $('#printImage').click(function(){
 
 	if(printing) return false;
 	printing = true;
-
+	map.resize();
 	d3.select('#printImage-icon').style('display', 'none');
 	d3.select('#printImage-loading').style('display', 'block');
 	// $('#top_row').css('position', 'inherit');
 	$('#print-date').html('<b>Image Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
+	$('#svg_summary2_div').css('display', 'block');
 
 	setTimeout(function(){
 		html2canvas(document.querySelector("#page1"),{
 	        allowTaint: true,
 	        onclone: function(doc){
-				$(doc).find('#top_row').css('position', 'unset');
+				$(doc).find('#summary_row').attr('style', 'margin-top: 10px');
+				$(doc).find('#svg_summary2_div').attr('style', '');
+				$(doc).find('#top_row').attr('style', 'position: relative');
 				$(doc).find('.container2').css('position', 'unset');
-				$(doc).find('#summary_row').css('margin-top', '6px');
 				$(doc).find('.main-content').css('padding-bottom', '4px');
 				$(doc).find('.main-content').css('margin', 'unset');
 				$(doc).find('#print-header').css('display', 'block')
@@ -4186,6 +4232,7 @@ $('#printImage').click(function(){
 	        ignoreElements: function(element){
 	        	if(element.id=='print') return true;
 	        	if(element.id=='printImage') return true;
+	        	if(element.id=='copyImage') return true;
 	        	if(element.id=='lasso') return true;
 	        	if(element.id=='expand') return true;
 	        	if(element.id=='map-toggle') return true;
@@ -4200,7 +4247,7 @@ $('#printImage').click(function(){
 	    		return false;
 	        },
 	        scale: 1.2,
-	        height: $('#page1').height()+30,
+	        height: $('#page1').height()+100,
 	        windowWidth: 1300,
 	        windowHeight: 2800,
 	        logging: false
@@ -4217,4 +4264,112 @@ $('#printImage').click(function(){
 		printing = false;
 		});
 	},200);
+});
+
+$('#copyImage').click(function(){
+
+	if(printing) return false;
+	printing = true;
+	map.resize();
+
+	d3.select('#copyImage-icon').style('display', 'none');
+	d3.select('#copyImage-loading').style('display', 'block');
+	// $('#top_row').css('position', 'inherit');
+	$('#print-date').html('<b>Image Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
+	$('#svg_summary2_div').css('display', 'block');
+
+	setTimeout(function(){
+		html2canvas(document.querySelector("#page1"),{
+	        allowTaint: true,
+	        onclone: function(doc){
+				$(doc).find('#summary_row').attr('style', 'margin-top: 10px');
+				$(doc).find('#svg_summary2_div').attr('style', '');
+				$(doc).find('#top_row').attr('style', 'position: relative');
+				$(doc).find('.container2').css('position', 'unset');
+				$(doc).find('.main-content').css('padding-bottom', '4px');
+				$(doc).find('.main-content').css('margin', 'unset');
+				$(doc).find('#print-header').css('display', 'block')
+				$(doc).find('br-header').css('line-height', 0.7);
+				$(doc).find('#svg_summary3_div').css('display', 'none');
+				$(doc).find('#page2').css('display', 'none');
+				$(doc).find('.removeFilterBtn').html('FILTERED');
+	        },
+	        useCORS: false,
+	        foreignObjectRendering: true,
+	        ignoreElements: function(element){
+	        	if(element.id=='print') return true;
+	        	if(element.id=='printImage') return true;
+	        	if(element.id=='copyImage') return true;
+	        	if(element.id=='lasso') return true;
+	        	if(element.id=='expand') return true;
+	        	if(element.id=='map-toggle') return true;
+	        	if(element.id=='map-bg-toggle') return true;
+	        	if(element.id=='heatmap-radius-slider-div') return true;
+	        	if(element.id=='adm-toggle') return true;
+	        	if(element.id=='dateRangeContainer_img') return true;
+	        	if(element.id=='page2') return true;
+	        	if($(element).hasClass('select2')) return true;
+	        	if($(element).hasClass('removeFilterBtn')) return true;
+	        	if($(element).hasClass('selectRows')) return true;
+	    		return false;
+	        },
+	        scale: 1.2,
+	        height: $('#page1').height()+100,
+	        windowWidth: 1300,
+	        windowHeight: 2800,
+	        logging: false
+	    }).then(canvas => {
+	    	canvas.toBlob(blob => {
+			    navigator.clipboard.write([
+			      new ClipboardItem({
+			        [blob.type]: blob
+			      })
+			    ]).then(() => {
+			      console.log('Copied')
+			    })
+			  })
+			// copied to clipboard
+			d3.select('#copyImage-icon').style('display', 'block');
+			d3.select('#copyImage-loading').style('display', 'none');
+			printing = false;
+		});
+	},200);
+
+});
+
+	tippy('#print', {
+		content: 'Export to PDF',
+		theme: 'light-border',
+		delay: [250,100],
+		inertia: false,
+		distance: 8,
+		allowHTML: true,
+		animation: 'shift-away',
+		arrow: true,
+		size: 'small'
+	});
+
+	tippy('#printImage', {
+		content: 'Export to PNG',
+		theme: 'light-border',
+		delay: [250,100],
+		inertia: false,
+		distance: 8,
+		allowHTML: true,
+		animation: 'shift-away',
+		arrow: true,
+		size: 'small'
+	});
+
+	tippy('#copyImage', {
+		content: 'Copy to clipboard',
+		theme: 'light-border',
+		delay: [250,100],
+		inertia: false,
+		distance: 8,
+		allowHTML: true,
+		animation: 'shift-away',
+		arrow: true,
+		size: 'small'
+	});
 });

@@ -1,16 +1,8 @@
-html {
-
-}
-
-text {
-}
-
 .time-select text {
 	fill: #FFF;
 }
 
-body {
-	font-family: 'Source Sans Pro', sans-serif  !important;
+body, canvas {
 	font-size: 14px;
 	margin: 0;
 	-moz-user-select: none; /* Firefox */
@@ -20,10 +12,13 @@ body {
 	-webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
 
+div, text, tspan, svg, body, canvas {
+	font-family: 'Source Sans Pro', sans-serif !important;
+}
+
 input { cursor: pointer; }
 
 svg {
-	font-family: Source Sans Pro, sans-serif !important;
 	font-size: 18px;
 }
 
@@ -58,7 +53,6 @@ h2 {
 }
 
 #svg_summary2_div {
-	position: relative;
 	z-index: 3;
 }
 
@@ -99,13 +93,11 @@ h2 {
 	margin: 0px auto;
 	background-color: #FFF;
 	min-height: 500px;
-
 }
 
 .container2 {
 	padding: 0px 15px 0px 15px;
 	margin: 0px auto;
-	background-color: #FAFAFA;
 }
 
 #methodology {
@@ -130,10 +122,10 @@ h2 {
 }
 
 .rightcol {
-	width: 63%;
+	width: 62%;
 	float: right;
     position: absolute;
-    top: 50px;
+    top: 6.5vh;
     right: 0px;
 }
 
@@ -157,6 +149,16 @@ h2 {
 	height: 300px;
 	border: 1px solid #E4E4E4;
 	margin-top: 3px;
+}
+
+#gridmap-div {
+	position: absolute;
+	background-color: #FFF;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
 }
 
 [class^='select2'] {
@@ -216,7 +218,7 @@ h2 {
 #mapcontainer {
 	padding-right: 15px;
 	padding-top: 2px;
-	margin-bottom: 6px;
+	margin-bottom: 8px;
 }
 
 #mapcol {
@@ -225,13 +227,34 @@ h2 {
 
 
 #scores-container {
-	width: 63%;
+	width: 62%;
 	float: right;
     top: 0px;
     right: 0px;
 }
 
+#timechart-container {
+	margin-top: 6px;
+}
+
+@media only screen and (max-width: 1300px) {
+
+	.rightcol {
+	    top: 5.5vh;
+	}
+
+	.title {
+		font-size: 0.9vw;
+	}
+
+}
+
 @media only screen and (max-width: 1140px) {
+
+
+	.rightcol {
+	    top: 5.5vh;
+	}
 
 	#framework-chart svg {
 	    font-size: 14px !important;
@@ -252,7 +275,7 @@ h2 {
 	}
 
 	#timechart-legend {
-		left: 280px !important;
+		left: 20vw !important;
 	}
 
 	#framework-toggle-switch {
@@ -293,10 +316,6 @@ h2 {
 		width: 97% !important;
 	}
 
-	.title {
-		font-size: 11px !important;
-	}
-
 	#finalScore_value,
 	#severity_value {
 		font-size: 9px !important;
@@ -314,7 +333,7 @@ h2 {
 	}
 
 	#timechart-legend {
-	    left: 254px !important;
+	    left: 20vw !important;
 	    width: 140px !important;
 	    top: 8px !important;
 	}
@@ -417,10 +436,6 @@ h2 {
 		height: 40px;
 	}
 
-	.title {
-		font-size: 10px !important;
-	}
-
 	#finalScore_value,
 	#severity_value {
 		font-size: 8px !important;
@@ -479,10 +494,6 @@ h2 {
 
 	#total_entries {
 		font-size: 20px !important;
-	}
-
-	.title {
-		font-size: 8px !important;
 	}
 
 	#top-row {
@@ -622,7 +633,7 @@ font-size: 15px;
 
 .avgSliderLabel {
 	font-size: 10px;
-	font-weight: 100;
+	font-weight: normal;
 }
 
 .sliderIcon {
@@ -667,8 +678,8 @@ font-size: 15px;
 
 #finalScore img, 
 #severity img {
-	top: 2px;
-    position: relative;
+	top: 1px;
+    position: absolute;
 }
 
 .removeFilterBtn:hover,
@@ -695,11 +706,12 @@ font-size: 15px;
 #finalScoreRemoveFilter,
 #severityRemoveFilter,
 #tableRemoveFilter,
-#geoRemoveFilter {
-	height: 13px;
+#geoRemoveFilter,
+.removeFilterBtn {
+	height: 0.9vw;
     padding-left: 5px;
     display: none;
-    padding-top: 2px;
+    padding-top: 0px;
     position: absolute;
 }
 
@@ -720,7 +732,7 @@ font-size: 15px;
 }
 
 #reliability {
-	width: 49%;
+	width: 48.5%;
 	display: inline-block;
 	fill: red;
 	float: right;
@@ -746,7 +758,7 @@ font-size: 15px;
 }
 
 .title {
-	font-size: 13px;
+	font-size: 0.8vw;
 	font-weight: bold;
 	display: inline;
 	white-space: nowrap;
@@ -755,7 +767,7 @@ font-size: 15px;
 
 .subtitle {
 	font-size: 12px;
-	font-weight: lighter;
+	font-weight: normal;
 	display: inline;
 	padding-left: 3px;
 }
@@ -788,12 +800,12 @@ font-size: 15px;
 }
 
 .scores_left {
-	width: 49%;
+	width: 48.5%;
 	float: left;
 }
 
 .scores_right {
-	width: 49%;
+	width: 48.5%;
 	float: right;
 }
 
@@ -1063,7 +1075,7 @@ font-size: 15px;
 	color: #FFF;
 	padding: 1px 4px;
 	font-size: 12px;
-	font-weight: 12px;
+	font-weight: normal;
 	text-anchor: left;
 }
 
@@ -1076,7 +1088,7 @@ font-size: 15px;
     top: 73px;
     display: inline;
     left: 5px;
-    z-index: 2;
+    z-index: 11;
     cursor: pointer;
 }
 
@@ -1097,7 +1109,7 @@ font-size: 15px;
     top: 4px;
     display: inline;
     right: 4px;
-    z-index: 2;
+    z-index: 11;
     cursor: pointer;
 }
 
@@ -1131,6 +1143,16 @@ font-size: 15px;
 	cursor: pointer;
 }
 
+#adm1,
+#adm2,
+#adm3 {
+    cursor: pointer;
+}
+
+.tippy-btn {
+	outline: none;
+}
+
 #map-bg-toggle {
 	position: absolute;
     top: 5px;
@@ -1147,6 +1169,7 @@ font-size: 15px;
     border: 2px solid #b7bebe;
     outline: none;
     font-weight: normal;
+    cursor: pointer;
 }
 
 #heatmap-radius-slider-div {
@@ -1198,7 +1221,7 @@ font-size: 15px;
     top: 99px;
     display: inline;
     left: 5px;
-    z-index: 2;
+    z-index: 12;
     cursor: pointer;
 }
 
@@ -1228,10 +1251,26 @@ font-size: 15px;
 
 #map-toggle-rect-choropleth {
 	position: absolute;
-	top: 46px;
+	top: 69px;
 	height: 23px;
 	width: 24px;
 	z-index: 5;
+}
+
+#map-toggle-rect-gridmap {
+	position: absolute;
+	top: 47px;
+	height: 21px;
+	width: 24px;
+	z-index: 5;
+}
+
+#map-toggle-gridmap, #gridmap-div {
+	display: none;
+}
+
+.grid-rect {
+	outline: none;
 }
 
 #print {
@@ -1241,6 +1280,7 @@ font-size: 15px;
     position: relative;
     top: 3px;
     left: 60px;
+	outline: none;
 }
 
 #print img {
@@ -1263,6 +1303,7 @@ font-size: 15px;
     position: relative;
     top: 3px;
     left: 60px;
+	outline: none;
 }
 
 #printImage img {
@@ -1275,6 +1316,29 @@ font-size: 15px;
 }
 
 #printImage img:hover {
+	opacity: 0.9;
+}
+
+#copyImage {
+	height: 20px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    top: 3px;
+    left: 60px;
+	outline: none;
+}
+
+#copyImage img {
+	height: 20px;
+}
+
+#copyImage-loading {
+	height: 20px;
+	display: none;
+}
+
+#copyImage img:hover {
 	opacity: 0.9;
 }
 

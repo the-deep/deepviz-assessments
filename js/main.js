@@ -5,8 +5,6 @@ var Deepviz = new Deepviz(sources, function(data){
 
 	var table = DeepvizTable.create();
 
-
-
 	//**************************
 	// sector chart
 	//**************************
@@ -69,7 +67,6 @@ var Deepviz = new Deepviz(sources, function(data){
 	// severity chart
 	//**************************
 	var severityChart = Deepviz.createSeverityChart();
-
 
 	//**************************
 	// assessment type chart
@@ -189,7 +186,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	var timelineSvg = Deepviz.createSvg({
 		id: 'timeline_viz',
 		viewBoxWidth: 1300,
-		viewBoxHeight: 1000,
+		viewBoxHeight: 970,
 		div: '#timeline'
 	});
 
