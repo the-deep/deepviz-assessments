@@ -1934,7 +1934,7 @@ Map.updateGridmap = function(){
 			return d.total;
 		});
 
-	    var u = d3.select('#map-grid-svg')
+	    d3.select('#map-grid-svg')
 	    .selectAll('.grid-rect')
 	    .data(nodes)
 	    .attr('data-name',function(d,i){
@@ -2027,7 +2027,7 @@ Map.updateGridmap = function(){
 
 	    nodes = metadata.geo_json_point.features;
 
-	    var u = d3.select('#map-grid-svg')
+	    d3.select('#map-grid-svg')
 	    .selectAll('.grid-rect')
 	    .data(nodes)
 	    .attr('data-name',function(d,i){

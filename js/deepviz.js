@@ -1417,7 +1417,9 @@ var Deepviz = function(sources, callback){
 		})
 		.attr("x", function(d,i) { 
 			var w = d3.select(this.parentNode).attr('data-width');
-			return barWidth = w*0.1;
+			if(filters.time=='d'){
+				return w*0.1;
+			}
 			if(filters.time=='m'){
 				return w*0.2
 			}
