@@ -221,7 +221,7 @@ Summary.update = function(includeTable){
 	d3.select('#total_publishers tspan').text(addCommas(totalPublishers));
 
 	// other documents
-	d3.select('#total_other_documents tspan').text(addCommas(totalLeads-totalAssessments));
+	d3.select('#total_other_documents tspan').text(addCommas(Math.max(0,(totalLeads-totalAssessments))));
 
 	// define maximum context value
 	var contextualRowTotals = d3.nest()
