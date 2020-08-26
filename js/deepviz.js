@@ -4325,10 +4325,9 @@ $('#copyImage').click(function(){
 			        [blob.type]: blob
 			      })
 			    ]).then(() => {
-			      console.log('Copied')
+					// copied to clipboard
 			    })
 			  })
-			// copied to clipboard
 			d3.select('#copyImage-icon').style('display', 'block');
 			d3.select('#copyImage-loading').style('display', 'none');
 			printing = false;

@@ -11,7 +11,7 @@ DeepvizTable.update = function(d){
 
     DeepvizTableDataset = [];
     d.forEach(function(d,i){
-        DeepvizTableDataset.push({'id': d.pk, 'lead': d.lead.title, 'url': d.lead.url, 'type': d.assessment_type_str, 'author': d.organization_str, 'coordination': d.coordination_str, 'date': d.date_str, 'analyticalDensity': d.scores.final_scores.score_matrix_pillar['1'], 'finalScore': d.final_score })
+        DeepvizTableDataset.push({'id': d.pk, 'lead': d.lead.title, 'url': d.lead.url, 'confidentiality': d.lead.confidentiality, 'type': d.assessment_type_str, 'author': d.organization_str, 'coordination': d.coordination_str, 'date': d.date_str, 'analyticalDensity': d.scores.final_scores.score_matrix_pillar['1'], 'finalScore': d.final_score })
     });
 
     if(DeepvizDataTable)
@@ -76,7 +76,11 @@ DeepvizTable.create = function(){
                 break;
             }
         }
-        return "<a href='" + urlPrefix + value + "' target='_blank'><div class='downloadReport'></div></a>";
+        if(typeof value !== 'undefined'){
+            return "<a href='" + urlPrefix + value + "' target='_blank'><div class='downloadReport'></div></a>";
+        } else {
+            return '';
+        }
         }
     });
 
@@ -105,14 +109,15 @@ DeepvizTable.create = function(){
             {title:"", field:"url", align: "center", formatter:"linkFormatter", headerSort:false, width: 1, resizable:false}
         ],
         rowClick:function(e, row){
-           var id = row.getIndex();
-           Deepviz.filter('id', id);
+            if(e.srcElement.className!='downloadReport'){
+                var id = row.getIndex();
+                Deepviz.filter('id', id);        
+            }
         },
     });
 
     d3.select('#tableRemoveFilter').on('click', function(){ 
         $('.searchRows').val('');
-        Deepviz.filter('id', 'clear'); });
-
-
+        Deepviz.filter('id', 'clear'); 
+    });
  }
