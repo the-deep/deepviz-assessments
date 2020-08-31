@@ -2222,7 +2222,7 @@ var Deepviz = function(sources, callback){
 			// colorBars();
 			updateDate();
 
-			if(disableSync==false){
+			if((disableSync==false)||(d3.event.sourceEvent==null)){
 				Summary.update(false);
 				// updateRadarCharts();
 				Map.update();
