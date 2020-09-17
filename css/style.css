@@ -1062,6 +1062,11 @@ font-size: 15px;
 	stroke-dasharray: 1 1; 
 }
 
+.axisLabel,
+.avgSliderLabel {
+	fill: #5F5F5F
+}
+
 .clearfix {
 	overflow: auto;
 }
