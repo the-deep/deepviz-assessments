@@ -172,7 +172,7 @@ Summary.update = function(includeTable){
 	var dc = data.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
 	var dcEntries = dataEntries.filter(function(d){return ((d.date>=dateRange[0])&&(d.date<dateRange[1])) ;});
 
-	var totalAssessments = dc.length;
+	totalAssessments = dc.length;
 
 	if(includeTable) DeepvizTable.update(dc);
 
@@ -232,8 +232,24 @@ Summary.update = function(includeTable){
 	d3.selectAll('.total-label').text(0);
 	
 	contextualRowTotals.forEach(function(d,i){
-		d3.select('#total-label'+(d.key-1)).text(d.value);
+		d3.select('#total-label'+(d.key-1)).text(addCommas(d.value));
+	});
+
+	d3.selectAll('.contextualRow .label')
+	.attr('x', function(d,i){
+		var xoffset = d3.select(this.parentNode).selectAll('.total-label').node().getBBox().width;
+		return xoffset + (width-margin.right)-30;
 	})
+	.attr('transform', function(){
+		var h = d3.select(this).node().getBBox().height;
+		var shift = -(h/2)+10;
+		return 'translate('+0+','+shift+')';
+	})
+	.selectAll('tspan')
+	.attr('x', function(d,i){
+		var xoffset = d3.select(this.parentNode.parentNode).selectAll('.total-label').node().getBBox().width;
+		return xoffset + (width-margin.right)-25;
+	});
 
 	var mutli_sector_5 = d3.sum(dc, function(d){
 		if(d.sector_count>=5)
@@ -431,9 +447,9 @@ Summary.update = function(includeTable){
 
 		d3.select(this).selectAll('.summary-label').attr('x',function(d,i){
 			if(d3.select(this).text().includes('=')){
-					return valueWidth+126;		
+					return valueWidth+110;		
 				} else {
-					return valueWidth+18;						
+					return valueWidth+13;						
 				}
 
 		});
