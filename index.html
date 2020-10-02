@@ -19,7 +19,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
 
 	<!-- load custom CSS -->
-	<link href="css/style.css?cache=9220" rel="stylesheet" type="text/css" media="all">
+	<link href="css/style.css?cache=77778" rel="stylesheet" type="text/css" media="all">
 
 </head>
 
@@ -54,6 +54,7 @@
 				<div id="print"><img id="print-icon" src="images/print.png"/><img id="print-loading" src="images/loading.gif"/></div>
 				<div id="printImage"><img id="printImage-icon" src="images/printImage.png"/><img id="printImage-loading" src="images/loading.gif"/></div>
 				<div id="copyImage"><img id="copyImage-icon" src="images/copyImage.png"/><img id="copyImage-loading" src="images/loading.gif"/></div>
+				<div id="loadImage" class="loader"></div>
 
 				<div class="selectedDate">
 					<div class="title">
@@ -178,9 +179,12 @@
 
 				</div>
 
-				<div id="timeline" class="widget">
-
+				<div style="height: 45.3vw">
+					<div id="timeline" class="widget"></div>
 				</div>
+
+				<object id="timechart-toggle" type="image/svg+xml" data="images/timechart-toggle.svg"></object>
+
 			</div><!-- / .rightcol -->
 		</div><!-- /# summary_row -->
 
@@ -244,7 +248,7 @@
 	<div id="ary-details" class="assessment_details container2 main-content">
 		<h2 style="margin-bottom: 10px; margin-top: 2px">Assessment Details&nbsp;<img id="tableRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
 		<div class="selectRows">
-			<div class="searchBox" style="display: inline; margin-right: 30px">Search&nbsp;
+			<div class="searchBox" style="display: inline; margin-right: 30px">
 				<input type="text" onkeyup="DeepvizTable.search(this.value)" name="first name" placeholder="Search" required="required" class="searchRows" />
 			</div>
 			Show&nbsp;
@@ -275,13 +279,14 @@
 
 <!-- load custom JavaScript -->
 <script type="text/javascript" src="js/radarChart.js"></script>
-<script type="text/javascript" src="js/map.js?cache=9220"></script>
-<script type="text/javascript" src="js/summary.js?cache=9220"></script>
-<script type="text/javascript" src="js/deepviz.js?cache=9220"></script>
-<script type="text/javascript" src="js/parse-data.js?cache=9220"></script>
-<script type="text/javascript" src="js/barchart.js?cache=9220"></script>
-<script type="text/javascript" src="js/DeepvizTable.js?cache=9220"></script>
-<script type="text/javascript" src="js/main.js?cache=9220"></script>
+<script type="text/javascript" src="js/map.js?cache=77778"></script>
+<script type="text/javascript" src="js/bumpchart.js?cache=77778"></script>
+<script type="text/javascript" src="js/summary.js?cache=77778"></script>
+<script type="text/javascript" src="js/deepviz.js?cache=77778"></script>
+<script type="text/javascript" src="js/parse-data.js?cache=77778"></script>
+<script type="text/javascript" src="js/barchart.js?cache=77778"></script>
+<script type="text/javascript" src="js/DeepvizTable.js?cache=77778"></script>
+<script type="text/javascript" src="js/main.js?cache=77778"></script>
 
 </body>
 </html>

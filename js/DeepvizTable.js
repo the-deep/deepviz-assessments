@@ -119,5 +119,5 @@ DeepvizTable.create = function(){
     d3.select('#tableRemoveFilter').on('click', function(){ 
         $('.searchRows').val('');
         Deepviz.filter('id', 'clear'); 
-    });
+    arginargarargin});
  }

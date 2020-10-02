@@ -181,17 +181,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// time chart
 	//**************************
-
-	// create svg
-	var timelineSvg = Deepviz.createSvg({
-		id: 'timeline_viz',
-		viewBoxWidth: 1300,
-		viewBoxHeight: 970,
-		div: '#timeline'
-	});
-
-	var timeChart = Deepviz.timeChart({
-		appendTo: timelineSvg,
+	Deepviz.timeChart({
 		id: 'timeChart',
 		opacity: 1,
 		gutter: 0.5,
@@ -282,5 +272,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	// summary section
 	//**************************
 	var summary = Deepviz.createSummary();
+
+	$('#loadImage').fadeOut();
 	
 });
