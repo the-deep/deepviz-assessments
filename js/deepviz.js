@@ -1816,6 +1816,7 @@ var Deepviz = function(sources, callback){
 			dateRange[1].setHours(0,0,0,0);
 			dateRange[1] = moment(dateRange[1].setDate(dateRange[1].getDate())).add(1, 'day');
 			gBrush.call(brush.move, dateRange.map(scale.timechart.x));
+		    update();
 		});
 
 	    // keyboard pagination
@@ -1908,33 +1909,34 @@ var Deepviz = function(sources, callback){
 				d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[4]);
 		    }
 
-		    function update(){
-		    	// colorBars();
-		    	updateDate();
-		    	Summary.update(true);
-		    	updateRadarCharts();
-		    	Map.update();
-		    	updateFinalScore('map', 200);
-		    	updateSeverity('map', 200);
-		    	BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
-		    	BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
-		    	BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
-		    	BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
-		    	BarChart.updateBars('methodology_content', dataByMethodologyContent);
-		    	BarChart.updateBars('additional_documentation', dataByAdditionalDocumentation);
-		    	BarChart.updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
-		    	BarChart.updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
-		    	BarChart.updateStackedBars('language', dataByLanguage);
-		    	BarChart.updateStackedBars('sector', dataBySector);
-		    	BarChart.updateBars('focus', dataByFocusArray);
-		    	BarChart.updateStackedBars('organisation', dataByOrganisation)
-
-		    	handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
-				handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + ((timechartSvgHeight-timechartHeight2-20) - margin.top) + ")"; });
-				$('#loadImage').delay(50).fadeOut(500);
-		    }
 		}
 
+	    function update(){
+	    	// colorBars();
+	    	updateDate();
+	    	Summary.update(true);
+	    	updateRadarCharts();
+	    	Map.update();
+	    	updateFinalScore('map', 200);
+	    	updateSeverity('map', 200);
+	    	BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+	    	BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
+	    	BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
+	    	BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
+	    	BarChart.updateBars('methodology_content', dataByMethodologyContent);
+	    	BarChart.updateBars('additional_documentation', dataByAdditionalDocumentation);
+	    	BarChart.updateStackedBars('unit_of_reporting', dataByUnitOfReporting);
+	    	BarChart.updateStackedBars('unit_of_analysis', dataByUnitOfAnalysis);
+	    	BarChart.updateStackedBars('language', dataByLanguage);
+	    	BarChart.updateStackedBars('sector', dataBySector);
+	    	BarChart.updateBars('focus', dataByFocusArray);
+	    	BarChart.updateStackedBars('organisation', dataByOrganisation)
+
+	    	handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
+			handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + ((timechartSvgHeight-timechartHeight2-20) - margin.top) + ")"; });
+			$('#loadImage').delay(50).fadeOut(500);
+	    }
+		    
 	    // programattically set date range
 	    gBrush.call(brush.move, dateRange.map(scale.timechart.x));
 	    // function to handle the changes during slider dragging
