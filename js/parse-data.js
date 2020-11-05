@@ -189,8 +189,8 @@ parseAssessmentsMetadata = function(metadata){
 		d._id = d.id;
 		d.id = i+1;
 		if(d.name=='Donor') stakeholder_type_keys.donor = d.id;
-		if(d.name=='International Organization') stakeholder_type_keys.ingo = d.id;
-		if(d.name=='Non-governmental Organization') stakeholder_type_keys.lngo = d.id;
+		if(d.name=='International NGOs') stakeholder_type_keys.ingo = d.id;
+		if(d.name=='National NGOs') stakeholder_type_keys.lngo = d.id;
 		if(d.name=='Government') stakeholder_type_keys.government = d.id;
 		if(d.name=='UN Agency') stakeholder_type_keys.un_agency = d.id;
 		if(d.name=='UN Agencies') stakeholder_type_keys.un_agency = d.id;
@@ -399,6 +399,20 @@ parseAssessmentsData = function(data, metadata){
 			}
 		});
 		d.organization_str = (d.organization_str.join(", "));
+
+		d.organization_and_stakeholder_type.forEach(function(dd,ii){
+			metadata.organization.forEach(function(ddd,ii){
+				if(dd[1]==ddd.id){
+					if(ddd.parent){
+						metadata.organization.forEach(function(dp){
+							if(dp._id==ddd.parent){
+								dd[1] = dp.id;
+							}
+						});
+					}
+				}
+			});
+		});
 
 		// parse scorepillar scale id
 		d._scorepillar_scale = d.scorepillar_scale;
