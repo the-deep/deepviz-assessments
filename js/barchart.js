@@ -409,6 +409,12 @@ BarChart.updateBars = function(group, dataset, duration = 0){
 	.data(d)
 	.attr('class', function(d,i){
 		return 'bar-row '+group+'-row '+group+'-bar-row'+d.key;
+	}).style('display', function(d,i){
+		if(d.value>0){
+			return 'inline-block';
+		} else {
+			return 'none';
+		}
 	});
 
 	var labels =d3.selectAll('text.'+group)
@@ -589,6 +595,12 @@ BarChart.updateStackedBars = function(group, dataset, duration = 0){
 		.data(d)
 		.attr('class', function(d,i){
 			return 'bar-row '+group+'-row '+group+'-bar-row'+d.key;
+		}).style('display', function(d,i){
+			if(d.value>0){
+				return 'inline-block';
+			} else {
+				return 'none';
+			}
 		});
 
 		var labels =d3.selectAll('text.'+group)
