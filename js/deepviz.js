@@ -41,7 +41,7 @@ var bumpchartCanvas;
 var bumpchartCustomBase;
 var timeFormat = d3.timeFormat("%d-%m-%Y");
 var mapbox;
-var mapboxToken = 'pk.eyJ1Ijoic2hpbWl6dSIsImEiOiJjam95MDBhamYxMjA1M2tyemk2aHMwenp5In0.i2kMIJulhyPLwp3jiLlpsA';
+var mapboxToken = 'pk.eyJ1IjoibWF0dGhld3NtYXdmaWVsZCIsImEiOiJDdFBZM3dNIn0.9GYuVHPIaUZ2Gqjsk1EtcQ';
 var mapToggle = 'bubbles';
 var lassoActive = false;
 var expandActive = false;
@@ -3584,6 +3584,8 @@ var Deepviz = function(sources, callback){
 
 		if(drawingTimeline==true) return false;
 
+		d3.selectAll('#timeline').style('opacity', 0);
+
 		$('#loadImage').show();
 
 		drawingTimeline = true;
@@ -3709,6 +3711,10 @@ var Deepviz = function(sources, callback){
 			BarChart.updateStackedBars('organisation', dataByOrganisation);
 
 			drawingTimeline = false;
+
+			d3.select('#timeline').style('display', 'block');
+			d3.select('#timeline').style('opacity', 1);
+
 		});
 	}
 
@@ -4287,6 +4293,13 @@ var Deepviz = function(sources, callback){
 				}
 			} 
 		});
+
+		d3.selectAll('#timeline .vizlibResponsiveDiv').style('width', '100%')
+		.style('height', function(d,i){
+			var ar = $(this).attr('data-aspectRatio');
+			return $(this).width()/ar;
+		});
+		
 		mapbox.resize();
 
 		if(collapsed==true){

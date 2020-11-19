@@ -411,6 +411,7 @@ Map.create = function(){
 
 	var expandLayout = function() {
 		d3.select('#timeline .vizlibResponsiveDiv').style('opacity', 0);
+		d3.select('#timeline').style('display', 'none');
 		if(expandActive==true){
 			$('#mapcol, #mapcontainer').removeClass('leftcol');
 			$('#timechart-container').removeClass('rightcol');
