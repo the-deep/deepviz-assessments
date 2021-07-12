@@ -567,17 +567,26 @@ parseEntriesData = function(dataEntries, metadata){
 		d.year.setDate(1);
 		d.year.setMonth(0);
 
-		// PARSE STRING IDS TO INTEGERS
-		// parse context array
-		d._context = d.context;
-		d.context = [];
-		d._context.forEach(function(dd,ii){
-			metadata.context_array.forEach(function(ddd,ii){
-				if(dd==ddd._id){
-					d.context.push(ddd.id);
-				}
+		metadata.contextWidgetIds = [];
+
+		d.context_sector =  Object.entries(d.context_sector);
+		d.context_sector.forEach(function(d,i){
+			metadata.contextWidgetIds.push(d[0]);
+			d.key = d[0];
+			d._context = d[1].context;
+			d.sector = d[1].sector;
+			d.context = [];
+			d._context.forEach(function(dd,ii){
+				metadata.context_array.forEach(function(ddd,ii){
+					if(dd==ddd._id){
+						d.context.push(ddd.id);
+					}
+				});
 			});
+			d.shift();
+			d.shift();
 		});
+
 		// parse specific needs array
 		d._special_needs = d.special_needs;
 		d.special_needs = [];
@@ -588,6 +597,7 @@ parseEntriesData = function(dataEntries, metadata){
 				}
 			});
 		});
+
 		// parse affected groups array
 		d._affected_groups = d.affected_groups;
 		d.affected_groups = [];
@@ -598,29 +608,35 @@ parseEntriesData = function(dataEntries, metadata){
 				}
 			});
 		});
-		// parse affected groups array
-		d._sector = d.sector;
-		d.sector = [];
-		d._sector.forEach(function(dd,ii){
-			var context_id = 0;
-			metadata.context_array.forEach(function(ddd,ii){
-				if(dd[0]==ddd._id){
-					context_id = ddd.id;
-				}
+		// parse sector array
+
+		d.context_sector.forEach(function(d,i){
+
+			d._sector = d.sector;
+			d.sector = [];
+			d._sector.forEach(function(dd,ii){
+				var context_id = 0;
+				metadata.context_array.forEach(function(ddd,ii){
+					if(dd[0]==ddd._id){
+						context_id = ddd.id;
+					}
+				});
+				var framework_id = 0;
+				metadata.framework_groups_array.forEach(function(ddd,ii){
+					if(dd[1]==ddd._id){
+						framework_id = ddd.id;
+					}
+				});
+				var sector_id = 0;
+				metadata.sector_array.forEach(function(ddd,ii){
+					if(dd[2]==ddd._id){
+						sector_id = ddd.id;
+					}
+				});
+				if(!d.sector.includes([context_id,framework_id,sector_id]))
+				d.sector.push([context_id,framework_id,sector_id]);
 			});
-			var framework_id = 0;
-			metadata.framework_groups_array.forEach(function(ddd,ii){
-				if(dd[1]==ddd._id){
-					framework_id = ddd.id;
-				}
-			});
-			var sector_id = 0;
-			metadata.sector_array.forEach(function(ddd,ii){
-				if(dd[2]==ddd._id){
-					sector_id = ddd.id;
-				}
-			});
-			d.sector.push([context_id,framework_id,sector_id]);
+
 		});
 
 		// parse severity id
@@ -675,6 +691,7 @@ parseEntriesMetadata = function(metadata){
 		d._id = d.id;
 		d.id = i+1;
 	});
+
 	metadata.framework_groups_array.forEach(function(d,i){
 		d._id = d.id;
 		d.id = i+1;
@@ -711,6 +728,12 @@ parseEntriesMetadata = function(metadata){
 		d._id = d.id;
 		d.id = i+1;
 	});
+
+	metadata.original = {}
+	metadata.original._context_array = metadata.context_array;
+	metadata.original._sector_array = metadata.sector_array;
+	metadata.original._framework_groups_array = metadata.framework_groups_array;
+
 	metadata.severity_units.forEach(function(d,i){
 		d._id = d.id;
 		d.id = i+1;
