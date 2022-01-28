@@ -880,7 +880,6 @@ var Deepviz = function(sources, callback){
 		maxDate = new Date(d3.max(data, function(d){
 			return d.date;
 		}));
-		var maxAssessmentDate = maxDate;
 
 		var today = new Date();
 		if(maxDate<today){
