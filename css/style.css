@@ -187,7 +187,7 @@ h2 {
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice,
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-	background-color: rgb(0, 137, 116);
+	background-color: #5061E4;
 	color: #FFF;
 	border: none;
 }
@@ -723,7 +723,7 @@ font-size: 15px;
 	margin-bottom: 0px;
 	font-size: 40px;
 	font-weight: bold;
-	color: #008974;
+	color: #5061E4;
 	line-height: 0.8;
 }
 
@@ -800,7 +800,7 @@ font-size: 15px;
 }
 
 #severity_value {
-	color: #e6550d;
+	color: #5061E4;
 	display: inline;
 	font-size: 12px;
 	font-weight: bold;
@@ -837,7 +837,7 @@ font-size: 15px;
 #dateRangeText {
 	    padding-top: 2px;
     font-size: 16px;
-    color: #008974;
+    color: #5061E4;
     cursor: default;
     padding-right: 2px;
     position: absolute;
@@ -878,7 +878,7 @@ font-size: 15px;
 }
 
 #finalScore_value, #severity_value {
-	color: #008974;
+	color: #5061E4;
 	display: inline;
 	font-size: 12px;
 	font-weight: bold;
@@ -946,7 +946,7 @@ font-size: 15px;
 .selection {
 	fill-opacity: 0.066;
 	stroke-opacity: 0;
-	fill: #36BBA6;
+	fill: #7F8CF6;
 }
 
 .selection:hover {
@@ -1451,9 +1451,9 @@ font-size: 15px;
   position: relative;
   text-indent: -9999em;
   border-top: 2px solid rgba(255, 255, 255, 0.2);
-  border-left: 2px solid #1AA791;
+  border-left: 2px solid #5061E4;
   border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-  border-left: 2px solid #1AA791;
+  border-left: 2px solid #5061E4;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);

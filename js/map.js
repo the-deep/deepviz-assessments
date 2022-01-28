@@ -16,16 +16,16 @@ var nodeRadius = 13;
 var bubbleData;
 
 var heatmapColorEntries = [
-		'interpolate',
-		['linear'],
-		['heatmap-density'],
-			0,'rgba(254, 240, 217,0)',
-			0.05,'rgba(103,169,207,0.2)',
-			0.1,'#ddf6f2',
-			0.4,'#36BBA6',
-			0.7,'#1AA791',
-			0.9,'#008974'
-		];
+	'interpolate',
+	['linear'],
+	['heatmap-density'],
+		0,'rgba(255, 255, 255,0)',
+		0.05,'rgba(103,169,207,0.2)',
+		0.1, colorNeutral[1],
+		0.4, colorNeutral[2],
+		0.7, colorNeutral[4],
+		0.9, colorNeutral[4]
+	];
 
 var heatmapColorSeverity = [
 		'interpolate',
@@ -543,7 +543,7 @@ Map.createBubbles = function(){
 	featureElementG
 	.append("circle")
 	.attr('class',  'outerCircle')
-	.attr("stroke", colorNeutral[3])
+	.attr("stroke", colorNeutral[4])
 	.attr("fill", "#FFF")
 	.attr('cx', 0)
 	.attr('cy', 0)
@@ -553,7 +553,7 @@ Map.createBubbles = function(){
 	featureElementG
 	.append("circle")
 	.attr('class',  'innerCircle')
-	.attr("fill", colorNeutral[3])
+	.attr("fill", colorNeutral[4])
 	.attr('cx', 0)
 	.attr('cy', 0)
 	.attr('r' , 25)
@@ -1222,7 +1222,7 @@ Map.updateBubbles = function(){
 
 		featureElementG.select('.innerCircle').style('fill', function(d,i){ 
 			if((filters.geo.length==0)||(filters.geo.includes(d.id))){
-				return colorNeutral[3];
+				return colorNeutral[4];
 			} else { 
 				return colorGrey[1]; 
 			}
@@ -1235,7 +1235,7 @@ Map.updateBubbles = function(){
 				if(filters.geo.length>0){
 					return colorGrey[1];
 				} else {
-					return colorNeutral[3];
+					return colorNeutral[4];
 				}
 			}
 		});
