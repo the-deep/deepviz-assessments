@@ -195,16 +195,6 @@ var svg_quality;
 
 var printing = false;
 
-// colors
-var colorPrimary = ['#A1E6DB','#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']; // finalScore (multi-hue)
-var colorGrey = ['#CDCDCD', '#AFAFAF', '#939393', '#808080', '#646464'];
-var colorLightgrey = ['#EBEBEB', '#CFCFCF', '#B8B8B7', '#A8A9A8', '#969696'];
-var colorLightgrey = ['#fafafa','#F5F5F5', '#DFDFDF', '#D0D0D0', '#C7C7C7', '#BABABA'];
-var colorBlue = ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'];
-var colorNeutral = ['#ddf6f2', '#76D1C3', '#36BBA6', '#1AA791', '#008974'];
-var colorPrimary = ['#ddf6f2', '#76D1C3', '#36BBA6', '#1AA791', '#008974'];
-var colorSecondary = ['#A1E6DB','#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']; // finalScore (multi-hue)
-
 var maxCellSize = 4;
 var cellColorScale = d3.scaleSequential().domain([1,maxCellSize])
 .interpolator(d3.interpolateReds);
@@ -363,11 +353,11 @@ var Deepviz = function(sources, callback){
 		range = rangeScale(countDays);
 
 		// override colors
-		d3.select('#total_assessments').style('color',colorNeutral[3]);
+		d3.select('#total_assessments').style('color',colorNeutral[4]);
 		d3.select('#finalScore_value').style('color',colorPrimary[3]);
 		d3.select('#reliability_value').style('color',colorSecondary[3]);
-		d3.select('.selection').style('fill', colorNeutral[3]);
-		d3.select('#dateRange').style('color', colorNeutral[4]);
+		d3.select('.selection').style('fill', colorNeutral[4]);
+		d3.select('#dateRange').style('color', colorNeutral[5]);
 		
 		return callback(values);
 	});
@@ -890,7 +880,6 @@ var Deepviz = function(sources, callback){
 		maxDate = new Date(d3.max(data, function(d){
 			return d.date;
 		}));
-		var maxAssessmentDate = maxDate;
 
 		var today = new Date();
 		if(maxDate<today){
@@ -927,7 +916,7 @@ var Deepviz = function(sources, callback){
 			if(filters.time=='d'){
 				maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth()+1, 1);
 				minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
-				dateRange[0] = new Date(maxAssessmentDate.getFullYear(), maxAssessmentDate.getMonth(), 1);
+				dateRange[0] = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
 				dateRange[1] = maxDate;
 			}	
 			timechartInit=1;
@@ -1201,7 +1190,7 @@ var Deepviz = function(sources, callback){
 		.attr("x", 5)
 		.attr('width', 10)
 		.attr('height', 10)
-		.style('fill', colorNeutral[3]);
+		.style('fill', colorNeutral[4]);
 
 	    //**************************
 	    // Y AXIS left
@@ -1348,9 +1337,9 @@ var Deepviz = function(sources, callback){
 			.style('opacity', 0)
 			.on('mouseover', function(){
 				if(filters.toggle == 'finalScore'){
-					return tick.style('color', colorNeutral[4]);
+					return tick.style('color', colorNeutral[5]);
 				} else { 
-					return tick.style('color', colorNeutral[4]);
+					return tick.style('color', colorNeutral[5]);
 				}
 			})
 			.on('mouseout', function(){
@@ -1575,7 +1564,7 @@ var Deepviz = function(sources, callback){
 					var text = metadata.scorepillar_scale[final_score_median].name;
 
 				var html = '<div style="text-align: left; font-weight: bold;">'+date+'</div>';
-				html += '<div style="width: 100px; height: 10px; display: inline; background-color: '+ color + '">&nbsp;&nbsp;</div>&nbsp;<span style="font-size: 10px">&nbsp;' + text + '</span><div style="padding-left: 3px; padding-bottom: 2px; display: inline; color: '+ colorNeutral[4] + '; font-size: 9px"><b>' + thisData[0].total_assessments + ' '+textLabel+'</b></div>';
+				html += '<div style="width: 100px; height: 10px; display: inline; background-color: '+ color + '">&nbsp;&nbsp;</div>&nbsp;<span style="font-size: 10px">&nbsp;' + text + '</span><div style="padding-left: 3px; padding-bottom: 2px; display: inline; color: '+ colorNeutral[5] + '; font-size: 9px"><b>' + thisData[0].total_assessments + ' '+textLabel+'</b></div>';
 	        	instance.setContent(html);
 			}
 		});
@@ -1592,7 +1581,7 @@ var Deepviz = function(sources, callback){
 		})
 		.on('mouseout', function(d,i){
 			d3.selectAll('.time-select rect').style('fill', colorGrey[2]);
-			d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[4]);
+			d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[5]);
 		}).on('click', function(d,i){
 			var id = d3.select(this).attr('id');
 			var v = id.substr(-1);
@@ -1601,10 +1590,10 @@ var Deepviz = function(sources, callback){
 			}
 			filters.time = v;
 			d3.selectAll('.time-select rect').style('fill', colorGrey[2]);
-			d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[4]);
+			d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[5]);
 		})
 
-		d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[4]);
+		d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[5]);
 
 		//**************************
 		// create sub-timechart
@@ -1656,6 +1645,8 @@ var Deepviz = function(sources, callback){
 			timechartToggle.select('#timechart-toggle1-icon').attr('opacity', 1);
 			timechartToggle.select('#bumpchart-toggle').attr('opacity', 1);
 		}
+
+		timechartToggle.selectAll('circle').attr('fill', colorNeutral[5]);
 
 		//**************************
 		// hover 
@@ -1906,7 +1897,7 @@ var Deepviz = function(sources, callback){
 					Deepviz.redrawTimeline();
 				}
 				d3.selectAll('.time-select rect').style('fill', colorGrey[2]);
-				d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[4]);
+				d3.select('#time-select-'+filters.time+ ' rect').style('fill', colorNeutral[5]);
 		    }
 
 		}
@@ -2753,7 +2744,7 @@ var Deepviz = function(sources, callback){
 		.attr('y',contextualRowHeight/2+4)
 		.style('font-size', '15px')
 		.style('font-weight', 'bold')
-		.style('fill', colorNeutral[4]);
+		.style('fill', colorNeutral[5]);
 
 		// row title
 		rows.append('text').text(function(d,i){
@@ -3106,7 +3097,7 @@ var Deepviz = function(sources, callback){
 		radarHeight = Math.min(radarWidth, window.innerHeight - radarMargin.top - radarMargin.bottom - 20);
 
 		radarColor = d3.scaleOrdinal()
-		.range([colorNeutral[3]]);
+		.range([colorNeutral[4]]);
 
 		radarChartOptions = {
 		  w: radarWidth,
@@ -3829,7 +3820,7 @@ var Deepviz = function(sources, callback){
 					return colorPrimary[Math.round(d.value.median_s)];
 				} 
 			} else {
-				return colorNeutral[3];
+				return colorNeutral[4];
 			}
 		});
 		// clear canvas
@@ -4222,7 +4213,7 @@ var Deepviz = function(sources, callback){
 				}).style('fill-opacity', 1);
 
 				d3.select(this).selectAll('.eventDrop').style('fill', function(d,i){
-					return colorNeutral[3];
+					return colorNeutral[4];
 				});
 			// } else {
 			// 	d3.select(this).selectAll('.bar').style('fill', function(d,i){

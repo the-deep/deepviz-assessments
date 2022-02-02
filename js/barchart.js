@@ -131,7 +131,7 @@ BarChart.createBarChart = function(a){
 	.style('alignment-baseline', 'middle')
 	.style('text-anchor', 'middle')
 	.attr('x', labelWidth - 70)
-	.style('fill', colorPrimary[4])
+	.style('fill', colorPrimary[5])
 	.style('font-weight', 'bold')
 	.style('font-size', '16px');
 
@@ -145,7 +145,7 @@ BarChart.createBarChart = function(a){
 	.style('alignment-baseline', 'middle')
 	.style('text-anchor', 'middle')
 	.attr('x', labelWidth - 30)
-	.style('fill', colorPrimary[4])
+	.style('fill', colorPrimary[5])
 	.style('font-size', '16px');
 
 	d3.select('#'+a.classname+'RemoveFilter').on('click', function(){ Deepviz.filter(a.filter, 'clear'); });
@@ -319,7 +319,7 @@ BarChart.createStackedBarChart = function(a){
 	.style('alignment-baseline', 'middle')
 	.style('text-anchor', 'middle')
 	.attr('x', labelWidth - 73)
-	.style('fill', colorNeutral[4])
+	.style('fill', colorNeutral[5])
 	.style('font-weight', 'bold')
 	.style('font-size', '16px');
 
@@ -333,7 +333,7 @@ BarChart.createStackedBarChart = function(a){
 	.style('alignment-baseline', 'middle')
 	.style('text-anchor', 'middle')
 	.attr('x', labelWidth - 30)
-	.style('fill', colorNeutral[4])
+	.style('fill', colorNeutral[5])
 	.style('font-size', '16px');
 
 	d3.select('#'+a.classname+'RemoveFilter').on('click', function(){ Deepviz.filter(a.filter, 'clear'); });
@@ -952,7 +952,7 @@ BarChart.updateTooltipSparkline = function(dataId, group, dataGroupId, dataGroup
 		}
 		var p = (dataTotal/t)*100;
 		p = Math.round(p)+'%';
-		var html =  '<div style="text-align: left; font-weight: bold;">'+dataGroupName+'&nbsp;&nbsp;<span style="font-size: 9px; color: lightgrey;"></span></div><div style="width: 100px; height: 10px; display: inline; background-color: '+ color + '">&nbsp;&nbsp;</div><span style="font-size: 10px">' + text + '</span><div style="padding-left: 3px; padding-bottom: 2px; display: inline; color: '+ colorNeutral[4] + '; font-size: 9px"><b>' + dataTotal + ' '+textLabel+'</b>&nbsp;&nbsp;('+p+')</div>';
+		var html =  '<div style="text-align: left; font-weight: bold;">'+dataGroupName+'&nbsp;&nbsp;<span style="font-size: 9px; color: lightgrey;"></span></div><div style="width: 100px; height: 10px; display: inline; background-color: '+ color + '">&nbsp;&nbsp;</div><span style="font-size: 10px">' + text + '</span><div style="padding-left: 3px; padding-bottom: 2px; display: inline; color: '+ colorNeutral[5] + '; font-size: 9px"><b>' + dataTotal + ' '+textLabel+'</b>&nbsp;&nbsp;('+p+')</div>';
         html=html+'<br/><svg style="margin-top: 1px; margin-bottom: 1px" id="tooltipSparkline" width="'+tooltipSparklineWidth+'px" height="'+tooltipSparklineHeight+'px">'+barTooltipSvg.node().outerHTML+'</svg>';
         return html;
 

@@ -31,7 +31,7 @@ DeepvizTable.create = function(){
             return "<strong>" + cell.getValue() + "</strong>"; //make the contents of the cell bold
         },
         bolder:function(cell, formatterParams){
-            return "<strong style='color: #1AA791'>" + cell.getValue() + "</strong>"; //make the contents of the cell bold
+            return "<strong style='color: #5061E4'>" + cell.getValue() + "</strong>"; //make the contents of the cell bold
         },
         uppercase:function(cell, formatterParams){
             return cell.getValue().toUpperCase(); //make the contents of the cell uppercase
