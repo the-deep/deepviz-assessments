@@ -608,6 +608,18 @@ parseEntriesData = function(dataEntries, metadata){
 				}
 			});
 		});
+
+		// parse demographic groups array
+		d._demographic_groups = d.demographic_groups;
+		d.demographic_groups = [];
+		d._demographic_groups.forEach(function(dd,ii){
+			metadata.demographic_groups_array.forEach(function(ddd,ii){
+				if(dd==ddd._id){
+					d.demographic_groups.push(ddd.id);
+				}
+			});
+		});
+
 		// parse sector array
 
 		d.context_sector.forEach(function(d,i){
@@ -725,6 +737,11 @@ parseEntriesMetadata = function(metadata){
 		d.id = i+1;
 	});
 	metadata.sector_array.forEach(function(d,i){
+		d._id = d.id;
+		d.id = i+1;
+	});
+
+	metadata.demographic_groups_array.forEach(function(d,i){
 		d._id = d.id;
 		d.id = i+1;
 	});

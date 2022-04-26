@@ -4,6 +4,7 @@ var updateInterval = 0;
 var tooltipSparklineHeight = 40;
 var tooltipSparklineWidth = 140;
 var maxBarHeight = 40;
+var labelWidthText = 200; 
 
 BarChart.createBarChart = function(a){
 
@@ -56,15 +57,21 @@ BarChart.createBarChart = function(a){
 		return 'translate(0,' + ((i*rowHeight) + padding.top) + ')';
 	});
 
-	var label = rows.append('text')
-	.attr('y', rowHeight/2 )
-	.attr('class', function(d,i){ return a.classname + ' ' + a.classname+'-'+i })
-	.style('alignment-baseline', 'middle')
-	.text(function(d,i){
-		var name = d.name.substr(0,labelCharLimit);
-		if(name.length==labelCharLimit) name += '.';
-		return name;
-	}).style('text-anchor', 'end');
+
+	var label = rows.append('foreignObject')
+	.attr('requiredFeatures','http://www.w3.org/TR/SVG11/feature#Extensibility')
+	.attr('y', 0 )
+	.attr('height', rowHeight )
+	.attr('width', labelWidthText )
+	.attr('class', function(d,i){ return ''+a.classname+'-labeltext labeltext ' })
+	.append("xhtml:div")
+	.style('height', rowHeight )
+	.html(function(d,i){
+		// var name = d.name.substr(0,labelCharLimit);
+		// if(name.length==labelCharLimit) name += '.';
+		return d.name;
+	});
+
 
 	var labelWidth = chartarea.node().getBBox().width + padding.left;
 	label.attr('x', labelWidth-20);
@@ -201,16 +208,21 @@ BarChart.createStackedBarChart = function(a){
 		return 'translate(0,' + ((i*rowHeight) + padding.top) + ')';
 	});
 
-	var label = rows.append('text')
-	.attr('y', rowHeight/2 )
-	.attr('class', function(d,i){ return a.classname + ' ' + a.classname+'-'+i })
-	.style('alignment-baseline', 'middle')
-	.text(function(d,i){
-		var name = d.name.substr(0,labelCharLimit-7);
-		if(name.length==labelCharLimit-7) name += '.';
-		return name;
-	}).style('text-anchor', 'end');
 
+	var label = rows.append('foreignObject')
+	.attr('requiredFeatures','http://www.w3.org/TR/SVG11/feature#Extensibility')
+	.attr('y', 0 )
+	.attr('height', rowHeight )
+	.attr('width', labelWidthText )
+	.attr('class', function(d,i){ return ''+a.classname+'-labeltext labeltext ' })
+	.append("xhtml:div")
+	.style('height', rowHeight )
+	.html(function(d,i){
+		// var name = d.name.substr(0,labelCharLimit);
+		// if(name.length==labelCharLimit) name += '.';
+		return d.name;
+	});
+	
 	var labelWidth = chartarea.node().getBBox().width + padding.left;
 	label.attr('x', labelWidth-20);
 	labelWidth = labelWidth + 76;
@@ -417,14 +429,15 @@ BarChart.updateBars = function(group, dataset, duration = 0){
 		}
 	});
 
-	var labels =d3.selectAll('text.'+group)
+
+	var labels = d3.selectAll('.'+group+'-labeltext div')
 	.data(d)
-	.text(function(d,ii){
+	.html(function(d,ii){
+		// var name = d.name.substr(0,labelCharLimit);
+		// if(name.length==labelCharLimit) name += '.';
 		return d.name;
-	})
-	.attr('class', function(d,i){
-		return group + ' ' +group +'-'+d.key;``
-	})
+	});
+
 
 	rows.select('.'+group+'-bg')
 	.attr('class', function(d,i) { 
@@ -603,15 +616,16 @@ BarChart.updateStackedBars = function(group, dataset, duration = 0){
 			}
 		});
 
-		var labels =d3.selectAll('text.'+group)
+
+		var labels = d3.selectAll('.'+group+'-labeltext div')
 		.data(d)
-		.text(function(d,ii){
+		.style('opacity', 1)
+		.html(function(d,ii){
+			// var name = d.name.substr(0,labelCharLimit);
+			// if(name.length==labelCharLimit) name += '.';
 			return d.name;
 		})
-		.attr('class', function(d,i){
-			return group + ' ' +group +'-'+d.key;``
-		})
-		.style('opacity', 1);
+	
 
 		d3.selectAll('.'+group+'-bg')
 		.data(d)
