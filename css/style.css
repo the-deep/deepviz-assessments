@@ -1114,6 +1114,14 @@ font-size: 15px;
 	cursor: pointer;
 }
 
+.labeltext div {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: end;
+    line-height: 1;
+}
+
 .domain {
 	stroke: #d5d5d5 !important;
 }
