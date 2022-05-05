@@ -1,15 +1,15 @@
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	<meta charset="utf-8">
+	
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
 	<title>DEEP Assessment Registry Dashboard</title>
-
-    <link rel='shortcut icon' href="images/favicon.png" type='image/x-icon' >
-
+	
+	<link rel='shortcut icon' href="images/favicon.png" type='image/x-icon' >
+	
 	<!-- load vendor CSS -->
 	<link href='js/vendor/mapbox-gl.css' rel='stylesheet' />
 	<link href='js/vendor/tippy.css' rel='stylesheet' />
@@ -17,277 +17,277 @@
 	<link href="js/vendor/select2.min.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="js/vendor/Tabulator/tabulator_bulma.min.css"/>
 	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
-
+	
 	<!-- load custom CSS -->
 	<link href="css/style.css?cache=77793" rel="stylesheet" type="text/css" media="all">
-
+	
 </head>
 
 <body>
-
-<div id="main">
-<div id="page1">
-
-	<div id="print-header" style="display: none; margin-bottom: 10px">
-		<div style='display: inline; vertical-align: middle'></div>
-		<div style="display:inline; font-size: 36px; vertical-align: middle; padding-left: 2px">DEEP</div>
-		<div style="display: inline; vertical-align: middle; padding-left: 3px;">ASSESSMENT REGISTRY DASHBOARD </div>
-		<div id="print-date" style="display: inline; vertical-align: middle; padding-left: 10px; text-align: right; color: grey">Print Export</div>
-	</div>
-
-	<div id="top_row">
-		<div id="svg_summary1_div"></div>
-		<div id="svg_summary2_div"></div>
-		<div id="svg_summary3_div"></div>
-	</div>
-
-	<div class="container1">
-
-	<div class="main-content">
-
-		<div id="summary_row">
-
-			<div class="leftcol" style="float: left; position: relative">
-
-				<h2 style="margin-bottom: 3px; margin-top: 0px; display: inline-block">Summary<img id="globalRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
-
-				<div id="print"><img id="print-icon" src="images/print.png"/><img id="print-loading" src="images/loading.gif"/></div>
-				<div id="printImage"><img id="printImage-icon" src="images/printImage.png"/><img id="printImage-loading" src="images/loading.gif"/></div>
-				<div id="copyImage"><img id="copyImage-icon" src="images/copyImage.png"/><img id="copyImage-loading" src="images/loading.gif"/></div>
-				<div id="loadImage" class="loader"></div>
-
-				<div class="selectedDate">
-					<div class="title">
-						<div id="dateRangeContainer"><img id="dateRangeContainer_img" src="images/calendar.jpg" height="11px"/> DATE RANGE</div>
-						<div><div id="dateRangeText"></div><input id="dateRange" value=""/></div>
-					</div><br/>
-				</div>
-
-				<div class="title"><br/>
-					ASSESSMENTS BY LOCATION
-				</div>
-				<img id="geoRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
 	
+	<div id="main">
+		<div id="page1">
+			
+			<div id="print-header" style="display: none; margin-bottom: 10px">
+				<div style='display: inline; vertical-align: middle'></div>
+				<div style="display:inline; font-size: 36px; vertical-align: middle; padding-left: 2px">DEEP</div>
+				<div style="display: inline; vertical-align: middle; padding-left: 3px;">ASSESSMENT REGISTRY DASHBOARD </div>
+				<div id="print-date" style="display: inline; vertical-align: middle; padding-left: 10px; text-align: right; color: grey">Print Export</div>
 			</div>
-
-			<div id="scores-container" class="rightcol">
-				<div class="scores">
-					<div class="scores_left">
-						<div id="finalScore" class="widget">
-							<div class="title finalScoreToggle">
-								ASSESSMENTS BY FINAL ANALYTICAL SCORE&nbsp;<div id="finalScore_value"></div> 
+			
+			<div id="top_row">
+				<div id="svg_summary1_div"></div>
+				<div id="svg_summary2_div"></div>
+				<div id="svg_summary3_div"></div>
+			</div>
+			
+			<div class="container1">
+				
+				<div class="main-content">
+					
+					<div id="summary_row">
+						
+						<div class="leftcol" style="float: left; position: relative">
+							
+							<h2 style="margin-bottom: 3px; margin-top: 0px; display: inline-block">Summary<img id="globalRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
+							
+							<div id="print"><img id="print-icon" src="images/print.png"/><img id="print-loading" src="images/loading.gif"/></div>
+							<div id="printImage"><img id="printImage-icon" src="images/printImage.png"/><img id="printImage-loading" src="images/loading.gif"/></div>
+							<div id="copyImage"><img id="copyImage-icon" src="images/copyImage.png"/><img id="copyImage-loading" src="images/loading.gif"/></div>
+							<div id="loadImage" class="loader"></div>
+							
+							<div class="selectedDate">
+								<div class="title">
+									<div id="dateRangeContainer"><img id="dateRangeContainer_img" src="images/calendar.jpg" height="11px"/> DATE RANGE</div>
+									<div><div id="dateRangeText"></div><input id="dateRange" value=""/></div>
+								</div><br/>
 							</div>
-							<img id="finalScoreRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
-							<div id="finalScore_bars"></div>
-						</div>
-					</div>
-					<div class="scores_right">
-						<div id="severity" class="widget">
-							<div class="title severityToggle">
-								ENTRIES BY SEVERITY&nbsp;<div id="severity_value"></div>
+							
+							<div class="title"><br/>
+								ASSESSMENTS BY LOCATION
 							</div>
-							<img id="severityRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
-							<div id="severity_bars"></div>
+							<img id="geoRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
+							
 						</div>
-					</div>
-				</div>
-			</div><!-- .rightcol -->
-
-		</div><!-- #summary_row -->
-
-		<div>
-
-			<div id="mapcontainer" class="leftcol">
-				<select id="location-search" class="js-example-responsive" style="width: 100%; height: 26px" name="states[]" multiple="multiple"></select>
-				<div id="map">
-
-					<div id="gridmap-div"></div>
+						
+						<div id="scores-container" class="rightcol">
+							<div class="scores">
+								<div class="scores_left">
+									<div id="finalScore" class="widget">
+										<div class="title finalScoreToggle">
+											ASSESSMENTS BY FINAL ANALYTICAL SCORE&nbsp;<div id="finalScore_value"></div> 
+										</div>
+										<img id="finalScoreRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
+										<div id="finalScore_bars"></div>
+									</div>
+								</div>
+								<div class="scores_right">
+									<div id="severity" class="widget">
+										<div class="title severityToggle">
+											ENTRIES BY SEVERITY&nbsp;<div id="severity_value"></div>
+										</div>
+										<img id="severityRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/>
+										<div id="severity_bars"></div>
+									</div>
+								</div>
+							</div>
+						</div><!-- .rightcol -->
+						
+					</div><!-- #summary_row -->
 					
-					<div id="lasso">
-						<img id="lasso-default" height="24px" src="images/lasso-default.svg" class="tippy-btn" data-tippy-content="Select locations"/>
-						<img id="lasso-selected" height="24px" src="images/lasso-selected.svg" class="tippy-btn" data-tippy-content="Select locations"/>
-						<img id="lasso-hover" height="24px" src="images/lasso-hover.svg" class="tippy-btn" data-tippy-content="Select locations"/>
-					</div>
-					<div id="expand">
-						<img id="expand-default" height="24px" src="images/expand-default.svg"/>
-						<img id="expand-selected" height="24px" src="images/expand-selected.svg"/>
-						<img id="expand-hover" height="24px" src="images/expand-hover.svg"/>
-					</div>
-					<div id="map-toggle">
-						<div id="map-toggle-rect-bubbles" class="tippy-btn" data-tippy-content="Proportional symbols"></div>
-						<div id="map-toggle-rect-heatmap" class="tippy-btn" data-tippy-content="Heatmap"></div>
-						<div id="map-toggle-rect-gridmap" class="tippy-btn" data-tippy-content="Tile grid map"></div>
-						<div id="map-toggle-rect-choropleth" class="tippy-btn" data-tippy-content="Choropleth"></div>
-
-						<img id="map-toggle-bubbles" height="91px" src="images/map-toggle-bubbles.svg"/>
-						<img id="map-toggle-heatmap" height="91px" src="images/map-toggle-heatmap.svg"/>
-						<img id="map-toggle-gridmap" height="91px" src="images/map-toggle-gridmap.svg"/>
-						<img id="map-toggle-choropleth" height="91px" src="images/map-toggle-choropleth.svg"/>
-					</div>
+					<div>
+						
+						<div id="mapcontainer" class="leftcol">
+							<select id="location-search" class="js-example-responsive" style="width: 100%; height: 26px" name="states[]" multiple="multiple"></select>
+							<div id="map">
+								
+								<div id="gridmap-div"></div>
+								
+								<div id="lasso">
+									<img id="lasso-default" height="24px" src="images/lasso-default.svg" class="tippy-btn" data-tippy-content="Select locations"/>
+									<img id="lasso-selected" height="24px" src="images/lasso-selected.svg" class="tippy-btn" data-tippy-content="Select locations"/>
+									<img id="lasso-hover" height="24px" src="images/lasso-hover.svg" class="tippy-btn" data-tippy-content="Select locations"/>
+								</div>
+								<div id="expand">
+									<img id="expand-default" height="24px" src="images/expand-default.svg"/>
+									<img id="expand-selected" height="24px" src="images/expand-selected.svg"/>
+									<img id="expand-hover" height="24px" src="images/expand-hover.svg"/>
+								</div>
+								<div id="map-toggle">
+									<div id="map-toggle-rect-bubbles" class="tippy-btn" data-tippy-content="Proportional symbols"></div>
+									<div id="map-toggle-rect-heatmap" class="tippy-btn" data-tippy-content="Heatmap"></div>
+									<div id="map-toggle-rect-gridmap" class="tippy-btn" data-tippy-content="Tile grid map"></div>
+									<div id="map-toggle-rect-choropleth" class="tippy-btn" data-tippy-content="Choropleth"></div>
+									
+									<img id="map-toggle-bubbles" height="91px" src="images/map-toggle-bubbles.svg"/>
+									<img id="map-toggle-heatmap" height="91px" src="images/map-toggle-heatmap.svg"/>
+									<img id="map-toggle-gridmap" height="91px" src="images/map-toggle-gridmap.svg"/>
+									<img id="map-toggle-choropleth" height="91px" src="images/map-toggle-choropleth.svg"/>
+								</div>
+								
+								<div id="heatmap-radius-slider-div">
+								</div>
+								
+								<div id="map-bg-toggle" class="tippy-btn-vert" data-tippy-content="Change background layer">
+									<select>
+										<option value="light-v10">light-grey</option>
+										<option value="streets-v11">streets</option>
+										<option value="satellite-streets-v11">satelitte</option>
+										<option value="dark-v10">dark</option>
+									</select>
+								</div>
+								
+								<div id="adm-toggle" class="tippy-btn-vert" data-tippy-content="Change admin level">
+									<object type="image/svg+xml" data="images/adm.svg" class="adm"></object>
+								</div>
+							</div>
+						</div>
+						
+						<div id="timechart-container" class="rightcol">
+							
+							<div class="secondRow row">
+								
+							</div>
+							
+							<div class="header">
+								<div id="timechartTitle" class="title">ASSESSMENTS BY DATE AND FINAL ANALYTICAL SCORE</div>
+								
+								<div id="timechart-legend"></div>
+								
+								<svg id="timechart-select" width="55px" viewBox="0 0 140 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<g id="time-select-g" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<g id="time-select-y" class="time-select" transform="translate(2.000000, 0.000000)">
+											<rect id="Rectangle" fill="#898989" x="0" y="2" width="40" height="40"></rect>
+											<text font-family="Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
+												<tspan x="11" y="33">Y</tspan>
+											</text>
+										</g>
+										<g id="time-select-m" class="time-select" transform="translate(46.000000, 0.000000)">
+											<rect id="Rectangle" fill="#898989" x="0" y="2" width="40" height="40"></rect>
+											<text font-family="Source Sans Pro" font-size="33" font-weight="bold" fill="#FFFFFF">
+												<tspan x="8" y="33">M</tspan>
+											</text>
+										</g>
+										<g id="time-select-d" class="time-select" transform="translate(90.000000, 0.000000)">
+											<rect id="Rectangle" fill="#898989" x="0" y="2" width="40" height="40"></rect>
+											<text font-family="Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
+												<tspan x="7" y="33">D</tspan>
+											</text>
+										</g>
+									</g>
+								</svg>
+								
+							</div>
+							
+							<div style="height: 45.3vw">
+								<div id="timeline" class="widget"></div>
+							</div>
+							
+							<object id="timechart-toggle" type="image/svg+xml" data="images/timechart-toggle.svg"></object>
+							
+						</div><!-- / .rightcol -->
+					</div><!-- /# summary_row -->
 					
-					<div id="heatmap-radius-slider-div">
-					</div>
-
-					<div id="map-bg-toggle" class="tippy-btn-vert" data-tippy-content="Change background layer">
-						<select>
-							<option value="light-v10">light-grey</option>
-							<option value="streets-v11">streets</option>
-							<option value="satellite-streets-v11">satelitte</option>
-							<option value="dark-v10">dark</option>
-						</select>
-					</div>
-
-					<div id="adm-toggle" class="tippy-btn-vert" data-tippy-content="Change admin level">
-						<object type="image/svg+xml" data="images/adm.svg" class="adm"></object>
-					</div>
-				</div>
-			</div>
-
-			<div id="timechart-container" class="rightcol">
-
-				<div class="secondRow row">
+					<div id="firstChartRow"><br/>
+						<div class="chartCol">
+							<div id="focus-svg" class="col-content"></div>
+						</div>
+						<div class="chartCol">
+							<div id="sector-svg" class="col-content"></div>
+						</div>
+						<div class="chartCol">
+							<div id="affected-groups-svg" class="col-content"></div>
+						</div>
+						<div class="chartCol">
+							<div id="top-stakeholders-svg" class="col-content"></div>
+						</div>	
+					</div><!-- /#firstChartRow -->
 					
-				</div>
-
-				<div class="header">
-					<div id="timechartTitle" class="title">ASSESSMENTS BY DATE AND FINAL ANALYTICAL SCORE</div>
-
-					<div id="timechart-legend"></div>
-
-						<svg id="timechart-select" width="55px" viewBox="0 0 140 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-						    <g id="time-select-g" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-						        <g id="time-select-y" class="time-select" transform="translate(2.000000, 0.000000)">
-						            <rect id="Rectangle" fill="#898989" x="0" y="2" width="40" height="40"></rect>
-						            <text font-family="Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
-						                <tspan x="11" y="33">Y</tspan>
-						            </text>
-						        </g>
-						        <g id="time-select-m" class="time-select" transform="translate(46.000000, 0.000000)">
-						            <rect id="Rectangle" fill="#898989" x="0" y="2" width="40" height="40"></rect>
-						            <text font-family="Source Sans Pro" font-size="33" font-weight="bold" fill="#FFFFFF">
-						                <tspan x="8" y="33">M</tspan>
-						            </text>
-						        </g>
-						        <g id="time-select-d" class="time-select" transform="translate(90.000000, 0.000000)">
-						            <rect id="Rectangle" fill="#898989" x="0" y="2" width="40" height="40"></rect>
-						            <text font-family="Source Sans Pro" font-size="35" font-weight="bold" fill="#FFFFFF">
-						                <tspan x="7" y="33">D</tspan>
-						            </text>
-						        </g>
-						    </g>
-						</svg>
-
-				</div>
-
-				<div style="height: 45.3vw">
-					<div id="timeline" class="widget"></div>
-				</div>
-
-				<object id="timechart-toggle" type="image/svg+xml" data="images/timechart-toggle.svg"></object>
-
-			</div><!-- / .rightcol -->
-		</div><!-- /# summary_row -->
-
-		<div id="firstChartRow"><br/>
-			<div class="chartCol">
-				<div id="focus-svg" class="col-content"></div>
-			</div>
-			<div class="chartCol">
-				<div id="sector-svg" class="col-content"></div>
-			</div>
-			<div class="chartCol">
-				<div id="affected-groups-svg" class="col-content"></div>
-			</div>
-			<div class="chartCol">
-				<div id="top-stakeholders-svg" class="col-content"></div>
-			</div>	
-		</div><!-- /#firstChartRow -->
-
-	<h2>Quality</h2>
-	
-	<div id="svg_quality_div"></div>
-
-		<div id="methodology">
-			<h2 style="margin-bottom: 8px">Methodology</h2>
-			<div id="secondChartRow">
-				<div class="chartCol">
-					<div id="assessment-type-svg" class="col-content"></div>
-				</div>
-				<div class="chartCol">
-					<div id="data-collection-technique-svg" class="col-content"></div>
-				</div>
-				<div class="chartCol">
-					<div id="unit-of-analysis-svg" class="col-content"></div>
-				</div>
-				<div class="chartCol">
-					<div id="unit-of-reporting-svg" class="col-content"></div>
-				</div>	<br/>
-			</div><!-- /#secondChartRow -->
-			<hr/>
-			<div id="thirdChartRow" style="margin-top: 8px;">
-				<div class="chartCol">
-					<div id="methodology-content-svg" class="col-content"></div>
-				</div>
-				<div class="chartCol">
-					<div id="additional-documentation-svg" class="col-content"></div>
-				</div>
-				<div class="chartCol">
-					<div id="language-svg" class="col-content"></div>
-				</div>
-				<div class="chartCol">
-					<div id="sampling-approach-svg" class="col-content"></div>
-				</div>	
-			</div><!-- /#thirdChartRow -->
-		</div><!-- /#methodology -->
-	</div><!-- /.container2 -->
-	<br/>
-</div><!-- /#page1 -->
-</div>
-<div id="page2">
-
-	<div id="ary-details" class="assessment_details container2 main-content">
-		<h2 style="margin-bottom: 10px; margin-top: 2px">Assessment Details&nbsp;<img id="tableRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
-		<div class="selectRows">
-			<div class="searchBox" style="display: inline; margin-right: 30px">
-				<input type="text" onkeyup="DeepvizTable.search(this.value)" name="first name" placeholder="Search" required="required" class="searchRows" />
-			</div>
-			Show&nbsp;
-			<select id="selectRows" onChange="DeepvizTable.setRowsToDisplay(this.value)">
-				<option value="25">25</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-			</select>&nbsp;assessments
+					<h2>Quality</h2>
+					
+					<div id="svg_quality_div"></div>
+					
+					<div id="methodology">
+						<h2 style="margin-bottom: 8px">Methodology</h2>
+						<div id="secondChartRow">
+							<div class="chartCol">
+								<div id="assessment-type-svg" class="col-content"></div>
+							</div>
+							<div class="chartCol">
+								<div id="data-collection-technique-svg" class="col-content"></div>
+							</div>
+							<div class="chartCol">
+								<div id="unit-of-analysis-svg" class="col-content"></div>
+							</div>
+							<div class="chartCol">
+								<div id="unit-of-reporting-svg" class="col-content"></div>
+							</div>	<br/>
+						</div><!-- /#secondChartRow -->
+						<hr/>
+						<div id="thirdChartRow" style="margin-top: 8px;">
+							<div class="chartCol">
+								<div id="methodology-content-svg" class="col-content"></div>
+							</div>
+							<div class="chartCol">
+								<div id="additional-documentation-svg" class="col-content"></div>
+							</div>
+							<div class="chartCol">
+								<div id="language-svg" class="col-content"></div>
+							</div>
+							<div class="chartCol">
+								<div id="sampling-approach-svg" class="col-content"></div>
+							</div>	
+						</div><!-- /#thirdChartRow -->
+					</div><!-- /#methodology -->
+				</div><!-- /.container2 -->
+				<br/>
+			</div><!-- /#page1 -->
 		</div>
-		<div id="data-table" width="100%"></div>
-	</div><!-- /#ary-details -->
-
-</div><!-- /#page2 -->
-</div><!-- /#main -->
-
-<!-- load vendor JavaScript -->
-<script type="text/javascript" src="js/vendor/jspdf.min.js"></script>
-<script type="text/javascript" src="js/vendor/html2canvas.min.js"></script>
-<script type="text/javascript" src="js/vendor/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="js/vendor/d3.v5.min.js"></script>
-<script type="text/javascript" src="js/vendor/Tabulator/tabulator.min.js"></script>
-<script type="text/javascript" src="js/vendor/moment.min.js"></script>
-<script type="text/javascript" src="js/vendor/popper.min.js"></script>
-<script type="text/javascript" src="js/vendor/tippy.min.js"></script>
-<script type="text/javascript" src="js/vendor/daterangepicker.min.js"></script>
-<script type="text/javascript" src="js/vendor/select2.min.js"></script>
-<script src='js/vendor/mapbox-gl.js'></script>
-
-<!-- load custom JavaScript -->
-<script type="text/javascript" src="js/colors.js"></script>
-<script type="text/javascript" src="js/radarChart.js"></script>
-<script type="text/javascript" src="js/map.js?cache=77793"></script>
-<script type="text/javascript" src="js/bumpchart.js?cache=77793"></script>
-<script type="text/javascript" src="js/summary.js?cache=77793"></script>
-<script type="text/javascript" src="js/deepviz.js?cache=77793"></script>
-<script type="text/javascript" src="js/parse-data.js?cache=77793"></script>
-<script type="text/javascript" src="js/barchart.js?cache=77793"></script>
-<script type="text/javascript" src="js/DeepvizTable.js?cache=77793"></script>
-<script type="text/javascript" src="js/main.js?cache=77793"></script>
-
+		<div id="page2">
+			
+			<div id="ary-details" class="assessment_details container2 main-content">
+				<h2 style="margin-bottom: 10px; margin-top: 2px">Assessment Details&nbsp;<img id="tableRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
+				<div class="selectRows">
+					<div class="searchBox" style="display: inline; margin-right: 30px">
+						<input type="text" onkeyup="DeepvizTable.search(this.value)" name="first name" placeholder="Search" required="required" class="searchRows" />
+					</div>
+					Show&nbsp;
+					<select id="selectRows" onChange="DeepvizTable.setRowsToDisplay(this.value)">
+						<option value="25">25</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select>&nbsp;assessments
+				</div>
+				<div id="data-table" width="100%"></div>
+			</div><!-- /#ary-details -->
+			
+		</div><!-- /#page2 -->
+	</div><!-- /#main -->
+	
+	<!-- load vendor JavaScript -->
+	<script type="text/javascript" src="js/vendor/jspdf.min.js"></script>
+	<script type="text/javascript" src="js/vendor/html2canvas.min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/vendor/d3.v5.min.js"></script>
+	<script type="text/javascript" src="js/vendor/Tabulator/tabulator.min.js"></script>
+	<script type="text/javascript" src="js/vendor/moment.min.js"></script>
+	<script type="text/javascript" src="js/vendor/popper.min.js"></script>
+	<script type="text/javascript" src="js/vendor/tippy.min.js"></script>
+	<script type="text/javascript" src="js/vendor/daterangepicker.min.js"></script>
+	<script type="text/javascript" src="js/vendor/select2.min.js"></script>
+	<script src='js/vendor/mapbox-gl.js'></script>
+	
+	<!-- load custom JavaScript -->
+	<script type="text/javascript" src="js/colors.js"></script>
+	<script type="text/javascript" src="js/radarChart.js"></script>
+	<script type="text/javascript" src="js/map.js?cache=77793"></script>
+	<script type="text/javascript" src="js/bumpchart.js?cache=77793"></script>
+	<script type="text/javascript" src="js/summary.js?cache=77793"></script>
+	<script type="text/javascript" src="js/deepviz.js?cache=77793"></script>
+	<script type="text/javascript" src="js/parse-data.js?cache=77793"></script>
+	<script type="text/javascript" src="js/barchart.js?cache=77793"></script>
+	<script type="text/javascript" src="js/DeepvizTable.js?cache=77793"></script>
+	<script type="text/javascript" src="js/main.js?cache=77793"></script>
+	
 </body>
 </html>
