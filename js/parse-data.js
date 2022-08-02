@@ -206,6 +206,12 @@ parseAssessmentsMetadata = function(metadata){
 		d.id = i+1;
 	});
 
+	metadata.protection_info_management_array.forEach(function(d,i){
+		d._id = d.id;
+		d.id = i+1;
+		d.name = d.title;
+	});
+
 	return metadata;
 }
 
@@ -258,6 +264,18 @@ parseAssessmentsData = function(data, metadata){
 		});
 
 		d.sector_count = d.sector.length;
+
+		// parse protection info management array
+		d._protection_info_management = d.protection_info_management;
+		d.protection_info_management = [];
+		var sa = [];
+		d._protection_info_management.forEach(function(dd,ii){
+			metadata.protection_info_management_array.forEach(function(ddd,ii){
+				if((dd==ddd._id)&&(!d.protection_info_management.includes(ddd.id))){
+					if(!d.protection_info_management.includes(ddd.id)) d.protection_info_management.push(ddd.id);
+				}
+			});
+		});
 
 		// parse assessment type
 		d._assessment_type = d.assessment_type;

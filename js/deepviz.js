@@ -81,6 +81,7 @@ var dataByFrameworkSector;
 var	databyFrameworkContext;
 var dataBySpecificNeeds;
 var dataByAffectedGroups;
+var dataByProtectionInfoManagement;
 var dataFitForPurpose;
 var coordinatedJointId;
 var coordinatedHarmonizedId;
@@ -173,6 +174,7 @@ var filters = {
 	severity: [],
 	affected_groups: [],
 	stakeholder_type: [],
+	protection_info_management: [],
 	context: [],
 	focus: [],
 	organisation: [],
@@ -408,6 +410,7 @@ var Deepviz = function(sources, callback){
 		dataBySector = [];
 		dataByFramework = [];
 		dataByAffectedGroups = [];
+		dataByProtectionInfoManagement = [];
 		dataBySpecificNeeds = [];
 		dataByAssessmentType = [];
 		dataByDataCollectionTechnique = [];
@@ -456,6 +459,10 @@ var Deepviz = function(sources, callback){
 
 			d.affected_groups.forEach(function(dd,ii){
 				dataByAffectedGroups.push({"date": d.date, "month": d.month, "year": d.year, "affected_groups": dd, 's': d.finalScore, 'r': null });
+			});
+
+			d.protection_info_management.forEach(function(dd,ii){
+				dataByProtectionInfoManagement.push({"date": d.date, "month": d.month, "year": d.year, "protection_info_management": dd, 's': d.finalScore, 'r': null });
 			});
 
 			d.unit_of_analysis.forEach(function(dd,ii){
@@ -707,6 +714,7 @@ var Deepviz = function(sources, callback){
 		Summary.update(true);
 		updateRadarCharts();
 		BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+		BarChart.updateStackedBars('protection_info_management', dataByProtectionInfoManagement);
 		BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
 		BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
 		BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
@@ -1911,6 +1919,7 @@ var Deepviz = function(sources, callback){
 	    	updateFinalScore('map', 200);
 	    	updateSeverity('map', 200);
 	    	BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+	    	BarChart.updateStackedBars('protection_info_management', dataByProtectionInfoManagement);
 	    	BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
 	    	BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
 	    	BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
@@ -2106,6 +2115,7 @@ var Deepviz = function(sources, callback){
 			updateSeverity('brush', 500);
 			updateRadarCharts();
 			BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+			BarChart.updateStackedBars('protection_info_management', dataByProtectionInfoManagement);
 			BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
 			BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
 			BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
@@ -2139,6 +2149,7 @@ var Deepviz = function(sources, callback){
 		updateSeverity('init', 500);
 		updateRadarCharts();
 		BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+		BarChart.updateStackedBars('protection_info_management', dataByProtectionInfoManagement);
 		BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
 		BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
 		BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
@@ -3276,6 +3287,7 @@ var Deepviz = function(sources, callback){
 				filters.context = [];
 				filters.top = [];
 				filters.affected_groups = [];
+				filters.protection_info_management = [];
 				filters.stakeholder_type = [];
 				filters.organisation = [];
 				filters.sampling_approach = [];
@@ -3308,9 +3320,11 @@ var Deepviz = function(sources, callback){
 			d3.select('#unit_of_analysisRemoveFilter').style('display', 'none').style('cursor', 'default');
 			d3.select('#data_collection_techniqueRemoveFilter').style('display', 'none').style('cursor', 'default');
 			d3.select('#assessment_typeRemoveFilter').style('display', 'none').style('cursor', 'default');
+			d3.select('#protection_info_managementRemoveFilter').style('display', 'none').style('cursor', 'default');
 
 			d3.selectAll('.sn').style('opacity', 1);
 			d3.selectAll('.affected_groups').style('opacity', 1);
+			d3.selectAll('.protection_info_management').style('opacity', 1);
 			d3.selectAll('.assessment_type').style('opacity', 1);
 			d3.selectAll('.data_collection_technique').style('opacity', 1);
 			d3.selectAll('.unit_of_analysis').style('opacity', 1);
@@ -3340,7 +3354,7 @@ var Deepviz = function(sources, callback){
 				}
 			}
 
-			if((filters['id'].length>0)||(filters['str'].length>0)||(filters['finalScore'].length>0)||(filters['focus'].length>0)||(filters['top'].length>0)||(filters['affected_groups'].length>0)||(filters['organisation'].length>0)||(filters['assessment_type'].length>0)||(filters['data_collection_technique'].length>0)||(filters['unit_of_analysis'].length>0)||(filters['unit_of_reporting'].length>0)||(filters['methodology_content'].length>0)||(filters['additional_documentation'].length>0)||(filters['language'].length>0)||(filters['sampling_approach'].length>0)||(filters['focus'].length>0)||(filters['severity'].length>0)||(filters['sector'].length>0)||(filters['geo'].length>0)||(filters['coordination'].length>0)||(filters['affected_groups'].length>0)){
+			if((filters['id'].length>0)||(filters['str'].length>0)||(filters['finalScore'].length>0)||(filters['focus'].length>0)||(filters['top'].length>0)||(filters['protection_info_management'].length>0)||(filters['organisation'].length>0)||(filters['assessment_type'].length>0)||(filters['data_collection_technique'].length>0)||(filters['unit_of_analysis'].length>0)||(filters['unit_of_reporting'].length>0)||(filters['methodology_content'].length>0)||(filters['additional_documentation'].length>0)||(filters['language'].length>0)||(filters['sampling_approach'].length>0)||(filters['focus'].length>0)||(filters['severity'].length>0)||(filters['sector'].length>0)||(filters['geo'].length>0)||(filters['coordination'].length>0)||(filters['affected_groups'].length>0)){
 				d3.select('#globalRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 			} else { 
 				d3.select('#globalRemoveFilter').style('display', 'none').style('cursor', 'default');
@@ -3421,6 +3435,13 @@ var Deepviz = function(sources, callback){
 				d3.select('#affected_groupsRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 			}
 
+			if(filters['protection_info_management'].length>0){
+				data = data.filter(function(d){
+					return d['protection_info_management'].some(r=> filters['protection_info_management'].indexOf(r) >= 0);
+				});
+				d3.select('#protection_info_managementRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
+			}
+
 			if(filters['top'].length>0){
 				data = data.filter(function(d){
 					return d['top'].some(r=> filters['top'].indexOf(r) >= 0);
@@ -3433,6 +3454,7 @@ var Deepviz = function(sources, callback){
 				d3.select('#assessment_typeRemoveFilter').style('display', 'inline').style('cursor', 'pointer');
 			}
 
+			
 			if(filters['focus'].length>0){
 				data = data.filter(function(d){
 					return d['focus'].some(r=> filters['focus'].indexOf(r) >= 0);
@@ -3689,6 +3711,7 @@ var Deepviz = function(sources, callback){
 			Map.update();
 			updateRadarCharts();
 			BarChart.updateStackedBars('affected_groups', dataByAffectedGroups);
+			BarChart.updateStackedBars('protection_info_management', dataByProtectionInfoManagement);
 			BarChart.updateStackedBars('assessment_type', dataByAssessmentType);
 			BarChart.updateStackedBars('data_collection_technique', dataByDataCollectionTechnique);
 			BarChart.updateStackedBars('sampling_approach', dataBySamplingApproach);
@@ -4116,7 +4139,7 @@ var Deepviz = function(sources, callback){
 				severityRolling[i] = severityCount;
 			}
 
-			if((target=='reliability')||(target=='init')||(target=='context')||(target=='geo')||(target=='specificNeeds')||(target=='affectedGroups')||(target=='brush')||(target=='sector')||(target=='clear')||(target=='map')||((target=='severity')&&(filters.severity.length == 0))){
+			if((target=='reliability')||(target=='init')||(target=='context')||(target=='geo')||(target=='specificNeeds')||(target=='protectionInfoManagement')||(target=='brush')||(target=='sector')||(target=='clear')||(target=='map')||((target=='severity')&&(filters.severity.length == 0))){
 				d3.selectAll('.severityBar')
 				.transition()
 				.duration(duration)
