@@ -1136,6 +1136,11 @@ font-size: 15px;
 	vertical-align: top;
 }
 
+#firstChartRow2 .chartCol, 
+#firstChartRow .chartCol {
+	width: 33%;
+}
+
 
 .clearfix::after {
   content: "";
