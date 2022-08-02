@@ -61,7 +61,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	// top stakeholders chart
 	//**************************
-	var pimChart = BarChart.createStackedBarChart({
+	BarChart.createStackedBarChart({
 		title: 'PROTECTION INFORMATION MANAGEMENT',
 		rows: 'protection_info_management_array',
 		classname: 'protection_info_management',
