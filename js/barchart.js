@@ -196,7 +196,6 @@ BarChart.createStackedBarChart = function(a){
 	if((maxBarHeight>0)&&(rowHeight>maxBarHeight)){
 		rowHeight = maxBarHeight;
 	}
-
 	var chartarea = svg.append('g');
 
 	var rows = chartarea.selectAll('.stacked-bar-row')
@@ -380,6 +379,7 @@ BarChart.updateBars = function(group, dataset, duration = 0){
 	var data_group = group;
 	if(data_group=='focus') data_group = 'focus_array';
 	if(data_group=='affected_groups') data_group = 'affected_groups_array';
+	if(data_group=='protection_info_management') data_group = 'protection_info_management_array';
 	if(data_group=='additional_documentation') data_group = 'additional_documentation_array';
 	if(data_group=='unit_of_reporting') data_group = 'type_of_unit_of_analysis';
 	if(data_group=='unit_of_analysis') data_group = 'type_of_unit_of_analysis';
@@ -536,6 +536,7 @@ BarChart.updateStackedBars = function(group, dataset, duration = 0){
 		if(data_group=='organisation') data_group = 'organization';
 		if(data_group=='sector') data_group = 'sector_array';
 		if(data_group=='affected_groups') data_group = 'affected_groups_array';
+		if(data_group=='protection_info_management') data_group = 'protection_info_management_array';
 		if(data_group=='specific_needs') data_group = 'specific_needs_groups_array';
 		if(data_group=='unit_of_reporting') data_group = 'type_of_unit_of_analysis';
 		if(data_group=='unit_of_analysis') data_group = 'type_of_unit_of_analysis';

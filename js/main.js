@@ -11,7 +11,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	var sectorChart = BarChart.createStackedBarChart({
 		title: 'ASSESSMENTS BY SECTOR AND ANALYITICAL SCORE',
 		rows: 'sector_array',
-		width: 500,
+		width: 666,
 		height: 500,
 		filter: 'sector',
 		classname: 'sector',
@@ -24,7 +24,7 @@ var Deepviz = new Deepviz(sources, function(data){
 	var focusChart = BarChart.createBarChart({
 		title: 'ASSESSMENTS BY FOCUS',
 		rows: 'focus_array',
-		width: 500,
+		width: 666,
 		height: 500,
 		filter: 'focus',
 		classname: 'focus',
@@ -38,7 +38,7 @@ var Deepviz = new Deepviz(sources, function(data){
 		title: 'ASSESSMENTS BY AFFECTED GROUPS',
 		rows: 'affected_groups_array',
 		classname: 'affected_groups',
-		width: 500,
+		width: 666,
 		height: 500,
 		filter: 'affected_groups',
 		div: 'affected-groups-svg'
@@ -51,10 +51,24 @@ var Deepviz = new Deepviz(sources, function(data){
 		title: 'TOP 10 STAKEHOLDERS',
 		rows: 'organization',
 		classname: 'organisation',
-		width: 500,
+		width: 666,
 		height: 500,
 		filter: 'organisation',
 		div: 'top-stakeholders-svg',
+		limit: 10
+	});
+
+	//**************************
+	// top stakeholders chart
+	//**************************
+	BarChart.createStackedBarChart({
+		title: 'PROTECTION INFORMATION MANAGEMENT',
+		rows: 'protection_info_management_array',
+		classname: 'protection_info_management',
+		width: 666,
+		height: 500,
+		filter: 'protection_info_management',
+		div: 'protection-info-management-svg',
 		limit: 10
 	});
 
