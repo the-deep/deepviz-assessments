@@ -287,6 +287,6 @@ var Deepviz = new Deepviz(sources, function(data){
 	//**************************
 	var summary = Deepviz.createSummary();
 
-	$('#loadImage').fadeOut();
+	$('#loadBar').fadeOut();
 	
 });

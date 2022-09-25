@@ -1934,7 +1934,7 @@ var Deepviz = function(sources, callback){
 
 	    	handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
 			handleBottom.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", " + ((timechartSvgHeight-timechartHeight2-20) - margin.top) + ")"; });
-			$('#loadImage').delay(50).fadeOut(500);
+			$('#loadBar').delay(50).fadeOut(500);
 	    }
 		    
 	    // programattically set date range
@@ -2029,7 +2029,7 @@ var Deepviz = function(sources, callback){
 				$('#location-search').select2('close');
 			}
 
-	    	$('#loadImage').show();
+	    	$('#loadBar').show();
 
 			//**************************
 			// update chartArea viewBox
@@ -2128,7 +2128,7 @@ var Deepviz = function(sources, callback){
 			BarChart.updateBars('focus', dataByFocusArray);
 			BarChart.updateStackedBars('organisation', dataByOrganisation)
 
-			$('#loadImage').fadeOut(500);
+			$('#loadBar').fadeOut(500);
 
 			// d3.select(this).call(d3.event.target.move, dateRange.map(scale.timechart.x));
 			handleTop.attr("transform", function(d, i) { return "translate(" + (dateRange.map(scale.timechart.x)[i]-1) + ", -"+ margin.top +")"; });
@@ -3275,7 +3275,7 @@ var Deepviz = function(sources, callback){
 	// filtering (push values to filter array)
 	//**************************
 	this.filter = function(filterClass, value){
-		$('#loadImage').fadeIn(50,function(){
+		$('#loadBar').fadeIn(50,function(){
 
 			if(filterClass=='clear'){
 				filters.id = [];
@@ -3586,7 +3586,7 @@ var Deepviz = function(sources, callback){
 				Deepviz.filter('clear', 'clear'); 
 			});
 
-			$('#loadImage').delay(500).fadeOut(700);
+			$('#loadBar').delay(500).fadeOut(700);
 		});
 	}
 
@@ -3599,7 +3599,7 @@ var Deepviz = function(sources, callback){
 
 		d3.selectAll('#timeline').style('opacity', 0);
 
-		$('#loadImage').show();
+		$('#loadBar').show();
 
 		drawingTimeline = true;
 
@@ -4411,212 +4411,198 @@ function addCommas(nStr){
 }
 
 $(document).ready(function(){
-
-$('#print').click(function(){
-
-	if(printing) return false;
-	printing = true;
-	map.resize();
-	d3.select('#print-icon').style('display', 'none');
-	d3.select('#print-loading').style('display', 'block');
-	// $('#top_row').css('position', 'inherit');
-	$('#print-date').html('<b>PDF Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
-	$('#svg_summary2_div').css('display', 'block');
-
-	setTimeout(function(){
-		// page 1
-		html2canvas(document.querySelector("#page1"),{
-	        allowTaint: true,
-	        onclone: function(doc){
-				$(doc).find('#summary_row').attr('style', 'margin-top: 10px');
-				$(doc).find('#svg_summary2_div').attr('style', '');
-				$(doc).find('#top_row').attr('style', 'position: relative');
-				$(doc).find('.container2').css('position', 'unset');
-				$(doc).find('.main-content').css('padding-bottom', '4px');
-				$(doc).find('.main-content').css('margin', 'unset');
-				$(doc).find('#print-header').css('display', 'block')
-				$(doc).find('br-header').css('line-height', 0.7);
-				$(doc).find('#svg_summary3_div').css('display', 'none');
-				$(doc).find('#page2').css('display', 'none');
-				$(doc).find('.removeFilterBtn').html('FILTERED');
-	        },
-	        useCORS: false,
-	        foreignObjectRendering: true,
-	        ignoreElements: function(element){
-	        	if(element.id=='print') return true;
-	        	if(element.id=='printImage') return true;
-	        	if(element.id=='copyImage') return true;
-	        	if(element.id=='lasso') return true;
-	        	if(element.id=='expand') return true;
-	        	if(element.id=='map-toggle') return true;
-	        	if(element.id=='map-bg-toggle') return true;
-	        	if(element.id=='heatmap-radius-slider-div') return true;
-	        	if(element.id=='adm-toggle') return true;
-	        	if(element.id=='dateRangeContainer_img') return true;
-	        	if($(element).hasClass('select2')) return true;
-	        	if(element.id=='page2') return true;
-	        	if($(element).hasClass('removeFilterBtn')) return true;
-	        	if($(element).hasClass('selectRows')) return true;
-	    		return false;
-	        },
-	        scale: 1.2,
-	        height: $('#page1').height()+100,
-	        windowWidth: 1300,
-	        windowHeight: 2800,
-	        logging: false
-	    }).then(canvas => {
-
-	    var img = canvas.toDataURL("image/png");
-	    var pdf = new jsPDF("p", "mm", "a4");
-	    var imgProps= pdf.getImageProperties(img);
-	    var pdfWidth = pdf.internal.pageSize.getWidth();
-	    var pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-	    pdf.addImage(img, 'JPEG', 10, 5, pdfWidth-20, pdfHeight-30);
-	    pdf.save('deep-pdf-export.pdf');
-		d3.select('#print-icon').style('display', 'block');
-		d3.select('#print-loading').style('display', 'none');
-		printing = false;
+		
+	$('#print').click(function(){
+		
+		if(printing) return false;
+		printing = true;
+		map.resize();
+		d3.select('#print-icon i').attr('class', 'fa-spin fa-solid fa-spinner');
+		$('#loadBar').show();
+		$('#print-date').html('<b>PDF Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
+		$('#svg_summary2_div').css('display', 'block');
+		
+		setTimeout(function(){
+			html2canvas(document.querySelector("#main"),{
+				allowTaint: true,
+				onclone: function(doc){
+					$(doc).find('#summary_row').attr('style', 'margin-top: 14px');
+					$(doc).find('#svg_summary2_div').attr('style', '');
+					$(doc).find('#top_row').attr('style', 'position: relative');
+					$(doc).find('#print-header').css('display', 'block')
+					$(doc).find('#svg_summary3_div').css('display', 'none');
+					$(doc).find('.main-content').css('margin-bottom', '30px');
+					$(doc).find('.removeFilterBtn').html('FILTERED');
+				},
+				useCORS: false,
+				foreignObjectRendering: true,
+				ignoreElements: function(element){
+					if(element.id=='print') return true;
+					if(element.id=='printImage') return true;
+					if(element.id=='copyImage') return true;
+					if(element.id=='lasso') return true;
+					if(element.id=='expand') return true;
+					if(element.id=='map-toggle') return true;
+					if(element.id=='map-bg-toggle') return true;
+					if(element.id=='heatmap-radius-slider-div') return true;
+					if(element.id=='adm-toggle') return true;
+					if(element.id=='dateRangeContainer_img') return true;
+					if($(element).hasClass('select2')) return true;
+					if($(element).hasClass('removeFilterBtn')) return true;
+					return false;
+				},
+				scale: 1.2,
+				height: $('#main').height()+100,
+				windowWidth: 1300,
+				windowHeight: 2900,
+				logging: false
+			}).then(canvas => {
+				// document.body.appendChild(canvas);
+				// window.print();
+				// $(canvas).remove();
+				
+				var img = canvas.toDataURL("image/png");
+				var pdf = new jsPDF("p", "mm", "a4");
+				var imgProps= pdf.getImageProperties(img);
+				var pdfWidth = pdf.internal.pageSize.getWidth();
+				var pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+				
+				pdf.addImage(img, 'JPEG', 9, 8, pdfWidth-20, pdfHeight-35);
+				pdf.save('deep-pdf-export.pdf');
+				
+				d3.select('#print-icon i').attr('class', 'fa-solid fa-print');
+				$('#loadBar').fadeOut();
+				
+				printing = false;
+			},200);
 		});
-	},200);
-});
-
-$('#printImage').click(function(){
-
-	if(printing) return false;
-	printing = true;
-	map.resize();
-	d3.select('#printImage-icon').style('display', 'none');
-	d3.select('#printImage-loading').style('display', 'block');
-	// $('#top_row').css('position', 'inherit');
-	$('#print-date').html('<b>Image Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
-	$('#svg_summary2_div').css('display', 'block');
-
-	setTimeout(function(){
-		html2canvas(document.querySelector("#page1"),{
-	        allowTaint: true,
-	        onclone: function(doc){
-				$(doc).find('#summary_row').attr('style', 'margin-top: 10px');
-				$(doc).find('#svg_summary2_div').attr('style', '');
-				$(doc).find('#top_row').attr('style', 'position: relative');
-				$(doc).find('.container2').css('position', 'unset');
-				$(doc).find('.main-content').css('padding-bottom', '4px');
-				$(doc).find('.main-content').css('margin', 'unset');
-				$(doc).find('#print-header').css('display', 'block')
-				$(doc).find('br-header').css('line-height', 0.7);
-				$(doc).find('#svg_summary3_div').css('display', 'none');
-				$(doc).find('#page2').css('display', 'none');
-				$(doc).find('.removeFilterBtn').html('FILTERED');
-	        },
-	        useCORS: false,
-	        foreignObjectRendering: true,
-	        ignoreElements: function(element){
-	        	if(element.id=='print') return true;
-	        	if(element.id=='printImage') return true;
-	        	if(element.id=='copyImage') return true;
-	        	if(element.id=='lasso') return true;
-	        	if(element.id=='expand') return true;
-	        	if(element.id=='map-toggle') return true;
-	        	if(element.id=='map-bg-toggle') return true;
-	        	if(element.id=='heatmap-radius-slider-div') return true;
-	        	if(element.id=='adm-toggle') return true;
-	        	if(element.id=='dateRangeContainer_img') return true;
-	        	if(element.id=='page2') return true;
-	        	if($(element).hasClass('select2')) return true;
-	        	if($(element).hasClass('removeFilterBtn')) return true;
-	        	if($(element).hasClass('selectRows')) return true;
-	    		return false;
-	        },
-	        scale: 1.2,
-	        height: $('#page1').height()+100,
-	        windowWidth: 1300,
-	        windowHeight: 2800,
-	        logging: false
-	    }).then(canvas => {
-
-		var img = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-		var link = document.createElement('a');
-		link.download = 'deep-export.png';
-		link.href = img;
-		link.click();
-		link.delete;
-		d3.select('#printImage-icon').style('display', 'block');
-		d3.select('#printImage-loading').style('display', 'none');
-		printing = false;
+	});
+	
+	$('#printImage').click(function(){
+		
+		if(printing) return false;
+		printing = true;
+		map.resize();
+		$('#loadBar').show();
+		d3.select('#printImage-icon i').attr('class', 'fa-spin fa-solid fa-spinner');
+		$('#print-date').html('<b>Image Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
+		$('#svg_summary2_div').css('display', 'block');
+		
+		setTimeout(function(){
+			html2canvas(document.querySelector("#main"),{
+				allowTaint: true,
+				onclone: function(doc){
+					$(doc).find('#summary_row').attr('style', 'margin-top: 14px');
+					$(doc).find('#svg_summary2_div').attr('style', '');
+					$(doc).find('#top_row').attr('style', 'position: relative');
+					$(doc).find('#print-header').css('display', 'block')
+					$(doc).find('#svg_summary3_div').css('display', 'none');
+					$(doc).find('.main-content').css('margin-bottom', '30px');
+					$(doc).find('.removeFilterBtn').html('FILTERED');
+				},
+				useCORS: false,
+				foreignObjectRendering: true,
+				ignoreElements: function(element){
+					if(element.id=='print') return true;
+					if(element.id=='printImage') return true;
+					if(element.id=='copyImage') return true;
+					if(element.id=='lasso') return true;
+					if(element.id=='expand') return true;
+					if(element.id=='map-toggle') return true;
+					if(element.id=='map-bg-toggle') return true;
+					if(element.id=='heatmap-radius-slider-div') return true;
+					if(element.id=='adm-toggle') return true;
+					if(element.id=='dateRangeContainer_img') return true;
+					if($(element).hasClass('select2')) return true;
+					if($(element).hasClass('removeFilterBtn')) return true;
+					return false;
+				},
+				scale: 1.2,
+				height: $('#main').height()+100,
+				windowWidth: 1300,
+				windowHeight: 2900,
+				logging: false
+			}).then(canvas => {
+				
+				var img = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+				var link = document.createElement('a');
+				link.download = 'deep-export.png';
+				link.href = img;
+				link.click();
+				link.delete;
+				
+				d3.select('#printImage-icon i').attr('class', 'fa-solid fa-file-image');
+				$('#loadBar').fadeOut();
+				
+				printing = false;
+			},200);
 		});
-	},200);
-});
+	});
+	
+	$('#copyImage').click(function(){
+		
+		if(printing) return false;
+		printing = true;
+		map.resize();
+		$('#loadBar').show();
+		d3.select('#copyImage-icon i').attr('class', 'fa-spin fa-solid fa-spinner');
+		$('#print-date').html('<b>Image Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
+		$('#svg_summary2_div').css('display', 'block');
+		
+		setTimeout(function(){
+			html2canvas(document.querySelector("#main"),{
+				allowTaint: true,
+				onclone: function(doc){
+					$(doc).find('#summary_row').attr('style', 'margin-top: 14px');
+					$(doc).find('#svg_summary2_div').attr('style', '');
+					$(doc).find('#top_row').attr('style', 'position: relative');
+					$(doc).find('#print-header').css('display', 'block')
+					$(doc).find('#svg_summary3_div').css('display', 'none');
+					$(doc).find('.main-content').css('margin-bottom', '30px');
+					$(doc).find('.removeFilterBtn').html('FILTERED');
+				},
+				useCORS: false,
+				foreignObjectRendering: true,
+				ignoreElements: function(element){
+					if(element.id=='print') return true;
+					if(element.id=='printImage') return true;
+					if(element.id=='copyImage') return true;
+					if(element.id=='lasso') return true;
+					if(element.id=='expand') return true;
+					if(element.id=='map-toggle') return true;
+					if(element.id=='map-bg-toggle') return true;
+					if(element.id=='heatmap-radius-slider-div') return true;
+					if(element.id=='adm-toggle') return true;
+					if(element.id=='dateRangeContainer_img') return true;
+					if($(element).hasClass('select2')) return true;
+					if($(element).hasClass('removeFilterBtn')) return true;
+					return false;
+				},
+				scale: 1.2,
+				height: $('#main').height()+100,
+				windowWidth: 1300,
+				windowHeight: 2900,
+				logging: false
+			}).then(canvas => {
+				canvas.toBlob(blob => {
+					navigator.clipboard.write([
+						new ClipboardItem({
+							[blob.type]: blob
+						})
+					]).then(() => {
+						
+					})
+				})
+				
+				// copied to clipboard
+				d3.select('#copyImage-icon i').attr('class', 'fa-solid fa-clipboard');
+				$('#loadBar').fadeOut();
 
-$('#copyImage').click(function(){
-
-	if(printing) return false;
-	printing = true;
-	map.resize();
-
-	d3.select('#copyImage-icon').style('display', 'none');
-	d3.select('#copyImage-loading').style('display', 'block');
-	// $('#top_row').css('position', 'inherit');
-	$('#print-date').html('<b>Image Export</b> &nbsp;&nbsp;&nbsp;'+new Date());
-	$('#svg_summary2_div').css('display', 'block');
-
-	setTimeout(function(){
-		html2canvas(document.querySelector("#page1"),{
-	        allowTaint: true,
-	        onclone: function(doc){
-				$(doc).find('#summary_row').attr('style', 'margin-top: 10px');
-				$(doc).find('#svg_summary2_div').attr('style', '');
-				$(doc).find('#top_row').attr('style', 'position: relative');
-				$(doc).find('.container2').css('position', 'unset');
-				$(doc).find('.main-content').css('padding-bottom', '4px');
-				$(doc).find('.main-content').css('margin', 'unset');
-				$(doc).find('#print-header').css('display', 'block')
-				$(doc).find('br-header').css('line-height', 0.7);
-				$(doc).find('#svg_summary3_div').css('display', 'none');
-				$(doc).find('#page2').css('display', 'none');
-				$(doc).find('.removeFilterBtn').html('FILTERED');
-	        },
-	        useCORS: false,
-	        foreignObjectRendering: true,
-	        ignoreElements: function(element){
-	        	if(element.id=='print') return true;
-	        	if(element.id=='printImage') return true;
-	        	if(element.id=='copyImage') return true;
-	        	if(element.id=='lasso') return true;
-	        	if(element.id=='expand') return true;
-	        	if(element.id=='map-toggle') return true;
-	        	if(element.id=='map-bg-toggle') return true;
-	        	if(element.id=='heatmap-radius-slider-div') return true;
-	        	if(element.id=='adm-toggle') return true;
-	        	if(element.id=='dateRangeContainer_img') return true;
-	        	if(element.id=='page2') return true;
-	        	if($(element).hasClass('select2')) return true;
-	        	if($(element).hasClass('removeFilterBtn')) return true;
-	        	if($(element).hasClass('selectRows')) return true;
-	    		return false;
-	        },
-	        scale: 1.2,
-	        height: $('#page1').height()+100,
-	        windowWidth: 1300,
-	        windowHeight: 2800,
-	        logging: false
-	    }).then(canvas => {
-	    	canvas.toBlob(blob => {
-			    navigator.clipboard.write([
-			      new ClipboardItem({
-			        [blob.type]: blob
-			      })
-			    ]).then(() => {
-					// copied to clipboard
-			    })
-			  })
-			d3.select('#copyImage-icon').style('display', 'block');
-			d3.select('#copyImage-loading').style('display', 'none');
-			printing = false;
-		});
-	},200);
-
-});
-
+				printing = false;
+			});
+		},200);
+	});
+	
 	tippy('#print', {
 		content: 'Export to PDF',
 		theme: 'light-border',
@@ -4628,7 +4614,7 @@ $('#copyImage').click(function(){
 		arrow: true,
 		size: 'small'
 	});
-
+	
 	tippy('#printImage', {
 		content: 'Export to PNG',
 		theme: 'light-border',
@@ -4640,7 +4626,7 @@ $('#copyImage').click(function(){
 		arrow: true,
 		size: 'small'
 	});
-
+	
 	tippy('#copyImage', {
 		content: 'Copy to clipboard',
 		theme: 'light-border',
