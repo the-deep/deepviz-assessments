@@ -17,6 +17,7 @@
 	<link href="js/vendor/select2.min.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="js/vendor/Tabulator/tabulator_bulma.min.css"/>
 	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	
 	<!-- load custom CSS -->
 	<link href="css/style.css?cache=77793" rel="stylesheet" type="text/css" media="all">
@@ -39,6 +40,7 @@
 				<div id="svg_summary1_div"></div>
 				<div id="svg_summary2_div"></div>
 				<div id="svg_summary3_div"></div>
+				<div id="loadBar" class="animated-gradient"></div>
 			</div>
 			
 			<div class="container1">
@@ -51,10 +53,25 @@
 							
 							<h2 style="margin-bottom: 3px; margin-top: 0px; display: inline-block">Summary<img id="globalRemoveFilter" class="removeFilterBtn" src="images/filter.png" title="Clear filter"/></h2>
 							
-							<div id="print"><img id="print-icon" src="images/print.png"/><img id="print-loading" src="images/loading.gif"/></div>
-							<div id="printImage"><img id="printImage-icon" src="images/printImage.png"/><img id="printImage-loading" src="images/loading.gif"/></div>
-							<div id="copyImage"><img id="copyImage-icon" src="images/copyImage.png"/><img id="copyImage-loading" src="images/loading.gif"/></div>
-							<div id="loadImage" class="loader"></div>
+							<div id="printIcons">
+								<div id="print">
+									<div id="print-icon" class="btn-top">
+										<i class="fa-solid fa-print"></i>
+									</div>
+								</div>
+
+								<div id="printImage">
+									<div id="printImage-icon" class="btn-top">
+										<i class="fa-solid fa-file-image"></i>
+									</div>
+								</div>
+
+								<div id="copyImage">
+									<div id="copyImage-icon" class="btn-top">
+										<i class="fa-solid fa-clipboard"></i>
+									</div>
+								</div>
+							</div>
 							
 							<div class="selectedDate">
 								<div class="title">
@@ -104,14 +121,14 @@
 								<div id="gridmap-div"></div>
 								
 								<div id="lasso">
-									<img id="lasso-default" height="24px" src="images/lasso-default.svg" class="tippy-btn" data-tippy-content="Select locations"/>
-									<img id="lasso-selected" height="24px" src="images/lasso-selected.svg" class="tippy-btn" data-tippy-content="Select locations"/>
-									<img id="lasso-hover" height="24px" src="images/lasso-hover.svg" class="tippy-btn" data-tippy-content="Select locations"/>
+									<img id="lasso-default" height="23px" src="images/lasso-default.svg" class="tippy-btn" data-tippy-content="Select locations"/>
+									<img id="lasso-selected" height="23px" src="images/lasso-selected.svg" class="tippy-btn" data-tippy-content="Select locations"/>
+									<img id="lasso-hover" height="23px" src="images/lasso-hover.svg" class="tippy-btn" data-tippy-content="Select locations"/>
 								</div>
 								<div id="expand">
-									<img id="expand-default" height="24px" src="images/expand-default.svg"/>
-									<img id="expand-selected" height="24px" src="images/expand-selected.svg"/>
-									<img id="expand-hover" height="24px" src="images/expand-hover.svg"/>
+									<img id="expand-default" height="23px" src="images/expand-default.svg"/>
+									<img id="expand-selected" height="23px" src="images/expand-selected.svg"/>
+									<img id="expand-hover" height="23px" src="images/expand-hover.svg"/>
 								</div>
 								<div id="map-toggle">
 									<div id="map-toggle-rect-bubbles" class="tippy-btn" data-tippy-content="Proportional symbols"></div>
